@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Nikhil — B.Tech CSE student at IIT Jodhpur. Systems builder and ML engineer. CogniOS, MLOps, hackathon finisher." />
+  <meta name="keywords" content="Nikhil, IIT Jodhpur, CSE, ML, systems, CogniOS, MLOps, hackathon, portfolio" />
+  <meta property="og:title" content="Nikhil — IIT Jodhpur" />
+  <meta property="og:description" content="Building toward MLOps and AI infrastructure. Turning ML theory into deployable systems." />
+  <meta property="og:type" content="website" />
+  <title>Nikhil — IIT Jodhpur</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <canvas id="particle-canvas" aria-hidden="true"></canvas>
+  <div class="dot-grid" aria-hidden="true"></div>
+  <div class="ambient-glow" aria-hidden="true"></div>
+
+  <!-- NAV -->
+  <nav id="main-nav" role="navigation" aria-label="Main navigation">
+    <a href="#hero" class="nav-monogram" aria-label="Back to top">N</a>
+    <ul class="nav-links">
+      <li><a href="#work" id="nav-work">Work</a></li>
+      <li><a href="#projects" id="nav-projects">Projects</a></li>
+      <li><a href="#education" id="nav-education">Education</a></li>
+      <li><a href="#writing" id="nav-writing">Writing</a></li>
+      <li><a href="#contact" id="nav-contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <div class="hero-bg-text" aria-hidden="true">SYSTEMS</div>
+    <!-- HERO -->
+    <section id="hero" aria-label="Hero">
+      <div class="hero-top">
+        <div>
+          <div class="hero-terminal">
+            <div class="hero-terminal-dot"></div>
+            <span>USER: NIKHIL // OP_MODE: BUILD // JODHPUR, IN</span>
+          </div>
+          <h1 class="hero-name">SYSTEMS<br/>&amp; ML</h1>
+          <p class="hero-subtitle">Computer Science &middot; IIT Jodhpur</p>
+          <div class="hero-tags">
+            <span class="hero-tag">Systems</span>
+            <span class="hero-tag">MLOps</span>
+            <span class="hero-tag">Infra</span>
+          </div>
+          <p class="hero-thought" id="hero-thought" aria-label="The best way to predict the future is to compile it."></p>
+        </div>
+      </div>
+      <div class="hero-bottom">
+        <div class="hero-desc-col">
+          <div class="hero-desc-text" style="font-size: 0.85rem; line-height: 1.6; color: var(--muted);">
+            <strong style="color: var(--heading); display: block; margin-bottom: 0.4rem; font-weight: 500;">Why engineering when AI is writing code?</strong>
+            Because AI optimizes the known, but engineering builds the unknown. The models still need infrastructure, the hardware still needs schedulers, and production still needs builders who can debug a telemetry pipeline at 3 AM.<br><br>
+            My aspiration is to build high-leverage systems that hold up under real-world pressure. I'm always looking to connect with enthusiastic peers, tackle hard problems, and collaborate with teams who care more about the craft than the hype.
+          </div>
+          <div class="hero-socials">
+            <a href="https://github.com/NikhByte" class="hero-social-link" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile">GitHub</a>
+            <a href="https://www.linkedin.com/in/nikhil-b17571385" class="hero-social-link" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile">LinkedIn</a>
+          </div>
+          <div class="hero-scroll" aria-hidden="true">
+            <span class="hero-scroll-arrow">&#8595;</span>
+            <span style="font-family:var(--font-mono)">scroll</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" aria-label="About">
+      <div class="about-grid">
+        <div class="stat-block reveal">
+          <div class="stat-row reveal-child">
+            <span class="stat-label">Institution</span>
+            <span class="stat-value">IIT Jodhpur</span>
+          </div>
+          <div class="stat-row reveal-child">
+            <span class="stat-label">Program</span>
+            <span class="stat-value">B.Tech CSE &middot; 2nd Year</span>
+          </div>
+          <div class="stat-row reveal-child">
+            <span class="stat-label">Roll No</span>
+            <span class="stat-value">B25CS1044</span>
+          </div>
+          <div class="stat-row reveal-child">
+            <span class="stat-label">CGPA</span>
+            <span class="stat-value">8.85</span>
+          </div>
+          <div class="stat-row reveal-child">
+            <span class="stat-label">Class 12</span>
+            <span class="stat-value">96.2% (CBSE)</span>
+          </div>
+          <div class="stat-row reveal-child">
+            <span class="stat-label">Hackathons</span>
+            <span class="stat-value">Runner-Up &middot; Top 5</span>
+          </div>
+        </div>
+
+        <div class="reveal" style="transition-delay:100ms">
+          <p class="about-prose">
+            I build things close to the metal &mdash; daemons, classifiers, telemetry pipelines. CogniOS is my current focus: a Linux workload detector that runs XGBoost in userspace to profile and optimize process scheduling without kernel modifications. I&rsquo;m also deep into MLOps tooling &mdash; Kubernetes, MLflow, Prometheus &mdash; because shipping a model is a different problem than training one. When I&rsquo;m not coding, I&rsquo;m turning lecture slides into Obsidian-linked knowledge systems.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- WORK -->
+    <section id="work" class="alt-bg" aria-label="Work and achievements">
+      <p class="section-label"><span class="label-accent">&mdash;</span>Work</p>
+      <div class="work-list">
+        <div class="work-entry reveal">
+          <div>
+            <p class="work-role">DevLUP Labs &middot; Member &amp; Project Builder</p>
+            <p class="work-date">2025 &ndash; present</p>
+          </div>
+          <div>
+            <p class="work-desc">Active member of IIT Jodhpur&rsquo;s tech club. Built CogniOS under the Summer of Code (SoC) program. Participated in WoC with SPARK.</p>
+            <div class="tag-list">
+              <span class="tag">Python</span><span class="tag">Linux</span><span class="tag">Docker</span><span class="tag">MLOps</span>
+            </div>
+          </div>
+        </div>
+        <div class="work-entry reveal">
+          <div>
+            <p class="work-role">Insomniac Hackathon &middot; Runner-Up</p>
+            <p class="work-date">DevLUP Labs &middot; 2024</p>
+          </div>
+          <div>
+            <p class="work-desc">Built FATE &mdash; a mobile focus-tracking app with multi-signal attention scoring across spatial, social, and digital inputs.</p>
+            <div class="tag-list">
+              <span class="tag">Flutter</span><span class="tag">FastAPI</span><span class="tag">Gemini CLI</span><span class="tag">Android</span>
+            </div>
+          </div>
+        </div>
+        <div class="work-entry reveal">
+          <div>
+            <p class="work-role">Bootup Hackathon &middot; Top 5</p>
+            <p class="work-date">DevLUP Labs &middot; 2024</p>
+          </div>
+          <div>
+            <p class="work-desc">Built Credo &mdash; a task management app with AI-assisted UI, reached final round as Team Elite Coders.</p>
+            <div class="tag-list">
+              <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">SQLite</span><span class="tag">Node.js</span>
+            </div>
+          </div>
+        </div>
+        <div class="work-entry reveal">
+          <div>
+            <p class="work-role">Cerebras Hackathon &middot; Builder</p>
+            <p class="work-date">June 2024</p>
+          </div>
+          <div>
+            <p class="work-desc">Shipped two projects in 48hrs: DebateOS (multi-agent AI debate engine) and AeroWSE (3D drone swarm simulator with Gemma 4 31B via Cerebras API).</p>
+            <div class="tag-list">
+              <span class="tag">Three.js</span><span class="tag">Node.js</span><span class="tag">Cerebras API</span><span class="tag">Gemma</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" aria-label="Projects">
+      <p class="section-label"><span class="label-accent">&mdash;</span>Projects</p>
+
+      <div class="featured-project reveal" role="article">
+        <h2 class="project-heading">CogniOS</h2>
+        <p class="project-subhead">Adaptive OS Intelligence Layer &middot; DevLUP Labs SoC &middot; Active</p>
+        <p class="project-desc">
+          Linux workload detection and optimization pipeline running entirely in userspace. XGBoost classifier trained on synthetic + pseudo-labeled telemetry data identifies workload profiles. Isolation Forest anomaly detection flags resource thrashing in real time. An OS flight recorder maintains a rolling telemetry buffer with crash-dump capability for post-mortem analysis. Offline scheduler simulator supports both classical and reinforcement learning evaluation methods.
+        </p>
+        <div class="tag-list">
+          <span class="tag">Python</span><span class="tag">XGBoost</span><span class="tag">Isolation Forest</span><span class="tag">psutil</span><span class="tag">SQLite</span><span class="tag">Gemma LLM</span><span class="tag">Linux</span><span class="tag">MLflow</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/NikhByte" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="CogniOS on GitHub">&#8599; GitHub</a>
+        </div>
+      </div>
+
+      <div class="project-grid">
+        <article class="project-card reveal">
+          <h3 class="card-title">FATE</h3>
+          <p class="card-context">Full Attention Telemetry Engine &middot; Insomniac Hackathon &mdash; Runner-Up</p>
+          <p class="card-desc">Mobile app tracking focus via a Contextual Attention Score synthesized from spatial, social, and digital signals. Flutter UI + Android native layer + Python FastAPI backend.</p>
+          <div class="tag-list">
+            <span class="tag">Flutter</span><span class="tag">Android</span><span class="tag">FastAPI</span><span class="tag">Python</span><span class="tag">Gemini CLI</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/NikhByte" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="FATE on GitHub">&#8599; GitHub</a>
+          </div>
+        </article>
+        <article class="project-card reveal">
+          <h3 class="card-title">SPARK</h3>
+          <p class="card-context">Self-hosted Personal Access Remote Kit &middot; DevLUP Labs WoC</p>
+          <p class="card-desc">Self-hosted cloud on Ubuntu Server using CasaOS Docker microservices. Media streaming, file storage, and remote access via Cloudflare Tunnel under real college-network constraints.</p>
+          <div class="tag-list">
+            <span class="tag">Docker</span><span class="tag">CasaOS</span><span class="tag">Cloudflare Tunnel</span><span class="tag">Ubuntu Server</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/NikhByte" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="SPARK on GitHub">&#8599; GitHub</a>
+          </div>
+        </article>
+        <article class="project-card reveal">
+          <h3 class="card-title">DebateOS</h3>
+          <p class="card-context">Cerebras Hackathon &middot; 2024</p>
+          <p class="card-desc">Multi-agent AI debate engine. Agents argue opposing positions using structured turn-taking, with a judge agent scoring arguments.</p>
+          <div class="tag-list">
+            <span class="tag">Node.js</span><span class="tag">Cerebras API</span><span class="tag">LangGraph</span><span class="tag">Multi-agent</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/NikhByte" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="DebateOS on GitHub">&#8599; GitHub</a>
+          </div>
+        </article>
+        <article class="project-card reveal">
+          <h3 class="card-title">AeroWSE</h3>
+          <p class="card-context">Autonomous Embedded Radar Ops &mdash; Warfighter Swarm Engine &middot; Cerebras Hackathon &middot; 2024</p>
+          <p class="card-desc">3D drone swarm simulator with real-time coordination logic powered by Gemma 4 31B via Cerebras API. Rendered in Three.js.</p>
+          <div class="tag-list">
+            <span class="tag">Three.js</span><span class="tag">Node.js</span><span class="tag">Cerebras API</span><span class="tag">Gemma 4 31B</span><span class="tag">WebGL</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/NikhByte" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="AeroWSE on GitHub">&#8599; GitHub</a>
+          </div>
+        </article>
+        <article class="project-card reveal">
+          <h3 class="card-title">Credo</h3>
+          <p class="card-context">Bootup Hackathon &middot; Team Elite Coders &middot; Top 5</p>
+          <p class="card-desc">Task management app with AI-assisted UI design. Manual coding + AI-generated components. Reached the final round.</p>
+          <div class="tag-list">
+            <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">SQLite</span><span class="tag">JavaScript</span><span class="tag">Node.js</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/NikhByte" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="Credo on GitHub">&#8599; GitHub</a>
+          </div>
+        </article>
+        <article class="project-card reveal">
+          <h3 class="card-title">Local AI Environment</h3>
+          <p class="card-context">Personal project &middot; Ongoing</p>
+          <p class="card-desc">Configured a local inference stack on RTX 3050 laptop &mdash; Ollama + Open WebUI &mdash; for running LLMs locally without cloud dependency.</p>
+          <div class="tag-list">
+            <span class="tag">Ollama</span><span class="tag">Open WebUI</span><span class="tag">CUDA</span><span class="tag">RTX 3050</span><span class="tag">Local LLM</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/NikhByte" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="Local AI Environment config repo on GitHub">&#8599; GitHub &mdash; config repo</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- STACK -->
+    <section id="stack" class="alt-bg" aria-label="Tech stack">
+      <p class="section-label"><span class="label-accent">&mdash;</span>Stack</p>
+      <div class="stack-groups reveal">
+        <div class="stack-row reveal-child">
+          <span class="stack-domain">PY</span>
+          <div class="stack-tags">
+            <span class="tag">Python</span><span class="tag">C</span><span class="tag">C++</span><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span><span class="tag">SQL</span>
+          </div>
+        </div>
+        <div class="stack-row reveal-child">
+          <span class="stack-domain">ML</span>
+          <div class="stack-tags">
+            <span class="tag">XGBoost</span><span class="tag">Isolation Forest</span><span class="tag">scikit-learn</span><span class="tag">MLflow</span><span class="tag">LangGraph</span>
+          </div>
+        </div>
+        <div class="stack-row reveal-child">
+          <span class="stack-domain">SYS</span>
+          <div class="stack-tags">
+            <span class="tag">Linux</span><span class="tag">Docker</span><span class="tag">psutil</span><span class="tag">SQLite</span><span class="tag">Ubuntu Server</span><span class="tag">Cloudflare</span>
+          </div>
+        </div>
+        <div class="stack-row reveal-child">
+          <span class="stack-domain">UI</span>
+          <div class="stack-tags">
+            <span class="tag">Flutter</span><span class="tag">Three.js</span><span class="tag">FastAPI</span><span class="tag">Node.js</span><span class="tag">Next.js</span>
+          </div>
+        </div>
+        <div class="stack-row reveal-child">
+          <span class="stack-domain">NOW</span>
+          <div class="stack-tags">
+            <span class="tag">Kubernetes</span><span class="tag">Prometheus</span><span class="tag">Grafana</span><span class="tag">GitHub Actions</span><span class="tag">MLflow</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EDUCATION -->
+    <section id="education" aria-label="Education">
+      <p class="section-label"><span class="label-accent">&mdash;</span>Education</p>
+      <div class="edu-grid">
+        <div class="reveal">
+          <p class="edu-degree">B.Tech &middot; Computer Science &amp; Engineering</p>
+          <p class="edu-institution">Indian Institute of Technology Jodhpur</p>
+          <p class="edu-years">2025 &ndash; 2029 (expected)</p>
+          <div class="course-chips">
+            <span class="course-chip">DSA</span>
+            <span class="course-chip">Discrete Math</span>
+            <span class="course-chip">Probability &amp; Stats</span>
+            <span class="course-chip">Signals &amp; Systems</span>
+            <span class="course-chip">Intro to ML</span>
+            <span class="course-chip">CSE Lab</span>
+          </div>
+        </div>
+        <div class="stat-block reveal" style="transition-delay:80ms">
+          <div class="stat-row">
+            <span class="stat-label">CGPA</span>
+            <span class="stat-value">8.85</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Class 12</span>
+            <span class="stat-value">96.2% (CBSE)</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Roll No</span>
+            <span class="stat-value">B25CS1044</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Status</span>
+            <span class="stat-value">2nd Year &middot; 3rd Semester</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WRITING -->
+    <section id="writing" class="alt-bg" aria-label="Writing">
+      <p class="section-label"><span class="label-accent">&mdash;</span>Writing</p>
+      <div class="writing-block reveal">
+        <p class="writing-intro">Writing in progress. I document deeply &mdash; Obsidian-first, publish when it&rsquo;s worth reading.</p>
+        <div id="writing-posts">
+
+          <article class="writing-post" data-post-id="post-1">
+            <div class="writing-post-header" role="button" tabindex="0" aria-expanded="false" aria-controls="body-post-1">
+              <div class="writing-post-left">
+                <p class="writing-title">How I built a Linux workload classifier without touching the kernel</p>
+                <div class="writing-meta">
+                  <span class="writing-status">draft</span>
+                  <span class="writing-date">in progress</span>
+                </div>
+              </div>
+              <span class="writing-expand-icon" aria-hidden="true">&#8250;</span>
+            </div>
+            <div class="writing-post-body" id="body-post-1" role="region">
+              <p class="writing-preview">CogniOS needed workload-type awareness without a kernel module. I ended up training an XGBoost classifier on synthetic telemetry &mdash; CPU cycles, page faults, I/O patterns &mdash; to label running processes as compute-bound, memory-bound, or idle. The trick was getting useful features out of <code style="font-family:var(--font-mono);font-size:0.8em;color:var(--accent)">/proc</code> without root and keeping inference under 2ms.</p>
+              <div class="writing-post-footer">
+                <button class="like-btn" data-post="post-1" aria-label="Like this post" type="button">
+                  <span class="like-icon">&#9825;</span>
+                  <span class="like-count">0</span>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <article class="writing-post" data-post-id="post-2">
+            <div class="writing-post-header" role="button" tabindex="0" aria-expanded="false" aria-controls="body-post-2">
+              <div class="writing-post-left">
+                <p class="writing-title">XGBoost in userspace: building CogniOS&rsquo;s ML pipeline from scratch</p>
+                <div class="writing-meta">
+                  <span class="writing-status">draft</span>
+                  <span class="writing-date">in progress</span>
+                </div>
+              </div>
+              <span class="writing-expand-icon" aria-hidden="true">&#8250;</span>
+            </div>
+            <div class="writing-post-body" id="body-post-2" role="region">
+              <p class="writing-preview">Training a model is one problem. Making it run reliably as a background daemon &mdash; handling cold-start, model versioning, telemetry drift, and crash-dump replay &mdash; is another. This post covers the full MLflow-tracked pipeline: data gen, labeling heuristics, feature engineering from <code style="font-family:var(--font-mono);font-size:0.8em;color:var(--accent)">psutil</code>, model serialization, and how I wired it into CogniOS&rsquo;s flight recorder.</p>
+              <div class="writing-post-footer">
+                <button class="like-btn" data-post="post-2" aria-label="Like this post" type="button">
+                  <span class="like-icon">&#9825;</span>
+                  <span class="like-count">0</span>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <article class="writing-post" data-post-id="post-3">
+            <div class="writing-post-header" role="button" tabindex="0" aria-expanded="false" aria-controls="body-post-3">
+              <div class="writing-post-left">
+                <p class="writing-title">What hackathons taught me about shipping in 48 hours</p>
+                <div class="writing-meta">
+                  <span class="writing-status">draft</span>
+                  <span class="writing-date">in progress</span>
+                </div>
+              </div>
+              <span class="writing-expand-icon" aria-hidden="true">&#8250;</span>
+            </div>
+            <div class="writing-post-body" id="body-post-3" role="region">
+              <p class="writing-preview">Three hackathons &mdash; Insomniac, Bootup, Cerebras &mdash; three completely different constraint profiles. The one consistent lesson: the gap between a working prototype and a presentable product is mostly clarity of scope, not code. I now build the demo path first and work backwards to what the code actually needs to do.</p>
+              <div class="writing-post-footer">
+                <button class="like-btn" data-post="post-3" aria-label="Like this post" type="button">
+                  <span class="like-icon">&#9825;</span>
+                  <span class="like-count">0</span>
+                </button>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" aria-label="Contact">
+      <div class="reveal">
+        <p class="contact-display">Let&rsquo;s build something.</p>
+        <div class="contact-links">
+          <a href="https://github.com/NikhByte" class="contact-link" target="_blank" rel="noopener noreferrer" aria-label="GitHub: NikhByte">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.6.113.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+            <span class="contact-link-text">github.com/NikhByte</span>
+          </a>
+          <a href="https://www.linkedin.com/in/nikhil-b17571385" class="contact-link" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            <span class="contact-link-text">linkedin.com/in/nikhil-b17571385</span>
+          </a>
+          <a href="mailto:nikhil010407@gmail.com" class="contact-link" aria-label="Email nikhil010407@gmail.com">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-.441.175-.864.49-1.178a1.634 1.634 0 0 1 1.069-.448h.077L12 10.09l10.364-6.259h.077c.399.009.78.177 1.069.449.315.313.49.736.49 1.177z"/></svg>
+            <span class="contact-link-text">nikhil010407@gmail.com</span>
+          </a>
+          <span class="contact-link" style="opacity:0.3;cursor:default" aria-label="X / Twitter handle coming soon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.259 5.63 5.905-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            <span class="contact-link-text">add handle when available</span>
+          </span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+
+  <!-- PROJECT DETAIL OVERLAY -->
+  <div id="proj-overlay" class="proj-overlay" role="dialog" aria-modal="true" aria-labelledby="proj-overlay-title" aria-hidden="true">
+    <div class="proj-overlay-header">
+      <div class="proj-overlay-title-group">
+        <p class="proj-overlay-name" id="proj-overlay-title"></p>
+        <p class="proj-overlay-sub" id="proj-overlay-sub"></p>
+      </div>
+      <button class="proj-overlay-close" id="proj-overlay-close" aria-label="Close project detail">
+        ESC / close
+      </button>
+    </div>
+    <div class="proj-overlay-body" id="proj-overlay-body"></div>
+  </div>
+
+  <footer role="contentinfo">
+    <span class="footer-left" id="footer-year-line">Nikhil &middot; IIT Jodhpur &middot; 2026</span>
+    <span class="footer-right">Built by me.</span>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
