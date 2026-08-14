@@ -586,7 +586,74 @@
       overlay.addEventListener('click', function(e) {
         if (e.target === overlay) closeOverlay();
       });
+    
+    // ── CONTACT FORM ───────────────────────────────────────────────
+    (function() {
+      var form    = document.getElementById('contact-form');
+      var btn     = document.getElementById('cf-submit');
+      var btnLbl  = document.getElementById('cf-btn-label');
+      var status  = document.getElementById('cf-status');
+      if (!form) return;
+
+      // Replace YOUR_FORMSPREE_ID with your endpoint from https://formspree.io
+      var ENDPOINT = 'https://formspree.io/f/YOUR_FORMSPREE_ID';
+
+      function setState(state) {
+        btn.disabled = (state === 'loading');
+        status.className = 'form-status ' + state;
+        if (state === 'loading') {
+          btnLbl.textContent = 'Sending...';
+          status.textContent = '';
+        } else if (state === 'success') {
+          btnLbl.textContent = 'Send Message';
+          status.textContent = '// message_sent → stand by for response';
+          form.reset();
+        } else if (state === 'error') {
+          btnLbl.textContent = 'Send Message';
+          status.textContent = '// delivery_failed → try nikhil010407@gmail.com';
+        } else {
+          btnLbl.textContent = 'Send Message';
+          status.textContent = '';
+        }
+      }
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        var name  = form.querySelector('#cf-name').value.trim();
+        var email = form.querySelector('#cf-email').value.trim();
+        var msg   = form.querySelector('#cf-message').value.trim();
+        if (!name || !email || !msg) {
+          status.className = 'form-status error';
+          status.textContent = '// validation_failed → fill all fields';
+          return;
+        }
+
+        // Fallback to mailto if Formspree not configured
+        if (ENDPOINT.indexOf('YOUR_FORMSPREE_ID') !== -1) {
+          var mailtoUrl = 'mailto:nikhil010407@gmail.com'
+            + '?subject=' + encodeURIComponent('Portfolio contact from ' + name)
+            + '&body=' + encodeURIComponent(msg + '\n\n— ' + name + ' (' + email + ')');
+          window.location.href = mailtoUrl;
+          setState('success');
+          return;
+        }
+
+        setState('loading');
+
+        fetch(ENDPOINT, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: name, email: email, message: msg })
+        })
+        .then(function(res) {
+          if (res.ok) { setState('success'); } else { setState('error'); }
+        })
+        .catch(function() { setState('error'); });
+      });
     })();
+
+})();
 
  
 })();
