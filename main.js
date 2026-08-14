@@ -595,8 +595,8 @@
       var status  = document.getElementById('cf-status');
       if (!form) return;
 
-      // Replace YOUR_FORMSPREE_ID with your endpoint from https://formspree.io
-      var ENDPOINT = 'https://formspree.io/f/YOUR_FORMSPREE_ID';
+      // Formspree endpoint — delivers to nikhil010407@gmail.com
+      var ENDPOINT = 'https://formspree.io/f/xeajzddb';
 
       function setState(state) {
         btn.disabled = (state === 'loading');
@@ -626,16 +626,6 @@
         if (!name || !email || !msg) {
           status.className = 'form-status error';
           status.textContent = '// validation_failed → fill all fields';
-          return;
-        }
-
-        // Fallback to mailto if Formspree not configured
-        if (ENDPOINT.indexOf('YOUR_FORMSPREE_ID') !== -1) {
-          var mailtoUrl = 'mailto:nikhil010407@gmail.com'
-            + '?subject=' + encodeURIComponent('Portfolio contact from ' + name)
-            + '&body=' + encodeURIComponent(msg + '\n\n— ' + name + ' (' + email + ')');
-          window.location.href = mailtoUrl;
-          setState('success');
           return;
         }
 
