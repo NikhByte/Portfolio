@@ -992,6 +992,48 @@
       .hero-name { font-size: 3rem !important; }
     }
 
+    
+    /* PROJECT CARD — like button & top row */
+    .card-top-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-bottom: 0.2rem;
+    }
+    .card-like-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.04em;
+      padding: 0.2rem 0.5rem;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: border-color 150ms, color 150ms, background 150ms;
+    }
+    .card-like-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .card-like-btn.liked {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(245,158,11,0.07);
+    }
+    .card-like-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .card-like-icon { font-size: 0.75rem; line-height: 1; }
+    .project-grid-label {
+      font-family: var(--font-mono);
+      font-size: 0.58rem;
+      color: rgba(139,148,158,0.4);
+      letter-spacing: 0.1em;
+      margin-top: 2rem;
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+    }
+
     /* PROJECT OVERLAY */
     .proj-overlay {
       position: fixed;

@@ -295,7 +295,7 @@
             { title: 'Synthetic data generalization', desc: 'Real workload telemetry is hard to label. Synthetic generation needed enough realism to train a model that generalizes. Spent two weeks tuning the generators before the trained model stopped over-fitting to artificial patterns.' },
             { title: 'Flight recorder ring-buffer design', desc: 'Crash-dump capability required atomic writes and a format that stays readable even when the recorder itself crashes mid-write. Ended up with a two-file commit-log approach similar to SQLite\'s WAL.' },
           ],
-          links: [{ label: '↗ GitHub', href: 'https://github.com/NikhByte' }],
+          links: [{ label: '\u2197 GitHub', href: 'https://github.com/NikhByte/CogniOS' }, { label: '\u2197 Demo', href: 'https://github.com/NikhByte/CogniOS' }],
         },
 
         'fate': {
@@ -303,12 +303,13 @@
           sub: 'Full Attention Telemetry Engine · Insomniac Hackathon · Runner-Up · 2025',
           overview: 'FATE (Full Attention Telemetry Engine) is a mobile app that tracks focus using a Contextual Attention Score — a composite metric synthesized from spatial context (location, ambient noise), social context (communication patterns), and digital signals (app usage, screen-on time). Built end-to-end in 48 hours at the Insomniac Hackathon, it placed Runner-Up. The stack: Flutter + Android native sensor layer on the frontend, Python FastAPI backend for ML inference, and Gemini CLI for natural-language focus coaching.',
           timeline: [
-            { date: 'Day 1 — 9am', event: 'Team formed. Scope defined: real-time focus tracking with a multi-signal score. Decided against wearables — phone sensors only.', milestone: true },
-            { date: 'Day 1 — 2pm', event: 'Flutter app scaffolded. FastAPI server initialized. Agreed on REST contract between client and backend.' },
-            { date: 'Day 1 — 8pm', event: 'Contextual Attention Score (CAS) algorithm designed. Weighted formula across spatial, social, and digital sub-scores.' },
-            { date: 'Day 1 — 2am', event: 'Android native layer integrated via Flutter platform channels. GPS, accelerometer, and app-usage permission flows working.' },
-            { date: 'Day 2 — 10am', event: 'Backend ML inference running. Gemini CLI integration for focus coaching nudges added.', milestone: true },
-            { date: 'Day 2 — 5pm', event: 'Demo polished, edge cases handled. Submitted. Won Runner-Up.', milestone: true },
+            { date: 'Day 1 — 8:00 PM', event: 'Hackathon starts. Team formed on the spot. Scope locked in the first 20 minutes: real-time multi-signal focus tracking, phone-only, no wearables.', milestone: true },
+            { date: 'Day 1 — 10:00 PM', event: 'Flutter app scaffolded. FastAPI server initialized. REST contract agreed between client and backend.' },
+            { date: 'Day 1 — 11:30 PM', event: 'Contextual Attention Score (CAS) algorithm designed on paper. Weighted formula across spatial, social, and digital sub-scores.' },
+            { date: 'Day 2 — 3:00 AM', event: 'Android native layer integrated via Flutter platform channels. GPS, accelerometer, and app-usage permission flows working.' },
+            { date: 'Day 2 — 9:00 AM', event: 'Backend ML inference running. Gemini CLI integration for focus coaching nudges added. End-to-end flow demoed internally.', milestone: true },
+            { date: 'Day 2 — 6:00 PM', event: 'Final polish, edge cases handled, demo video recorded. Submitted at the wire. Won Runner-Up.', milestone: true },
+            { date: 'Day 2 — 8:00 PM', event: 'Hackathon closes. 24 hours, start to finish.', milestone: false },
           ],
           stack: [
             { label: 'MOBILE', tags: ['Flutter', 'Dart', 'Android'] },
@@ -321,7 +322,7 @@
             { title: 'Scoring formula under time pressure', desc: 'Defining a "meaningful" attention score in under 24 hours meant we couldn\'t train a model — we had to design the formula analytically. Got it roughly right by anchoring weights to empirical distraction research.' },
             { title: 'Android permissions flow', desc: 'Android 12+ requires background location and usage-stats permissions to go through system settings, not runtime dialogs. Built a guided onboarding flow to handle this at 1am.' },
           ],
-          links: [{ label: '↗ GitHub', href: 'https://github.com/NikhByte' }],
+          links: [{ label: '\u2197 GitHub', href: 'https://github.com/NikhByte/FATE' }, { label: '\u2197 Demo', href: 'https://github.com/NikhByte/FATE' }],
         },
 
         'spark': {
@@ -346,7 +347,7 @@
             { title: 'Dynamic local IP assignment', desc: 'The campus DHCP reassigns IPs every few hours. Solved by reserving the server\'s MAC address in CasaOS\'s network config and writing a systemd unit that checks and updates internal routing on each boot.' },
             { title: 'Power and heat management', desc: 'Running a 24/7 server in a dorm room on a laptop chassis is a thermal nightmare. Had to configure aggressive CPU frequency scaling and add a kill-switch script that shuts down non-critical services when the CPU temp exceeds 80°C.' },
           ],
-          links: [{ label: '↗ GitHub', href: 'https://github.com/NikhByte' }],
+          links: [{ label: '\u2197 GitHub', href: 'https://github.com/NikhByte/SPARK' }, { label: '\u2197 Demo', href: 'https://github.com/NikhByte/SPARK' }],
         },
 
         'debateos': {
@@ -354,11 +355,11 @@
           sub: 'Multi-agent AI Debate Engine · Cerebras Hackathon · 2024',
           overview: 'DebateOS is a multi-agent AI system where two LLM agents argue opposing positions in a structured debate, with a third judge agent scoring each round on logic, evidence use, and rhetorical quality. Built in 48 hours at the Cerebras Hackathon. The agent graph is orchestrated with LangGraph, running Llama 3 70B via the Cerebras API for inference speeds fast enough for real-time argument generation. The judge agent produces rubric-based scores after each turn, and a final verdict at the end of the debate.',
           timeline: [
-            { date: 'Hour 0–4', event: 'Architecture designed. Chose LangGraph for agent orchestration. Defined the three agent roles: Proponent, Opponent, Judge.', milestone: true },
-            { date: 'Hour 4–12', event: 'Cerebras API integration. Llama 3 70B selected for argument quality. Tested raw inference speed — ~800 tokens/sec, fast enough for streaming output.' },
-            { date: 'Hour 12–24', event: 'Structured turn-taking logic built. Proponent and Opponent receive each other\'s prior arguments as context. Debate format: 4 rounds.' },
-            { date: 'Hour 24–36', event: 'Judge agent designed. Prompt-engineered to score on three rubric dimensions. Prevented judge from being sycophantic via adversarial prompt testing.', milestone: true },
-            { date: 'Hour 36–48', event: 'Simple web UI built for live debate display. Edge cases handled (agent refusals, context overflow). Demo recorded and submitted.', milestone: true },
+            { date: 'Hour 0–3', event: 'Architecture designed. Chose LangGraph for orchestration. Three agent roles locked: Proponent, Opponent, Judge.', milestone: true },
+            { date: 'Hour 3–8', event: 'Cerebras API wired. Llama 3 70B selected for argument quality. Inference speed tested — ~800 tokens/sec, fast enough for real-time streaming.' },
+            { date: 'Hour 8–14', event: 'Structured turn-taking logic built. Agents receive each other\'s prior arguments as context. Debate format: 4 structured rounds.' },
+            { date: 'Hour 14–20', event: 'Judge agent prompt-engineered to score on three rubric dimensions. Adversarial testing to prevent sycophantic verdicts.', milestone: true },
+            { date: 'Hour 20–24', event: 'Web UI for live debate display. Edge cases handled (refusals, context overflow). Demo recorded. Submitted at Hour 24.', milestone: true },
           ],
           stack: [
             { label: 'AGENT', tags: ['LangGraph', 'LangChain'] },
@@ -371,7 +372,7 @@
             { title: 'Judge sycophancy', desc: 'The judge agent initially praised both sides equally regardless of argument quality. Solved with a multi-step scoring chain: first identify logical flaws, then score, never start with positives.' },
             { title: 'Context window management across rounds', desc: 'Four debate rounds of two agents plus a judge fills context fast. Had to implement a selective compression scheme that keeps the last full round and summarizes prior rounds.' },
           ],
-          links: [{ label: '↗ GitHub', href: 'https://github.com/NikhByte' }],
+          links: [{ label: '\u2197 GitHub', href: 'https://github.com/NikhByte/DebateOS' }, { label: '\u2197 Demo', href: 'https://github.com/NikhByte/DebateOS' }],
         },
 
         'aerowse': {
@@ -379,11 +380,11 @@
           sub: 'Autonomous Embedded Radar Ops — Warfighter Swarm Engine · Cerebras Hackathon · 2024',
           overview: 'AeroWSE is a 3D drone swarm simulator built in the browser using Three.js and WebGL. Each drone agent follows a behavior tree (separation, cohesion, alignment — classic boids) overlaid with mission-specific objectives generated by Gemma 4 31B running on the Cerebras API. The result: a swarm that can be commanded in natural language ("intercept moving target at grid 7-7, maintain radar coverage") and translates that into emergent swarm behavior in real time. Built in 48 hours alongside DebateOS.',
           timeline: [
-            { date: 'Hour 0–6', event: 'Three.js scene set up. Drone mesh designed (low-poly for performance). Camera rig with orbit controls.', milestone: true },
-            { date: 'Hour 6–18', event: 'Boids algorithm implemented (separation, cohesion, alignment). Tuned weights until swarm behavior looked physically plausible.' },
-            { date: 'Hour 18–30', event: 'Gemma 4 31B integrated via Cerebras. Natural language mission commands parsed into swarm vector targets.', milestone: true },
-            { date: 'Hour 30–42', event: 'WebGL instanced mesh rendering for 50+ drones without frame drops. Added radar sweep visualization and drone state indicators.' },
-            { date: 'Hour 42–48', event: 'Mission modes: Patrol, Intercept, Scatter, Regroup. Demo video recorded. Submitted.', milestone: true },
+            { date: 'Hour 0–4', event: 'Three.js scene set up. Low-poly drone mesh designed. Camera rig with orbit controls. Baseline render working.', milestone: true },
+            { date: 'Hour 4–10', event: 'Boids algorithm implemented (separation, cohesion, alignment). Weight tuning until swarm motion looked physically plausible.' },
+            { date: 'Hour 10–16', event: 'Gemma 4 31B integrated via Cerebras API. Natural language mission commands parsed into swarm vector targets and behavior weights.', milestone: true },
+            { date: 'Hour 16–21', event: 'WebGL InstancedMesh rendering — one draw call for 50+ drones. Frame rate went from ~12fps to stable 60fps. Radar sweep UI added.' },
+            { date: 'Hour 21–24', event: 'Mission modes shipped: Patrol, Intercept, Scatter, Regroup. Demo video recorded. Submitted at Hour 24.', milestone: true },
           ],
           stack: [
             { label: '3D', tags: ['Three.js', 'WebGL', 'GLSL'] },
@@ -396,7 +397,7 @@
             { title: 'Natural language to swarm vectors', desc: 'Gemma\'s output is natural language; the swarm needs XYZ vectors and behavior weights. Built a structured output parser with a fallback grammar for ambiguous commands.' },
             { title: 'API latency visible in simulation', desc: 'Cerebras is fast but still has network latency. Commands felt laggy. Solved by streaming the swarm into its intermediate behavior state immediately on command, then applying Gemma\'s refinement when it arrives.' },
           ],
-          links: [{ label: '↗ GitHub', href: 'https://github.com/NikhByte' }],
+          links: [{ label: '\u2197 GitHub', href: 'https://github.com/NikhByte/AeroWSE' }, { label: '\u2197 Demo', href: 'https://github.com/NikhByte/AeroWSE' }],
         },
 
         'credo': {
@@ -420,7 +421,7 @@
             { title: 'SQLite concurrency in Node.js', desc: 'Multiple concurrent requests caused SQLite lock errors. Solved by wrapping all writes in a queue with a single serialized DB connection using better-sqlite3\'s synchronous API.' },
             { title: 'Scope creep nearly killed the demo', desc: 'Added priority tiers, recurring tasks, and a calendar view on Day 1. Had to cut all three on Day 2 morning to ensure the core flow was stable and demoable. Lesson: demo path first.' },
           ],
-          links: [{ label: '↗ GitHub', href: 'https://github.com/NikhByte' }],
+          links: [{ label: '\u2197 GitHub', href: 'https://github.com/NikhByte/Credo' }, { label: '\u2197 Demo', href: 'https://github.com/NikhByte/Credo' }],
         },
 
         'localai': {
@@ -445,7 +446,7 @@
             { title: 'Thermal throttling during long inference', desc: 'Long inference sessions cause laptop GPU to thermal-throttle at ~75°C, halving token output. Mitigated with aggressive fan curve config via GreenWithEnvy and context-length limits in Ollama.' },
             { title: 'VRAM fragmentation between sessions', desc: 'Ollama keeps models warm in VRAM. Loading a second model while one is resident causes OOM. Wrote a shell alias that sends an unload command before switching models.' },
           ],
-          links: [{ label: '↗ GitHub — config repo', href: 'https://github.com/NikhByte' }],
+          links: [{ label: '\u2197 GitHub', href: 'https://github.com/NikhByte/LocalAI-Setup' }, { label: '\u2197 Setup Guide', href: 'https://github.com/NikhByte/LocalAI-Setup' }],
         },
       };
 
@@ -646,4 +647,51 @@
 })();
 
  
+
+    // ── PROJECT CARD LIKES + SORT BY POPULARITY ─────────────────────
+    (function() {
+      var STORAGE_KEY = 'nikhil_card_likes';
+      var BASE_LIKES = { fate: 12, spark: 8, debateos: 15, aerowse: 18, credo: 6, localai: 10 };
+
+      function getLikes() {
+        try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+        catch(e) { return {}; }
+      }
+      function saveLikes(data) {
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
+        catch(e) {}
+      }
+      function getCount(pid) {
+        return (BASE_LIKES[pid] || 0) + (getLikes()[pid] ? 1 : 0);
+      }
+      function sortGrid() {
+        var grid = document.getElementById('project-grid');
+        if (!grid) return;
+        var cards = Array.from(grid.querySelectorAll('.project-card'));
+        cards.sort(function(a, b) { return getCount(b.dataset.pid) - getCount(a.dataset.pid); });
+        cards.forEach(function(c) { grid.appendChild(c); });
+      }
+      document.querySelectorAll('.card-like-btn').forEach(function(btn) {
+        var pid = btn.dataset.pid;
+        var countEl = btn.querySelector('.card-like-count');
+        var iconEl  = btn.querySelector('.card-like-icon');
+        var liked = !!getLikes()[pid];
+        countEl.textContent = getCount(pid);
+        if (liked) { btn.classList.add('liked'); iconEl.textContent = '♥'; }
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          var p = getLikes();
+          p[pid] = !p[pid];
+          saveLikes(p);
+          countEl.textContent = getCount(pid);
+          btn.classList.toggle('liked', !!p[pid]);
+          iconEl.textContent = p[pid] ? '♥' : '♡';
+          btn.style.transform = 'scale(1.12)';
+          setTimeout(function() { btn.style.transform = ''; }, 140);
+          setTimeout(sortGrid, 400);
+        });
+      });
+      sortGrid();
+    })();
+
 })();
