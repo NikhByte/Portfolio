@@ -55,24 +55,25 @@
     // PARTICLE FIELD
     var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     
-    // Typewriter effect for technerdy thought
+    // Typewriter effect for hero quote
     (function() {
       var el = document.getElementById('hero-thought');
-      if (el) {
-        var text = '"The best way to predict the future is to compile it."';
-        if (prefersReduced) {
-          el.textContent = text;
-        } else {
-          var i = 0;
-          function type() {
-            if (i < text.length) {
-              el.textContent += text.charAt(i);
-              i++;
-              setTimeout(type, 30 + Math.random() * 50); // random typing speed
-            }
+      if (!el) return;
+      // Strip the opening quote mark we put in the HTML
+      el.textContent = '';
+      var text = '“The best way to predict the future is to compile it.”';
+      if (prefersReduced) {
+        el.textContent = text;
+      } else {
+        var i = 0;
+        function type() {
+          if (i < text.length) {
+            el.textContent += text.charAt(i);
+            i++;
+            setTimeout(type, 28 + Math.random() * 45);
           }
-          setTimeout(type, 600); // delay before typing starts
         }
+        setTimeout(type, 900); // wait for page to settle
       }
     })();
 

@@ -34,42 +34,42 @@
   </nav>
 
   <main>
-    <div class="hero-bg-text" aria-hidden="true">SYSTEMS</div>
     <!-- HERO -->
     <section id="hero" aria-label="Hero">
-      <div class="hero-top">
-        <div>
-          <div class="hero-terminal">
-            <div class="hero-terminal-dot"></div>
-            <span>USER: NIKHIL // OP_MODE: BUILD // JODHPUR, IN</span>
-          </div>
-          <h1 class="hero-name">SYSTEMS<br/>&amp; ML</h1>
-          <p class="hero-subtitle">Computer Science &middot; IIT Jodhpur</p>
-          <div class="hero-tags">
-            <span class="hero-tag">Systems</span>
-            <span class="hero-tag">MLOps</span>
-            <span class="hero-tag">Infra</span>
-          </div>
-          <p class="hero-thought" id="hero-thought" aria-label="The best way to predict the future is to compile it."></p>
+
+      <!-- Eyebrow: minimal identity -->
+      <div class="hero-eyebrow">
+        <span class="hero-eyebrow-dot" aria-hidden="true"></span>
+        <span class="hero-eyebrow-text">nikhil &middot; IIT Jodhpur &middot; B.Tech CSE</span>
+      </div>
+
+      <!-- ONE focal point: headline + tagline + tags + CTAs -->
+      <div class="hero-center">
+        <h1 class="hero-name">Systems that don&rsquo;t<br>fall over at 3&nbsp;AM.</h1>
+        <p class="hero-tagline">AI needs infrastructure. I build it.</p>
+        <div class="hero-tags" aria-label="Disciplines">
+          <span class="hero-tag">Systems</span>
+          <span class="hero-tag">MLOps</span>
+          <span class="hero-tag">Infra</span>
+          <span class="hero-tag">Linux</span>
+        </div>
+        <div class="hero-cta-row">
+          <a href="https://github.com/NikhByte" class="hero-cta hero-cta--filled" target="_blank" rel="noopener noreferrer" aria-label="GitHub: NikhByte">GitHub</a>
+          <a href="https://www.linkedin.com/in/nikhil-b17571385" class="hero-cta hero-cta--outline" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile">LinkedIn</a>
         </div>
       </div>
-      <div class="hero-bottom">
-        <div class="hero-desc-col">
-          <div class="hero-desc-text" style="font-size: 0.85rem; line-height: 1.6; color: var(--muted);">
-            <strong style="color: var(--heading); display: block; margin-bottom: 0.4rem; font-weight: 500;">Why engineering when AI is writing code?</strong>
-            Because AI optimizes the known, but engineering builds the unknown. The models still need infrastructure, the hardware still needs schedulers, and production still needs builders who can debug a telemetry pipeline at 3 AM.<br><br>
-            My aspiration is to build high-leverage systems that hold up under real-world pressure. I'm always looking to connect with enthusiastic peers, tackle hard problems, and collaborate with teams who care more about the craft than the hype.
-          </div>
-          <div class="hero-socials">
-            <a href="https://github.com/NikhByte" class="hero-social-link" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile">GitHub</a>
-            <a href="https://www.linkedin.com/in/nikhil-b17571385" class="hero-social-link" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile">LinkedIn</a>
-          </div>
-          <div class="hero-scroll" aria-hidden="true">
-            <span class="hero-scroll-arrow">&#8595;</span>
-            <span style="font-family:var(--font-mono)">scroll</span>
-          </div>
-        </div>
+
+      <!-- Quote — large, bottom-anchored, typed in on load -->
+      <div class="hero-quote-row" aria-live="polite">
+        <p class="hero-quote" id="hero-thought"></p>
       </div>
+
+      <!-- Scroll hint -->
+      <div class="hero-scroll" aria-hidden="true">
+        <span class="hero-scroll-arrow">&#8595;</span>
+        <span>scroll</span>
+      </div>
+
     </section>
 
     <!-- ABOUT -->
