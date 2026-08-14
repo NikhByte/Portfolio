@@ -694,4 +694,137 @@
       sortGrid();
     })();
 
+
+    // ── SCROLL PROGRESS BAR ────────────────────────────────────────
+    (function() {
+      var bar = document.getElementById('scroll-progress');
+      if (!bar) return;
+      window.addEventListener('scroll', function() {
+        var scrolled = document.documentElement.scrollTop;
+        var total    = document.documentElement.scrollHeight - window.innerHeight;
+        bar.style.width = (total > 0 ? (scrolled / total) * 100 : 0) + '%';
+      }, { passive: true });
+    })();
+
+    // ── SPOTLIGHT BORDER ON PROJECT CARDS (mouse-tracked radial) ───
+    (function() {
+      document.querySelectorAll('.project-card').forEach(function(card) {
+        card.addEventListener('mousemove', function(e) {
+          var rect = card.getBoundingClientRect();
+          var x = ((e.clientX - rect.left) / rect.width  * 100).toFixed(1) + '%';
+          var y = ((e.clientY - rect.top)  / rect.height * 100).toFixed(1) + '%';
+          card.style.setProperty('--mx', x);
+          card.style.setProperty('--my', y);
+        }, { passive: true });
+      });
+    })();
+
+    // ── 3D TILT ON PROJECT CARDS ───────────────────────────────────
+    (function() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      document.querySelectorAll('.project-card').forEach(function(card) {
+        card.addEventListener('mousemove', function(e) {
+          var rect = card.getBoundingClientRect();
+          var cx   = rect.left + rect.width  / 2;
+          var cy   = rect.top  + rect.height / 2;
+          var dx   = (e.clientX - cx) / (rect.width  / 2);
+          var dy   = (e.clientY - cy) / (rect.height / 2);
+          card.style.transform = 'perspective(700px) rotateY(' + (dx * 4) + 'deg) rotateX(' + (-dy * 4) + 'deg) scale(1.015)';
+        }, { passive: true });
+        card.addEventListener('mouseleave', function() {
+          card.style.transform = '';
+        });
+      });
+
+      // Also tilt the featured project
+      var featured = document.querySelector('.featured-project');
+      if (featured) {
+        featured.addEventListener('mousemove', function(e) {
+          var rect = featured.getBoundingClientRect();
+          var cx   = rect.left + rect.width  / 2;
+          var cy   = rect.top  + rect.height / 2;
+          var dx   = (e.clientX - cx) / (rect.width  / 2);
+          var dy   = (e.clientY - cy) / (rect.height / 2);
+          featured.style.transform = 'perspective(1200px) rotateY(' + (dx * 2) + 'deg) rotateX(' + (-dy * 2) + 'deg)';
+        }, { passive: true });
+        featured.addEventListener('mouseleave', function() {
+          featured.style.transform = '';
+        });
+      }
+    })();
+
+    // ── TEXT SCRAMBLE ON NAV LINKS HOVER ──────────────────────────
+    (function() {
+      var CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      function scramble(el) {
+        var original = el.dataset.text || el.textContent;
+        el.dataset.text = original;
+        var steps = original.length * 2;
+        var frame = 0;
+        var raf;
+        function tick() {
+          el.textContent = original.split('').map(function(ch, i) {
+            if (ch === ' ') return ' ';
+            if (i < frame / 2) return ch;
+            return CHARS[Math.floor(Math.random() * CHARS.length)];
+          }).join('');
+          frame++;
+          if (frame <= steps) { raf = requestAnimationFrame(tick); }
+          else { el.textContent = original; }
+        }
+        cancelAnimationFrame(raf);
+        tick();
+      }
+      document.querySelectorAll('.nav-links a').forEach(function(a) {
+        a.addEventListener('mouseenter', function() { scramble(a); });
+      });
+    })();
+
+    // ── RIPPLE CLICK ON BUTTONS ────────────────────────────────────
+    (function() {
+      function addRipple(el) {
+        el.style.position = 'relative';
+        el.style.overflow = 'hidden';
+        el.addEventListener('click', function(e) {
+          var rect = el.getBoundingClientRect();
+          var r = document.createElement('span');
+          r.style.cssText = [
+            'position:absolute',
+            'border-radius:50%',
+            'transform:scale(0)',
+            'background:rgba(245,158,11,0.25)',
+            'animation:ripple-grow 500ms linear',
+            'pointer-events:none',
+            'width:' + Math.max(rect.width, rect.height) * 2 + 'px',
+            'height:' + Math.max(rect.width, rect.height) * 2 + 'px',
+            'left:' + (e.clientX - rect.left - Math.max(rect.width, rect.height)) + 'px',
+            'top:'  + (e.clientY - rect.top  - Math.max(rect.width, rect.height)) + 'px',
+          ].join(';');
+          el.appendChild(r);
+          setTimeout(function() { r.remove(); }, 520);
+        });
+      }
+      var RIPPLE_CSS = '@keyframes ripple-grow{to{transform:scale(2);opacity:0}}';
+      var s = document.createElement('style');
+      s.textContent = RIPPLE_CSS;
+      document.head.appendChild(s);
+      document.querySelectorAll('.hero-cta, .opportunity-btn, .form-submit, .hero-cta--filled').forEach(addRipple);
+    })();
+
+    // ── ACTIVE NAV LINK via IntersectionObserver ───────────────────
+    (function() {
+      var sections = document.querySelectorAll('section[id]');
+      var navLinks = document.querySelectorAll('.nav-links a');
+      var obs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            navLinks.forEach(function(a) {
+              a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id);
+            });
+          }
+        });
+      }, { rootMargin: '-40% 0px -55% 0px' });
+      sections.forEach(function(s) { obs.observe(s); });
+    })();
+
 })();

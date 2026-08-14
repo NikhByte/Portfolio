@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <div id="scroll-progress" aria-hidden="true"></div>
   <canvas id="particle-canvas" aria-hidden="true"></canvas>
   <div class="dot-grid" aria-hidden="true"></div>
   <div class="ambient-glow" aria-hidden="true"></div>
@@ -45,7 +46,7 @@
 
       <!-- ONE focal point: headline + tagline + tags + CTAs -->
       <div class="hero-center">
-        <h1 class="hero-name">Systems that don&rsquo;t<br>fall over at 3&nbsp;AM.</h1>
+        <h1 class="hero-name" data-text="Systems that don't fall over at 3 AM.">Systems that don&rsquo;t<br>fall over at 3&nbsp;AM.</h1>
         <p class="hero-tagline">AI needs infrastructure. I build it.</p>
         <div class="hero-tags" aria-label="Disciplines">
           <span class="hero-tag">Systems</span>
@@ -71,6 +72,42 @@
       </div>
 
     </section>
+
+
+    <!-- MARQUEE TECH STRIP -->
+    <div class="marquee-wrapper" aria-hidden="true">
+      <div class="marquee-track">
+        <span class="marquee-item"><span class="marquee-dot"></span>Linux Userspace</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>XGBoost</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>MLflow</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>Docker</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>Kubernetes</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>FastAPI</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>Cerebras Inference</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>Cloudflare Tunnel</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>Three.js / WebGL</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>Flutter</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>Ollama</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>Open WebUI</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>LangGraph</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>Prometheus</span>
+        <!-- Duplicate for seamless loop -->
+        <span class="marquee-item"><span class="marquee-dot"></span>Linux Userspace</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>XGBoost</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>MLflow</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>Docker</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>Kubernetes</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>FastAPI</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>Cerebras Inference</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>Cloudflare Tunnel</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>Three.js / WebGL</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>Flutter</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>Ollama</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>Open WebUI</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>LangGraph</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>Prometheus</span>
+      </div>
+    </div>
 
     <!-- ABOUT -->
     <section id="about" aria-label="About">
@@ -228,7 +265,7 @@
               <span class="card-like-count">0</span>
             </button>
           </div>
-          <p class="card-context">Cerebras Hackathon &middot; 24 hrs &middot; 2024</p>
+          <p class="card-context">Cerebras Hackathon &middot; 24 hrs</p>
           <p class="card-desc">Multi-agent AI debate engine. Agents argue opposing positions using structured turn-taking, with a judge agent scoring arguments.</p>
           <div class="tag-list"><span class="tag">Node.js</span><span class="tag">Cerebras API</span><span class="tag">LangGraph</span><span class="tag">Multi-agent</span></div>
           <div class="project-links">
@@ -245,7 +282,7 @@
               <span class="card-like-count">0</span>
             </button>
           </div>
-          <p class="card-context">Warfighter Swarm Engine &middot; Cerebras Hackathon &middot; 24 hrs &middot; 2024</p>
+          <p class="card-context">Warfighter Swarm Engine &middot; Cerebras Hackathon &middot; 24 hrs</p>
           <p class="card-desc">3D drone swarm simulator with real-time coordination logic powered by Gemma 4 31B via Cerebras API. Rendered in Three.js.</p>
           <div class="tag-list"><span class="tag">Three.js</span><span class="tag">Node.js</span><span class="tag">Cerebras API</span><span class="tag">Gemma 4 31B</span><span class="tag">WebGL</span></div>
           <div class="project-links">
