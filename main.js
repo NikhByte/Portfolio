@@ -172,7 +172,16 @@
       }, { passive: true });
 
       window.addEventListener('mouseleave', function() { mouse.x = -9999; mouse.y = -9999; });
-      window.addEventListener('resize', function() { resize(); initNodes(); }, { passive: true });
+
+      var prevWidth = window.innerWidth;
+      window.addEventListener('resize', function() {
+        var currentWidth = window.innerWidth;
+        resize();
+        if (currentWidth !== prevWidth) {
+          initNodes();
+          prevWidth = currentWidth;
+        }
+      }, { passive: true });
 
       resize();
       initNodes();
