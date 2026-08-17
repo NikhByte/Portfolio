@@ -756,12 +756,27 @@
     // ── TEXT SCRAMBLE ON NAV LINKS HOVER ──────────────────────────
     (function() {
       var CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      var scrambleRegistry = new WeakMap();
+
       function scramble(el) {
-        var original = el.dataset.text || el.textContent;
-        el.dataset.text = original;
+        var entry = scrambleRegistry.get(el);
+        if (!entry) {
+          entry = {
+            originalText: el.textContent,
+            rafId: null
+          };
+          scrambleRegistry.set(el, entry);
+        }
+
+        if (entry.rafId !== null) {
+          cancelAnimationFrame(entry.rafId);
+          entry.rafId = null;
+        }
+
+        var original = entry.originalText;
         var steps = original.length * 2;
         var frame = 0;
-        var raf;
+
         function tick() {
           el.textContent = original.split('').map(function(ch, i) {
             if (ch === ' ') return ' ';
@@ -769,10 +784,13 @@
             return CHARS[Math.floor(Math.random() * CHARS.length)];
           }).join('');
           frame++;
-          if (frame <= steps) { raf = requestAnimationFrame(tick); }
-          else { el.textContent = original; }
+          if (frame <= steps) {
+            entry.rafId = requestAnimationFrame(tick);
+          } else {
+            el.textContent = original;
+            entry.rafId = null;
+          }
         }
-        cancelAnimationFrame(raf);
         tick();
       }
       document.querySelectorAll('.nav-links a').forEach(function(a) {
