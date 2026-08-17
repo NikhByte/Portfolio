@@ -785,12 +785,33 @@
 
   // ── 12. 3D TILT & SPOTLIGHT RADIAL GLOW ──────────────────────────
   (function() {
+    var isTouchOnly = window.matchMedia('(hover: none)').matches;
+    if (isTouchOnly) return;
+
     var spotlightCards = document.querySelectorAll('.project-card, .featured-project, .link-card');
+    var projectCards   = document.querySelectorAll('.project-card');
+    var featured       = document.querySelector('.featured-project');
+
+    function updateCachedRect(el) {
+      var rect = el.getBoundingClientRect();
+      el._cachedRect = {
+        left: rect.left + window.scrollX,
+        top: rect.top + window.scrollY,
+        width: rect.width,
+        height: rect.height
+      };
+      return el._cachedRect;
+    }
+
     spotlightCards.forEach(function(card) {
+      card.addEventListener('mouseenter', function() {
+        updateCachedRect(card);
+      }, { passive: true });
+
       card.addEventListener('mousemove', function(e) {
-        var rect = card.getBoundingClientRect();
-        var x = ((e.clientX - rect.left) / rect.width  * 100).toFixed(1) + '%';
-        var y = ((e.clientY - rect.top)  / rect.height * 100).toFixed(1) + '%';
+        var rect = card._cachedRect || updateCachedRect(card);
+        var x = ((e.pageX - rect.left) / rect.width  * 100).toFixed(1) + '%';
+        var y = ((e.pageY - rect.top)  / rect.height * 100).toFixed(1) + '%';
         card.style.setProperty('--mx', x);
         card.style.setProperty('--my', y);
       }, { passive: true });
@@ -799,11 +820,15 @@
     if (prefersReduced) return;
 
     // 3D Perspective Tilt on project cards
-    document.querySelectorAll('.project-card').forEach(function(card) {
+    projectCards.forEach(function(card) {
+      card.addEventListener('mouseenter', function() {
+        if (!card._cachedRect) updateCachedRect(card);
+      }, { passive: true });
+
       card.addEventListener('mousemove', function(e) {
-        var rect = card.getBoundingClientRect();
-        var cx   = rect.left + rect.width  / 2;
-        var cy   = rect.top  + rect.height / 2;
+        var rect = card._cachedRect || updateCachedRect(card);
+        var cx   = rect.left - window.scrollX + rect.width  / 2;
+        var cy   = rect.top  - window.scrollY + rect.height / 2;
         var dx   = (e.clientX - cx) / (rect.width  / 2);
         var dy   = (e.clientY - cy) / (rect.height / 2);
         card.style.transform = 'perspective(800px) rotateY(' + (dx * 3.5) + 'deg) rotateX(' + (-dy * 3.5) + 'deg) scale(1.012)';
@@ -815,10 +840,14 @@
     });
 
     if (featured) {
+      featured.addEventListener('mouseenter', function() {
+        if (!featured._cachedRect) updateCachedRect(featured);
+      }, { passive: true });
+
       featured.addEventListener('mousemove', function(e) {
-        var rect = featured.getBoundingClientRect();
-        var cx   = rect.left + rect.width  / 2;
-        var cy   = rect.top  + rect.height / 2;
+        var rect = featured._cachedRect || updateCachedRect(featured);
+        var cx   = rect.left - window.scrollX + rect.width  / 2;
+        var cy   = rect.top  - window.scrollY + rect.height / 2;
         var dx   = (e.clientX - cx) / (rect.width  / 2);
         var dy   = (e.clientY - cy) / (rect.height / 2);
         featured.style.transform = 'perspective(1200px) rotateY(' + (dx * 1.8) + 'deg) rotateX(' + (-dy * 1.8) + 'deg)';
@@ -828,6 +857,12 @@
         featured.style.transform = '';
       });
     }
+
+    window.addEventListener('resize', function() {
+      spotlightCards.forEach(function(card) {
+        card._cachedRect = null;
+      });
+    }, { passive: true });
   })();
 
   // ── 13. NAV TEXT SCRAMBLE MATRIX EFFECT ──────────────────────────
