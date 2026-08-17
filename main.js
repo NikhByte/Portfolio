@@ -708,25 +708,80 @@
 
     // ── SPOTLIGHT BORDER ON PROJECT CARDS (mouse-tracked radial) ───
     (function() {
-      document.querySelectorAll('.project-card').forEach(function(card) {
-        card.addEventListener('mousemove', function(e) {
+      var isTouchOnly = window.matchMedia('(hover: none)').matches;
+      if (isTouchOnly) return;
+
+      var cards = document.querySelectorAll('.project-card');
+
+      cards.forEach(function(card) {
+        card.addEventListener('mouseenter', function() {
           var rect = card.getBoundingClientRect();
-          var x = ((e.clientX - rect.left) / rect.width  * 100).toFixed(1) + '%';
-          var y = ((e.clientY - rect.top)  / rect.height * 100).toFixed(1) + '%';
+          card._cachedRect = {
+            left: rect.left + window.scrollX,
+            top: rect.top + window.scrollY,
+            width: rect.width,
+            height: rect.height
+          };
+        }, { passive: true });
+
+        card.addEventListener('mousemove', function(e) {
+          if (!card._cachedRect) {
+            var rect = card.getBoundingClientRect();
+            card._cachedRect = {
+              left: rect.left + window.scrollX,
+              top: rect.top + window.scrollY,
+              width: rect.width,
+              height: rect.height
+            };
+          }
+          var rect = card._cachedRect;
+          var x = ((e.pageX - rect.left) / rect.width  * 100).toFixed(1) + '%';
+          var y = ((e.pageY - rect.top)  / rect.height * 100).toFixed(1) + '%';
           card.style.setProperty('--mx', x);
           card.style.setProperty('--my', y);
         }, { passive: true });
       });
+
+      window.addEventListener('resize', function() {
+        cards.forEach(function(card) {
+          card._cachedRect = null;
+        });
+      }, { passive: true });
     })();
 
     // ── 3D TILT ON PROJECT CARDS ───────────────────────────────────
     (function() {
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      document.querySelectorAll('.project-card').forEach(function(card) {
+      
+      var cards = document.querySelectorAll('.project-card');
+      var featured = document.querySelector('.featured-project');
+
+      cards.forEach(function(card) {
+        card.addEventListener('mouseenter', function() {
+          if (!card._cachedRect) {
+            var rect = card.getBoundingClientRect();
+            card._cachedRect = {
+              left: rect.left + window.scrollX,
+              top: rect.top + window.scrollY,
+              width: rect.width,
+              height: rect.height
+            };
+          }
+        }, { passive: true });
+
         card.addEventListener('mousemove', function(e) {
-          var rect = card.getBoundingClientRect();
-          var cx   = rect.left + rect.width  / 2;
-          var cy   = rect.top  + rect.height / 2;
+          if (!card._cachedRect) {
+            var rect = card.getBoundingClientRect();
+            card._cachedRect = {
+              left: rect.left + window.scrollX,
+              top: rect.top + window.scrollY,
+              width: rect.width,
+              height: rect.height
+            };
+          }
+          var rect = card._cachedRect;
+          var cx   = rect.left - window.scrollX + rect.width  / 2;
+          var cy   = rect.top - window.scrollY + rect.height / 2;
           var dx   = (e.clientX - cx) / (rect.width  / 2);
           var dy   = (e.clientY - cy) / (rect.height / 2);
           card.style.transform = 'perspective(700px) rotateY(' + (dx * 4) + 'deg) rotateX(' + (-dy * 4) + 'deg) scale(1.015)';
@@ -737,12 +792,30 @@
       });
 
       // Also tilt the featured project
-      var featured = document.querySelector('.featured-project');
       if (featured) {
-        featured.addEventListener('mousemove', function(e) {
+        featured.addEventListener('mouseenter', function() {
           var rect = featured.getBoundingClientRect();
-          var cx   = rect.left + rect.width  / 2;
-          var cy   = rect.top  + rect.height / 2;
+          featured._cachedRect = {
+            left: rect.left + window.scrollX,
+            top: rect.top + window.scrollY,
+            width: rect.width,
+            height: rect.height
+          };
+        }, { passive: true });
+
+        featured.addEventListener('mousemove', function(e) {
+          if (!featured._cachedRect) {
+            var rect = featured.getBoundingClientRect();
+            featured._cachedRect = {
+              left: rect.left + window.scrollX,
+              top: rect.top + window.scrollY,
+              width: rect.width,
+              height: rect.height
+            };
+          }
+          var rect = featured._cachedRect;
+          var cx   = rect.left - window.scrollX + rect.width  / 2;
+          var cy   = rect.top - window.scrollY + rect.height / 2;
           var dx   = (e.clientX - cx) / (rect.width  / 2);
           var dy   = (e.clientY - cy) / (rect.height / 2);
           featured.style.transform = 'perspective(1200px) rotateY(' + (dx * 2) + 'deg) rotateX(' + (-dy * 2) + 'deg)';
@@ -751,6 +824,15 @@
           featured.style.transform = '';
         });
       }
+
+      window.addEventListener('resize', function() {
+        cards.forEach(function(card) {
+          card._cachedRect = null;
+        });
+        if (featured) {
+          featured._cachedRect = null;
+        }
+      }, { passive: true });
     })();
 
     // ── TEXT SCRAMBLE ON NAV LINKS HOVER ──────────────────────────

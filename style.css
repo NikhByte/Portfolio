@@ -617,7 +617,7 @@
       transition: background 200ms var(--ease-out);
       overflow: hidden;
     }
-    .project-card::before {
+    .project-card::after {
       content: '';
       position: absolute;
       left: 0; top: 0; bottom: 0;
@@ -626,8 +626,9 @@
       transform: scaleY(0);
       transform-origin: top;
       transition: transform 200ms var(--ease-out);
+      z-index: 2;
     }
-    .project-card:hover::before { transform: scaleY(1); }
+    .project-card:hover::after { transform: scaleY(1); }
     .project-card:hover { background: #191f29; }
 
     .card-title {
