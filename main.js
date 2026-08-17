@@ -246,9 +246,14 @@
       mouse.y = -9999;
     });
 
+    var prevWidth = window.innerWidth;
     window.addEventListener('resize', function() {
+      var currentWidth = window.innerWidth;
       resize();
-      initNodes();
+      if (currentWidth !== prevWidth) {
+        initNodes();
+        prevWidth = currentWidth;
+      }
     }, { passive: true });
 
     resize();
