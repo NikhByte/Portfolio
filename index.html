@@ -12,7 +12,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -28,6 +28,7 @@
     <ul class="nav-links">
       <li><a href="#work" id="nav-work">Work</a></li>
       <li><a href="#projects" id="nav-projects">Projects</a></li>
+      <li><a href="#stack" id="nav-stack">Stack</a></li>
       <li><a href="#education" id="nav-education">Education</a></li>
       <li><a href="#writing" id="nav-writing">Writing</a></li>
       <li><a href="#contact" id="nav-contact">Contact</a></li>
@@ -73,7 +74,6 @@
 
     </section>
 
-
     <!-- MARQUEE TECH STRIP -->
     <div class="marquee-wrapper" aria-hidden="true">
       <div class="marquee-track">
@@ -91,7 +91,7 @@
         <span class="marquee-item"><span class="marquee-dot"></span>Open WebUI</span>
         <span class="marquee-item"><span class="marquee-dot"></span>LangGraph</span>
         <span class="marquee-item"><span class="marquee-dot"></span>Prometheus</span>
-        <!-- Duplicate for seamless loop -->
+        <!-- Duplicate for seamless infinite loop -->
         <span class="marquee-item"><span class="marquee-dot"></span>Linux Userspace</span>
         <span class="marquee-item"><span class="marquee-dot"></span>XGBoost</span>
         <span class="marquee-item"><span class="marquee-dot"></span>MLflow</span>
@@ -141,7 +141,7 @@
 
         <div class="reveal" style="transition-delay:100ms">
           <p class="about-prose">
-            I build things close to the metal &mdash; daemons, classifiers, telemetry pipelines. CogniOS is my current focus: a Linux workload detector that runs XGBoost in userspace to profile and optimize process scheduling without kernel modifications. I&rsquo;m also deep into MLOps tooling &mdash; Kubernetes, MLflow, Prometheus &mdash; because shipping a model is a different problem than training one. When I&rsquo;m not coding, I&rsquo;m turning lecture slides into Obsidian-linked knowledge systems.
+            I build things close to the metal &mdash; daemons, classifiers, telemetry pipelines. CogniOS is my current focus: a Linux workload detector that runs XGBoost in userspace to profile and optimize process scheduling without kernel modifications. I&rsquo;m also deep into MLOps tooling &mdash; Kubernetes, MLflow, Prometheus &mdash; because shipping a model is a different problem than training one. When I&rsquo;m not coding, I&rsquo;m turning complex systems into Obsidian-linked knowledge architectures.
           </p>
         </div>
       </div>
@@ -166,10 +166,10 @@
         <div class="work-entry reveal">
           <div>
             <p class="work-role">Insomniac Hackathon &middot; Runner-Up</p>
-            <p class="work-date">DevLUP Labs &middot; 2024</p>
+            <p class="work-date">DevLUP Labs &middot; 2025</p>
           </div>
           <div>
-            <p class="work-desc">Built FATE &mdash; a mobile focus-tracking app with multi-signal attention scoring across spatial, social, and digital inputs.</p>
+            <p class="work-desc">Built FATE &mdash; a mobile focus-tracking app with multi-signal attention scoring across spatial, social, and digital inputs in 24 hours.</p>
             <div class="tag-list">
               <span class="tag">Flutter</span><span class="tag">FastAPI</span><span class="tag">Gemini CLI</span><span class="tag">Android</span>
             </div>
@@ -190,10 +190,10 @@
         <div class="work-entry reveal">
           <div>
             <p class="work-role">Cerebras Hackathon &middot; Builder</p>
-            <p class="work-date">June 2024</p>
+            <p class="work-date">2024</p>
           </div>
           <div>
-            <p class="work-desc">Shipped two projects in 48hrs: DebateOS (multi-agent AI debate engine) and AeroWSE (3D drone swarm simulator with Gemma 4 31B via Cerebras API).</p>
+            <p class="work-desc">Shipped two projects in 24hrs each: DebateOS (multi-agent AI debate engine) and AeroWSE (3D drone swarm simulator with Gemma 4 31B via Cerebras API).</p>
             <div class="tag-list">
               <span class="tag">Three.js</span><span class="tag">Node.js</span><span class="tag">Cerebras API</span><span class="tag">Gemma</span>
             </div>
@@ -206,9 +206,18 @@
     <section id="projects" aria-label="Projects">
       <p class="section-label"><span class="label-accent">&mdash;</span>Projects</p>
 
-      <div class="featured-project reveal" role="article">
-        <h2 class="project-heading">CogniOS</h2>
-        <p class="project-subhead">Adaptive OS Intelligence Layer &middot; DevLUP Labs SoC &middot; Active</p>
+      <!-- Featured Project: CogniOS -->
+      <div class="featured-project reveal" role="article" data-pid="cognios" tabindex="0" aria-label="Open CogniOS case study">
+        <div class="card-top-row">
+          <div>
+            <h2 class="project-heading">CogniOS</h2>
+            <p class="project-subhead">Adaptive OS Intelligence Layer &middot; DevLUP Labs SoC &middot; Active</p>
+          </div>
+          <button class="card-like-btn" data-pid="cognios" aria-label="Like CogniOS" type="button">
+            <span class="card-like-icon">&#9825;</span>
+            <span class="card-like-count">24</span>
+          </button>
+        </div>
         <p class="project-desc">
           Linux workload detection and optimization pipeline running entirely in userspace. XGBoost classifier trained on synthetic + pseudo-labeled telemetry data identifies workload profiles. Isolation Forest anomaly detection flags resource thrashing in real time. An OS flight recorder maintains a rolling telemetry buffer with crash-dump capability for post-mortem analysis. Offline scheduler simulator supports both classical and reinforcement learning evaluation methods.
         </p>
@@ -219,172 +228,133 @@
           <a href="https://github.com/NikhByte/CogniOS" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="CogniOS on GitHub">&#8599; GitHub</a>
           <a href="https://github.com/NikhByte/CogniOS" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="CogniOS demo">&#8599; Demo</a>
         </div>
+        <p class="proj-card-hint">&#8594; click to explore case study</p>
       </div>
 
+      <!-- Grid of Projects -->
       <p class="project-grid-label">sorted by most liked</p>
       <div class="project-grid" id="project-grid">
-        <article class="project-card reveal" data-pid="fate">
-          <div class="card-top-row">
-            <h3 class="card-title">FATE</h3>
-            <button class="card-like-btn" data-pid="fate" aria-label="Like FATE" type="button">
-              <span class="card-like-icon">&#9825;</span>
-              <span class="card-like-count">0</span>
-            </button>
-          </div>
-          <p class="card-context">Full Attention Telemetry Engine &middot; Insomniac Hackathon &mdash; Runner-Up</p>
-          <p class="card-desc">Mobile app tracking focus via a Contextual Attention Score synthesized from spatial, social, and digital signals. Flutter UI + Android native layer + Python FastAPI backend.</p>
-          <div class="tag-list"><span class="tag">Flutter</span><span class="tag">Android</span><span class="tag">FastAPI</span><span class="tag">Python</span><span class="tag">Gemini CLI</span></div>
-          <div class="project-links">
-            <a href="https://github.com/NikhByte/FATE" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="FATE on GitHub">&#8599; GitHub</a>
-            <a href="https://github.com/NikhByte/FATE" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="FATE demo">&#8599; Demo</a>
-          </div>
-          <p class="proj-card-hint">&#8594; click to explore</p>
-        </article>
-        <article class="project-card reveal" data-pid="spark">
-          <div class="card-top-row">
-            <h3 class="card-title">SPARK</h3>
-            <button class="card-like-btn" data-pid="spark" aria-label="Like SPARK" type="button">
-              <span class="card-like-icon">&#9825;</span>
-              <span class="card-like-count">0</span>
-            </button>
-          </div>
-          <p class="card-context">Self-hosted Personal Access Remote Kit &middot; DevLUP Labs WoC</p>
-          <p class="card-desc">Self-hosted cloud on Ubuntu Server using CasaOS Docker microservices. Media streaming, file storage, and remote access via Cloudflare Tunnel under real college-network constraints.</p>
-          <div class="tag-list"><span class="tag">Docker</span><span class="tag">CasaOS</span><span class="tag">Cloudflare Tunnel</span><span class="tag">Ubuntu Server</span></div>
-          <div class="project-links">
-            <a href="https://github.com/NikhByte/SPARK" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="SPARK on GitHub">&#8599; GitHub</a>
-            <a href="https://github.com/NikhByte/SPARK" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="SPARK demo">&#8599; Demo</a>
-          </div>
-          <p class="proj-card-hint">&#8594; click to explore</p>
-        </article>
-        <article class="project-card reveal" data-pid="debateos">
-          <div class="card-top-row">
-            <h3 class="card-title">DebateOS</h3>
-            <button class="card-like-btn" data-pid="debateos" aria-label="Like DebateOS" type="button">
-              <span class="card-like-icon">&#9825;</span>
-              <span class="card-like-count">0</span>
-            </button>
-          </div>
-          <p class="card-context">Cerebras Hackathon &middot; 24 hrs</p>
-          <p class="card-desc">Multi-agent AI debate engine. Agents argue opposing positions using structured turn-taking, with a judge agent scoring arguments.</p>
-          <div class="tag-list"><span class="tag">Node.js</span><span class="tag">Cerebras API</span><span class="tag">LangGraph</span><span class="tag">Multi-agent</span></div>
-          <div class="project-links">
-            <a href="https://github.com/NikhByte/DebateOS" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="DebateOS on GitHub">&#8599; GitHub</a>
-            <a href="https://github.com/NikhByte/DebateOS" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="DebateOS demo">&#8599; Demo</a>
-          </div>
-          <p class="proj-card-hint">&#8594; click to explore</p>
-        </article>
-        <article class="project-card reveal" data-pid="aerowse">
+
+        <article class="project-card reveal" data-pid="aerowse" tabindex="0" role="button" aria-label="Open AeroWSE case study">
           <div class="card-top-row">
             <h3 class="card-title">AeroWSE</h3>
             <button class="card-like-btn" data-pid="aerowse" aria-label="Like AeroWSE" type="button">
               <span class="card-like-icon">&#9825;</span>
-              <span class="card-like-count">0</span>
+              <span class="card-like-count">18</span>
             </button>
           </div>
           <p class="card-context">Warfighter Swarm Engine &middot; Cerebras Hackathon &middot; 24 hrs</p>
-          <p class="card-desc">3D drone swarm simulator with real-time coordination logic powered by Gemma 4 31B via Cerebras API. Rendered in Three.js.</p>
-          <div class="tag-list"><span class="tag">Three.js</span><span class="tag">Node.js</span><span class="tag">Cerebras API</span><span class="tag">Gemma 4 31B</span><span class="tag">WebGL</span></div>
+          <p class="card-desc">3D drone swarm simulator with real-time coordination logic powered by Gemma 4 31B via Cerebras API. Rendered in Three.js with instanced WebGL meshes.</p>
+          <div class="tag-list">
+            <span class="tag">Three.js</span><span class="tag">Node.js</span><span class="tag">Cerebras API</span><span class="tag">Gemma 4 31B</span><span class="tag">WebGL</span>
+          </div>
           <div class="project-links">
             <a href="https://github.com/NikhByte/AeroWSE" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="AeroWSE on GitHub">&#8599; GitHub</a>
             <a href="https://github.com/NikhByte/AeroWSE" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="AeroWSE demo">&#8599; Demo</a>
           </div>
           <p class="proj-card-hint">&#8594; click to explore</p>
         </article>
-        <article class="project-card reveal" data-pid="credo">
+
+        <article class="project-card reveal" data-pid="debateos" tabindex="0" role="button" aria-label="Open DebateOS case study">
+          <div class="card-top-row">
+            <h3 class="card-title">DebateOS</h3>
+            <button class="card-like-btn" data-pid="debateos" aria-label="Like DebateOS" type="button">
+              <span class="card-like-icon">&#9825;</span>
+              <span class="card-like-count">15</span>
+            </button>
+          </div>
+          <p class="card-context">Multi-agent Debate Engine &middot; Cerebras Hackathon &middot; 24 hrs</p>
+          <p class="card-desc">Multi-agent AI debate engine orchestrated via LangGraph. Opposing agents debate structured motions with an automated judge scoring logical coherence and rhetoric.</p>
+          <div class="tag-list">
+            <span class="tag">Node.js</span><span class="tag">Cerebras API</span><span class="tag">LangGraph</span><span class="tag">Multi-agent</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/NikhByte/DebateOS" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="DebateOS on GitHub">&#8599; GitHub</a>
+            <a href="https://github.com/NikhByte/DebateOS" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="DebateOS demo">&#8599; Demo</a>
+          </div>
+          <p class="proj-card-hint">&#8594; click to explore</p>
+        </article>
+
+        <article class="project-card reveal" data-pid="fate" tabindex="0" role="button" aria-label="Open FATE case study">
+          <div class="card-top-row">
+            <h3 class="card-title">FATE</h3>
+            <button class="card-like-btn" data-pid="fate" aria-label="Like FATE" type="button">
+              <span class="card-like-icon">&#9825;</span>
+              <span class="card-like-count">12</span>
+            </button>
+          </div>
+          <p class="card-context">Full Attention Telemetry Engine &middot; Insomniac Hackathon &mdash; Runner-Up</p>
+          <p class="card-desc">Mobile app tracking focus via a Contextual Attention Score synthesized from spatial, social, and digital signals. Flutter UI + Android native layer + Python FastAPI backend.</p>
+          <div class="tag-list">
+            <span class="tag">Flutter</span><span class="tag">Android</span><span class="tag">FastAPI</span><span class="tag">Python</span><span class="tag">Gemini CLI</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/NikhByte/FATE" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="FATE on GitHub">&#8599; GitHub</a>
+            <a href="https://github.com/NikhByte/FATE" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="FATE demo">&#8599; Demo</a>
+          </div>
+          <p class="proj-card-hint">&#8594; click to explore</p>
+        </article>
+
+        <article class="project-card reveal" data-pid="localai" tabindex="0" role="button" aria-label="Open Local AI Environment case study">
+          <div class="card-top-row">
+            <h3 class="card-title">Local AI Environment</h3>
+            <button class="card-like-btn" data-pid="localai" aria-label="Like Local AI Environment" type="button">
+              <span class="card-like-icon">&#9825;</span>
+              <span class="card-like-count">10</span>
+            </button>
+          </div>
+          <p class="card-context">Personal project &middot; Ongoing</p>
+          <p class="card-desc">Configured a local inference stack on RTX 3050 laptop &mdash; Ollama + Open WebUI &mdash; for running quantized LLMs locally with zero cloud dependency and optimized VRAM utilization.</p>
+          <div class="tag-list">
+            <span class="tag">Ollama</span><span class="tag">Open WebUI</span><span class="tag">CUDA</span><span class="tag">RTX 3050</span><span class="tag">Local LLM</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/NikhByte/LocalAI-Setup" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="Local AI Environment on GitHub">&#8599; GitHub</a>
+            <a href="https://github.com/NikhByte/LocalAI-Setup" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="Local AI Environment setup guide">&#8599; Setup Guide</a>
+          </div>
+          <p class="proj-card-hint">&#8594; click to explore</p>
+        </article>
+
+        <article class="project-card reveal" data-pid="spark" tabindex="0" role="button" aria-label="Open SPARK case study">
+          <div class="card-top-row">
+            <h3 class="card-title">SPARK</h3>
+            <button class="card-like-btn" data-pid="spark" aria-label="Like SPARK" type="button">
+              <span class="card-like-icon">&#9825;</span>
+              <span class="card-like-count">8</span>
+            </button>
+          </div>
+          <p class="card-context">Self-hosted Personal Access Remote Kit &middot; DevLUP Labs WoC</p>
+          <p class="card-desc">Self-hosted cloud on Ubuntu Server using CasaOS Docker microservices. Media streaming, file storage, and remote access via Cloudflare Tunnel under real college-network NAT constraints.</p>
+          <div class="tag-list">
+            <span class="tag">Docker</span><span class="tag">CasaOS</span><span class="tag">Cloudflare Tunnel</span><span class="tag">Ubuntu Server</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/NikhByte/SPARK" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="SPARK on GitHub">&#8599; GitHub</a>
+            <a href="https://github.com/NikhByte/SPARK" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="SPARK demo">&#8599; Demo</a>
+          </div>
+          <p class="proj-card-hint">&#8594; click to explore</p>
+        </article>
+
+        <article class="project-card reveal" data-pid="credo" tabindex="0" role="button" aria-label="Open Credo case study">
           <div class="card-top-row">
             <h3 class="card-title">Credo</h3>
             <button class="card-like-btn" data-pid="credo" aria-label="Like Credo" type="button">
               <span class="card-like-icon">&#9825;</span>
-              <span class="card-like-count">0</span>
+              <span class="card-like-count">6</span>
             </button>
           </div>
           <p class="card-context">Bootup Hackathon &middot; Team Elite Coders &middot; Top 5</p>
-          <p class="card-desc">Task management app with AI-assisted UI design. Manual coding + AI-generated components. Reached the final round.</p>
-          <div class="tag-list"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">SQLite</span><span class="tag">JavaScript</span><span class="tag">Node.js</span></div>
+          <p class="card-desc">Task management app with AI-assisted UI design. Manual coding + AI-generated components. Reached the final round with structured SQLite persistence.</p>
+          <div class="tag-list">
+            <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">SQLite</span><span class="tag">JavaScript</span><span class="tag">Node.js</span>
+          </div>
           <div class="project-links">
             <a href="https://github.com/NikhByte/Credo" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="Credo on GitHub">&#8599; GitHub</a>
             <a href="https://github.com/NikhByte/Credo" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="Credo demo">&#8599; Demo</a>
           </div>
           <p class="proj-card-hint">&#8594; click to explore</p>
         </article>
-        <article class="project-card reveal" data-pid="localai">
-          <div class="card-top-row">
-            <h3 class="card-title">Local AI Environment</h3>
-            <button class="card-like-btn" data-pid="localai" aria-label="Like Local AI Environment" type="button">
-              <span class="card-like-icon">&#9825;</span>
-              <span class="card-like-count">0</span>
-            </button>
-          </div>
-          <p class="card-context">Personal project &middot; Ongoing</p>
-          <p class="card-desc">Configured a local inference stack on RTX 3050 laptop &mdash; Ollama + Open WebUI &mdash; for running LLMs locally without cloud dependency.</p>
-          <div class="tag-list"><span class="tag">Ollama</span><span class="tag">Open WebUI</span><span class="tag">CUDA</span><span class="tag">RTX 3050</span><span class="tag">Local LLM</span></div>
-          <div class="project-links">
-            <a href="https://github.com/NikhByte/LocalAI-Setup" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="Local AI Environment on GitHub">&#8599; GitHub</a>
-            <a href="https://github.com/NikhByte/LocalAI-Setup" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="Local AI Environment demo">&#8599; Demo</a>
-          </div>
-          <p class="proj-card-hint">&#8594; click to explore</p>
-        </article>
-      </div>
-          <div class="project-links">
-            <a href="https://github.com/NikhByte" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="FATE on GitHub">&#8599; GitHub</a>
-          </div>
-        </article>
-        <article class="project-card reveal">
-          <h3 class="card-title">SPARK</h3>
-          <p class="card-context">Self-hosted Personal Access Remote Kit &middot; DevLUP Labs WoC</p>
-          <p class="card-desc">Self-hosted cloud on Ubuntu Server using CasaOS Docker microservices. Media streaming, file storage, and remote access via Cloudflare Tunnel under real college-network constraints.</p>
-          <div class="tag-list">
-            <span class="tag">Docker</span><span class="tag">CasaOS</span><span class="tag">Cloudflare Tunnel</span><span class="tag">Ubuntu Server</span>
-          </div>
-          <div class="project-links">
-            <a href="https://github.com/NikhByte" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="SPARK on GitHub">&#8599; GitHub</a>
-          </div>
-        </article>
-        <article class="project-card reveal">
-          <h3 class="card-title">DebateOS</h3>
-          <p class="card-context">Cerebras Hackathon &middot; 2024</p>
-          <p class="card-desc">Multi-agent AI debate engine. Agents argue opposing positions using structured turn-taking, with a judge agent scoring arguments.</p>
-          <div class="tag-list">
-            <span class="tag">Node.js</span><span class="tag">Cerebras API</span><span class="tag">LangGraph</span><span class="tag">Multi-agent</span>
-          </div>
-          <div class="project-links">
-            <a href="https://github.com/NikhByte" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="DebateOS on GitHub">&#8599; GitHub</a>
-          </div>
-        </article>
-        <article class="project-card reveal">
-          <h3 class="card-title">AeroWSE</h3>
-          <p class="card-context">Autonomous Embedded Radar Ops &mdash; Warfighter Swarm Engine &middot; Cerebras Hackathon &middot; 2024</p>
-          <p class="card-desc">3D drone swarm simulator with real-time coordination logic powered by Gemma 4 31B via Cerebras API. Rendered in Three.js.</p>
-          <div class="tag-list">
-            <span class="tag">Three.js</span><span class="tag">Node.js</span><span class="tag">Cerebras API</span><span class="tag">Gemma 4 31B</span><span class="tag">WebGL</span>
-          </div>
-          <div class="project-links">
-            <a href="https://github.com/NikhByte" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="AeroWSE on GitHub">&#8599; GitHub</a>
-          </div>
-        </article>
-        <article class="project-card reveal">
-          <h3 class="card-title">Credo</h3>
-          <p class="card-context">Bootup Hackathon &middot; Team Elite Coders &middot; Top 5</p>
-          <p class="card-desc">Task management app with AI-assisted UI design. Manual coding + AI-generated components. Reached the final round.</p>
-          <div class="tag-list">
-            <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">SQLite</span><span class="tag">JavaScript</span><span class="tag">Node.js</span>
-          </div>
-          <div class="project-links">
-            <a href="https://github.com/NikhByte" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="Credo on GitHub">&#8599; GitHub</a>
-          </div>
-        </article>
-        <article class="project-card reveal">
-          <h3 class="card-title">Local AI Environment</h3>
-          <p class="card-context">Personal project &middot; Ongoing</p>
-          <p class="card-desc">Configured a local inference stack on RTX 3050 laptop &mdash; Ollama + Open WebUI &mdash; for running LLMs locally without cloud dependency.</p>
-          <div class="tag-list">
-            <span class="tag">Ollama</span><span class="tag">Open WebUI</span><span class="tag">CUDA</span><span class="tag">RTX 3050</span><span class="tag">Local LLM</span>
-          </div>
-          <div class="project-links">
-            <a href="https://github.com/NikhByte" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="Local AI Environment config repo on GitHub">&#8599; GitHub &mdash; config repo</a>
-          </div>
-        </article>
+
       </div>
     </section>
 
@@ -665,7 +635,6 @@
     </section>
 
   </main>
-
 
   <!-- PROJECT DETAIL OVERLAY -->
   <div id="proj-overlay" class="proj-overlay" role="dialog" aria-modal="true" aria-labelledby="proj-overlay-title" aria-hidden="true">
