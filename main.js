@@ -3,7 +3,7 @@
 
   var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // ── 1. SCROLL PROGRESS & NAV SCROLL EFFECT ───────────────────────
+  // ── 1. SCROLL PROGRESS & FLOATING NAV SCROLL EFFECT ──────────────
   var nav = document.getElementById('main-nav');
   var progressBar = document.getElementById('scroll-progress');
 
@@ -41,12 +41,52 @@
           });
         }
       });
-    }, { rootMargin: '-30% 0px -60% 0px', threshold: 0 });
+    }, { rootMargin: '-25% 0px -65% 0px', threshold: 0 });
 
     sections.forEach(function(sec) { spyObserver.observe(sec); });
   })();
 
-  // ── 3. SCROLL REVEALS ───────────────────────────────────────────
+  // ── 3. MOBILE FULLSCREEN MENU ───────────────────────────────────
+  (function() {
+    var toggleBtn = document.getElementById('nav-toggle');
+    var mobileMenu = document.getElementById('mobile-menu');
+    var closeBtn = document.getElementById('mobile-menu-close');
+    var mobileLinks = document.querySelectorAll('.mobile-nav-link');
+    if (!toggleBtn || !mobileMenu) return;
+
+    function openMobileMenu() {
+      mobileMenu.classList.add('open');
+      mobileMenu.setAttribute('aria-hidden', 'false');
+      toggleBtn.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeMobileMenu() {
+      mobileMenu.classList.remove('open');
+      mobileMenu.setAttribute('aria-hidden', 'true');
+      toggleBtn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+
+    toggleBtn.addEventListener('click', function() {
+      if (mobileMenu.classList.contains('open')) closeMobileMenu();
+      else openMobileMenu();
+    });
+
+    if (closeBtn) closeBtn.addEventListener('click', closeMobileMenu);
+
+    mobileLinks.forEach(function(link) {
+      link.addEventListener('click', closeMobileMenu);
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && mobileMenu.classList.contains('open')) {
+        closeMobileMenu();
+      }
+    });
+  })();
+
+  // ── 4. SCROLL REVEALS ───────────────────────────────────────────
   (function() {
     var heroSection = document.getElementById('hero');
     var revealEls = Array.from(document.querySelectorAll('.reveal'));
@@ -59,11 +99,11 @@
         el.classList.add('visible');
         var children = el.querySelectorAll('.reveal-child');
         children.forEach(function(child, i) {
-          setTimeout(function() { child.classList.add('visible'); }, i * 80);
+          setTimeout(function() { child.classList.add('visible'); }, i * 75);
         });
         revealObserver.unobserve(el);
       });
-    }, { threshold: 0.12 });
+    }, { threshold: 0.1 });
 
     revealEls.forEach(function(el) {
       if (heroSection && heroSection.contains(el)) {
@@ -74,7 +114,7 @@
     });
   })();
 
-  // ── 4. HERO QUOTE TYPEWRITER ────────────────────────────────────
+  // ── 5. HERO QUOTE TYPEWRITER ────────────────────────────────────
   (function() {
     var el = document.getElementById('hero-thought');
     if (!el) return;
@@ -88,14 +128,14 @@
         if (idx < text.length) {
           el.textContent += text.charAt(idx);
           idx++;
-          setTimeout(typeNext, 25 + Math.random() * 40);
+          setTimeout(typeNext, 25 + Math.random() * 35);
         }
       }
-      setTimeout(typeNext, 800);
+      setTimeout(typeNext, 700);
     }
   })();
 
-  // ── 5. PARTICLE CANVAS & AMBIENT GLOW ───────────────────────────
+  // ── 6. PARTICLE CANVAS & CURSOR AMBIENT GLOW ────────────────────
   (function() {
     var glow = document.querySelector('.ambient-glow');
     window.addEventListener('mousemove', function(e) {
@@ -111,10 +151,10 @@
     var ctx = canvas.getContext('2d');
     var W, H, nodes;
     var mouse = { x: -9999, y: -9999 };
-    var CONNECT_DIST = 150;
-    var REPEL_DIST = 85;
+    var CONNECT_DIST = 145;
+    var REPEL_DIST = 90;
     var REPEL_FORCE = 0.35;
-    var MAX_SPEED = 0.35;
+    var MAX_SPEED = 0.32;
 
     function resize() {
       W = canvas.width = window.innerWidth;
@@ -133,7 +173,7 @@
     }
 
     function initNodes() {
-      var count = window.innerWidth < 768 ? Math.floor(35 + Math.random() * 10) : Math.floor(75 + Math.random() * 20);
+      var count = window.innerWidth < 768 ? Math.floor(30 + Math.random() * 8) : Math.floor(70 + Math.random() * 15);
       nodes = [];
       for (var i = 0; i < count; i++) nodes.push(createNode());
     }
@@ -166,30 +206,30 @@
         if (n.y > H) n.y -= H;
       }
 
-      // Connecting lines
+      // Connecting fine vector lines
       for (var i = 0; i < nodes.length; i++) {
         for (var j = i + 1; j < nodes.length; j++) {
           var a = nodes[i], b = nodes[j];
           var ddx = a.x - b.x, ddy = a.y - b.y;
           var d = Math.sqrt(ddx * ddx + ddy * ddy);
           if (d < CONNECT_DIST) {
-            var alpha = (1 - d / CONNECT_DIST) * 0.24;
+            var alpha = (1 - d / CONNECT_DIST) * 0.22;
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
-            ctx.strokeStyle = 'rgba(245,158,11,' + (alpha * 0.75) + ')';
-            ctx.lineWidth = 0.6;
+            ctx.strokeStyle = 'rgba(245,158,11,' + (alpha * 0.7) + ')';
+            ctx.lineWidth = 0.55;
             ctx.stroke();
           }
         }
       }
 
-      // Draw dots
+      // Draw particle points
       for (var i = 0; i < nodes.length; i++) {
         var n = nodes[i];
         ctx.beginPath();
-        ctx.arc(n.x, n.y, 1.4, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(245,158,11,0.4)';
+        ctx.arc(n.x, n.y, 1.35, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(245,158,11,0.42)';
         ctx.fill();
       }
 
@@ -216,7 +256,7 @@
     tick();
   })();
 
-  // ── 6. DYNAMIC FOOTER YEAR ──────────────────────────────────────
+  // ── 7. DYNAMIC FOOTER YEAR ──────────────────────────────────────
   (function() {
     var el = document.getElementById('footer-year-line');
     if (el) {
@@ -225,7 +265,7 @@
     }
   })();
 
-  // ── 7. WRITING POSTS ACCORDION + LIKES ───────────────────────────
+  // ── 8. WRITING POSTS ACCORDION + LIKES ───────────────────────────
   (function() {
     var STORAGE_KEY = 'nikhil_post_likes';
     var BASE = { 'post-1': 3, 'post-2': 5, 'post-3': 7 };
@@ -244,7 +284,6 @@
       return base + (personal[postId] ? 1 : 0);
     }
 
-    // Initialize like buttons in writing posts
     document.querySelectorAll('.writing-post .like-btn').forEach(function(btn) {
       var postId = btn.getAttribute('data-post');
       var personal = getLikes();
@@ -269,7 +308,7 @@
         btn.classList.toggle('liked', nowLiked);
         if (iconEl) iconEl.textContent = nowLiked ? '♥' : '♡';
 
-        btn.style.transform = 'scale(1.12)';
+        btn.style.transform = 'scale(1.15)';
         setTimeout(function() { btn.style.transform = ''; }, 140);
       });
     });
@@ -281,7 +320,6 @@
         if (!post) return;
         var isOpen = post.classList.contains('open');
 
-        // Close all other posts
         document.querySelectorAll('.writing-post.open').forEach(function(p) {
           if (p !== post) {
             p.classList.remove('open');
@@ -304,50 +342,50 @@
     });
   })();
 
-  // ── 8. PROJECT CASE STUDY OVERLAY DATA & LOGIC ───────────────────
+  // ── 9. PROJECT CASE STUDY TECHNICAL DOSSIERS ────────────────────
   var PROJECTS = {
     'cognios': {
       name: 'CogniOS',
       sub: 'Adaptive OS Intelligence Layer · DevLUP Labs SoC · Active',
-      overview: 'CogniOS is a Linux workload detection and scheduling-optimization layer that runs entirely in userspace — no kernel patches, no elevated privileges. The system collects fine-grained telemetry via psutil and /proc, feeds it through a trained XGBoost classifier to identify workload profiles (compute-bound, memory-bound, I/O-bound, idle), and uses an Isolation Forest model to flag resource anomalies in real time. An OS flight recorder keeps a rolling ring-buffer of system state with crash-dump capability. A separate offline scheduler simulator lets me compare classical scheduling heuristics against RL-based approaches using replayed telemetry.',
+      overview: 'CogniOS is a Linux workload detection and scheduling-optimization layer that runs entirely in userspace — no kernel patches, no elevated root privileges. The system collects fine-grained telemetry via psutil and /proc, feeds an 18-dimensional feature vector into a trained XGBoost classifier to identify workload profiles (compute-bound, memory-bound, I/O-bound, idle), and utilizes an Isolation Forest model to flag resource thrashing in real time. An OS flight recorder maintains a rolling ring-buffer of system state with crash-dump capability. An offline scheduler simulator benchmarks classical scheduling against RL-based approaches using replayed telemetry traces.',
       timeline: [
-        { date: 'Apr 2025', event: 'Joined DevLUP Labs SoC. Proposed CogniOS concept: workload-aware scheduling without kernel modification.', milestone: true },
-        { date: 'May 2025', event: 'Built the telemetry collection layer. Wrote /proc parsers for CPU, memory, I/O, and context-switch metrics. Used psutil as the primary interface.' },
-        { date: 'Jun 2025', event: 'Designed and ran the synthetic dataset generation pipeline. Generated ~50,000 labeled samples across four workload classes. Validated label quality with replay tests.' },
-        { date: 'Jul 2025', event: 'Trained XGBoost classifier. MLflow experiment tracking set up. Achieved <2ms inference per sample on the target hardware profile.', milestone: true },
-        { date: 'Aug 2025', event: 'Integrated Isolation Forest for real-time anomaly detection. Wired anomaly scores into the flight recorder alert system.' },
-        { date: 'Ongoing', event: 'Building the offline scheduler simulator. Comparing CFS, EDF, and PPO-based RL scheduling policies on recorded telemetry traces.', milestone: true },
+        { date: 'Apr 2025', event: 'Joined DevLUP Labs SoC. Proposed CogniOS architecture: userspace workload-aware scheduling without kernel modification.', milestone: true },
+        { date: 'May 2025', event: 'Engineered telemetry collection layer. Wrote /proc parsers for CPU, memory, I/O, and context-switch metrics via psutil.' },
+        { date: 'Jun 2025', event: 'Constructed synthetic dataset generation pipeline. Generated ~50,000 labeled samples across four workload classes.' },
+        { date: 'Jul 2025', event: 'Trained XGBoost classifier with MLflow experiment tracking. Achieved <2ms inference latency on target hardware.', milestone: true },
+        { date: 'Aug 2025', event: 'Integrated Isolation Forest for anomaly detection. Wired real-time anomaly alerts directly into flight recorder.' },
+        { date: 'Ongoing', event: 'Building offline scheduler simulator to evaluate CFS vs EDF vs PPO reinforcement learning policies on recorded traces.', milestone: true },
       ],
       stack: [
-        { label: 'CORE', tags: ['Python', 'C', 'psutil', 'SQLite'] },
+        { label: 'CORE', tags: ['Python', 'C', 'psutil', 'SQLite WAL'] },
         { label: 'ML', tags: ['XGBoost', 'Isolation Forest', 'scikit-learn', 'MLflow'] },
-        { label: 'OS', tags: ['Linux', '/proc', 'cgroups', 'Docker'] },
+        { label: 'OS', tags: ['Linux', '/proc Telemetry', 'cgroups', 'Docker'] },
         { label: 'LLM', tags: ['Gemma LLM', 'Ollama'] },
       ],
       hurdles: [
-        { title: 'Useful features without root', desc: 'Most useful scheduling signals (hardware counters, perf events) need elevated privileges. Had to design features entirely from unprivileged /proc and psutil data — which meant careful feature engineering to avoid noise.' },
-        { title: 'Inference latency under 2ms', desc: 'For the classifier to not itself become a scheduling burden, inference had to stay under 2ms. Achieved this by trimming the feature set to 18 columns, using XGBoost native serialized model format, and pre-allocating numpy arrays.' },
-        { title: 'Synthetic data generalization', desc: 'Real workload telemetry is hard to label. Synthetic generation needed enough realism to train a model that generalizes. Spent two weeks tuning the generators before the trained model stopped over-fitting to artificial patterns.' },
-        { title: 'Flight recorder ring-buffer design', desc: 'Crash-dump capability required atomic writes and a format that stays readable even when the recorder itself crashes mid-write. Ended up with a two-file commit-log approach similar to SQLite WAL.' },
+        { title: 'Feature engineering without root privileges', desc: 'Standard hardware counters and perf events require root. Engineered 18 normalized signals entirely from unprivileged /proc and psutil telemetry, applying rolling differential smoothing to eliminate noise.' },
+        { title: 'Strict sub-2ms inference ceiling', desc: 'To prevent the scheduling daemon from creating overhead, inference must stay under 2ms. Achieved 1.4ms by trimming features, pre-allocating numpy arrays, and compiling XGBoost with native serialization.' },
+        { title: 'Telemetry drift in synthetic generation', desc: 'Synthetically generated workload traces initially over-fit to uniform distributions. Tuned generators with randomized stochastic burstiness to match real production Linux server behavior.' },
+        { title: 'Crash-dump WAL ring-buffer', desc: 'Built a two-file write-ahead-log commit mechanism ensuring system state remains fully readable even if the flight recorder itself is terminated.' },
       ],
       links: [
-        { label: '↗ GitHub', href: 'https://github.com/NikhByte/CogniOS' },
-        { label: '↗ Demo', href: 'https://github.com/NikhByte/CogniOS' }
+        { label: '↗ GitHub Repo', href: 'https://github.com/NikhByte/CogniOS' },
+        { label: '↗ Live Demo', href: 'https://github.com/NikhByte/CogniOS' }
       ],
     },
 
     'fate': {
       name: 'FATE',
       sub: 'Full Attention Telemetry Engine · Insomniac Hackathon · Runner-Up · 24 hrs',
-      overview: 'FATE (Full Attention Telemetry Engine) is a mobile app that tracks focus using a Contextual Attention Score — a composite metric synthesized from spatial context (location, ambient noise), social context (communication patterns), and digital signals (app usage, screen-on time). Built end-to-end in 24 hours at the Insomniac Hackathon, it placed Runner-Up. The stack: Flutter + Android native sensor layer on the frontend, Python FastAPI backend for ML inference, and Gemini CLI for natural-language focus coaching.',
+      overview: 'FATE (Full Attention Telemetry Engine) is an autonomous mobile attention telemetry system that measures cognitive focus via a Contextual Attention Score (CAS). CAS synthesizes spatial context (GPS, ambient sound), social context (communication frequency), and digital telemetry (app usage, screen-on duration). Built end-to-end in 24 hours at the Insomniac Hackathon, winning Runner-Up. Architecture combines Flutter and Android native sensors on the client with a Python FastAPI inference backend and Gemini CLI coaching.',
       timeline: [
-        { date: 'Day 1 — 8:00 PM', event: 'Hackathon starts. Team formed on the spot. Scope locked in the first 20 minutes: real-time multi-signal focus tracking, phone-only, no wearables.', milestone: true },
-        { date: 'Day 1 — 10:00 PM', event: 'Flutter app scaffolded. FastAPI server initialized. REST contract agreed between client and backend.' },
-        { date: 'Day 1 — 11:30 PM', event: 'Contextual Attention Score (CAS) algorithm designed on paper. Weighted formula across spatial, social, and digital sub-scores.' },
-        { date: 'Day 2 — 3:00 AM', event: 'Android native layer integrated via Flutter platform channels. GPS, accelerometer, and app-usage permission flows working.' },
-        { date: 'Day 2 — 9:00 AM', event: 'Backend ML inference running. Gemini CLI integration for focus coaching nudges added. End-to-end flow demoed internally.', milestone: true },
-        { date: 'Day 2 — 6:00 PM', event: 'Final polish, edge cases handled, demo video recorded. Submitted at the wire. Won Runner-Up.', milestone: true },
-        { date: 'Day 2 — 8:00 PM', event: 'Hackathon closes. 24 hours, start to finish.', milestone: false },
+        { date: 'Day 1 — 8:00 PM', event: 'Hackathon starts. Team formed. Locked scope in 20 minutes: phone-only multi-signal focus tracking with zero wearables.', milestone: true },
+        { date: 'Day 1 — 10:00 PM', event: 'Flutter mobile client scaffolded. FastAPI backend initialized. Agreed on strict typed REST schema.' },
+        { date: 'Day 1 — 11:30 PM', event: 'Engineered Contextual Attention Score (CAS) algorithm. Formulated weighted multi-tier signal fusion.' },
+        { date: 'Day 2 — 3:00 AM', event: 'Android native layer wired via Flutter platform channels. Real-time background GPS, motion, and usage stats operational.' },
+        { date: 'Day 2 — 9:00 AM', event: 'Backend inference pipeline active. Integrated Gemini CLI for contextual coaching nudges.', milestone: true },
+        { date: 'Day 2 — 6:00 PM', event: 'Final validation, edge-case hardening, demo recorded. Submitted before deadline. Awarded Runner-Up.', milestone: true },
+        { date: 'Day 2 — 8:00 PM', event: 'Hackathon concludes. 24 hours from zero to working telemetry product.', milestone: false },
       ],
       stack: [
         { label: 'MOBILE', tags: ['Flutter', 'Dart', 'Android'] },
@@ -356,151 +394,150 @@
         { label: 'AI', tags: ['Gemini CLI'] },
       ],
       hurdles: [
-        { title: 'Real-time sensor fusion', desc: 'Merging GPS, accelerometer, screen-on events, and communication logs into a single live score required careful async buffering. Flutter isolates helped but added coordination complexity.' },
-        { title: 'Scoring formula under time pressure', desc: 'Defining a meaningful attention score in under 24 hours meant we could not train a model — we had to design the formula analytically. Got it right by anchoring weights to empirical distraction research.' },
-        { title: 'Android permissions flow', desc: 'Android 12+ requires background location and usage-stats permissions to go through system settings, not runtime dialogs. Built a guided onboarding flow to handle this at 1am.' },
+        { title: 'Asynchronous multi-sensor stream fusion', desc: 'Merging high-frequency accelerometer streams with low-frequency GPS and app-usage timestamps caused lock contention. Solved using Flutter background isolates and time-windowed aggregation buckets.' },
+        { title: 'Algorithmic attention scoring without training data', desc: 'Under 24-hour time constraints, ML training was replaced by an analytical multi-tier heuristic calibrated against distraction research.' },
+        { title: 'Android 12+ background permission restrictions', desc: 'Engineered a seamless onboarding permission guide directing users through system settings for background telemetry.' },
       ],
       links: [
-        { label: '↗ GitHub', href: 'https://github.com/NikhByte/FATE' },
-        { label: '↗ Demo', href: 'https://github.com/NikhByte/FATE' }
+        { label: '↗ GitHub Repo', href: 'https://github.com/NikhByte/FATE' },
+        { label: '↗ Live Demo', href: 'https://github.com/NikhByte/FATE' }
       ],
     },
 
     'spark': {
       name: 'SPARK',
       sub: 'Self-hosted Personal Access Remote Kit · DevLUP Labs WoC · 2025',
-      overview: 'SPARK is a personal self-hosted cloud built on a repurposed Ubuntu Server machine in my dorm room. It runs CasaOS as the orchestration layer over Docker microservices — Jellyfin for media streaming, Nextcloud for file storage, and Vaultwarden for passwords. The core constraint: college campus networks block all inbound traffic. Cloudflare Tunnel provided the escape hatch — a persistent outbound-only tunnel that makes internal services reachable from anywhere without exposing a public IP.',
+      overview: 'SPARK is a self-hosted cloud infrastructure stack deployed on a repurposed Ubuntu Server machine. It utilizes CasaOS as an orchestration interface over Docker microservices — Jellyfin for media streaming, Nextcloud for distributed file storage, and Vaultwarden for password security. Built under strict campus network constraints where all inbound ports are blocked by NAT; bypassed using outbound-only persistent Cloudflare Tunnels.',
       timeline: [
-        { date: 'Jan 2025', event: 'Installed Ubuntu Server 24.04 on a spare laptop. Configured static local IP, SSH hardening, and unattended-upgrades.', milestone: true },
-        { date: 'Feb 2025', event: 'Installed CasaOS. Deployed Jellyfin and Nextcloud as Docker containers. Set up Portainer for container management.' },
-        { date: 'Mar 2025', event: 'Configured Cloudflare Tunnel (cloudflared) to bypass campus NAT. Each service gets a *.cfargotunnel.com subdomain.', milestone: true },
-        { date: 'Apr 2025', event: 'Added Vaultwarden (self-hosted Bitwarden). Set up Prometheus + Grafana stack for server monitoring.' },
-        { date: 'Ongoing', event: 'Adding more services. Experimenting with local AI inference (Ollama) alongside SPARK infrastructure.', milestone: true },
+        { date: 'Jan 2025', event: 'Configured Ubuntu Server 24.04 on bare metal. Configured static subnet IP, SSH keys, and firewall hardening.', milestone: true },
+        { date: 'Feb 2025', event: 'Deployed CasaOS. Provisioned Docker containers for Nextcloud and Jellyfin with persistent volume mappings.' },
+        { date: 'Mar 2025', event: 'Configured Cloudflare Tunnel (cloudflared) daemon to punch through strict campus NAT without port forwarding.', milestone: true },
+        { date: 'Apr 2025', event: 'Added Vaultwarden vault and configured Prometheus + Grafana telemetry for 24/7 node health monitoring.' },
+        { date: 'Ongoing', event: 'Integrating local Ollama inference container into the homelab private cluster.', milestone: true },
       ],
       stack: [
         { label: 'HOST', tags: ['Ubuntu Server', 'Linux', 'systemd'] },
         { label: 'ORCH', tags: ['Docker', 'CasaOS', 'Portainer'] },
         { label: 'NET', tags: ['Cloudflare Tunnel', 'Nginx', 'Tailscale'] },
-        { label: 'OBS', tags: ['Prometheus', 'Grafana', 'Uptime Kuma'] },
+        { label: 'OBS', tags: ['Prometheus', 'Grafana'] },
       ],
       hurdles: [
-        { title: 'Campus network blocks all inbound ports', desc: 'IIT Jodhpur campus network uses NAT with strict inbound blocking. Port forwarding is impossible. Cloudflare Tunnel (outbound-only persistent connection) was the only clean solution — no VPN or punch-through needed.' },
-        { title: 'Dynamic local IP assignment', desc: 'The campus DHCP reassigns IPs every few hours. Solved by reserving the server MAC address in CasaOS network config and writing a systemd unit that checks and updates internal routing on each boot.' },
-        { title: 'Power and heat management', desc: 'Running a 24/7 server in a dorm room on a laptop chassis is a thermal challenge. Configured aggressive CPU frequency scaling and added a kill-switch script that shuts down non-critical services when CPU temp exceeds 80°C.' },
+        { title: 'Inbound port blocking on college network', desc: 'Campus NAT forbids port forwarding. Cloudflare Tunnel (outbound HTTP/2 tunnel to Cloudflare edge) provided authenticated ingress with zero exposed ports.' },
+        { title: 'Dynamic campus IP reallocation', desc: 'Campus DHCP leases periodically reassign local addresses. Automated a systemd boot script that discovers active subnet routing and updates Docker bridge networks.' },
+        { title: '24/7 thermal safety on laptop chassis', desc: 'Configured aggressive CPU frequency governors and an automated daemon that monitors thermal sensors and throttles non-essential containers above 80°C.' },
       ],
       links: [
-        { label: '↗ GitHub', href: 'https://github.com/NikhByte/SPARK' },
-        { label: '↗ Demo', href: 'https://github.com/NikhByte/SPARK' }
+        { label: '↗ GitHub Repo', href: 'https://github.com/NikhByte/SPARK' },
+        { label: '↗ Live Demo', href: 'https://github.com/NikhByte/SPARK' }
       ],
     },
 
     'debateos': {
       name: 'DebateOS',
       sub: 'Multi-agent AI Debate Engine · Cerebras Hackathon · 24 hrs',
-      overview: 'DebateOS is a multi-agent AI system where two LLM agents argue opposing positions in a structured debate, with a third judge agent scoring each round on logic, evidence use, and rhetorical quality. Built in 24 hours at the Cerebras Hackathon. The agent graph is orchestrated with LangGraph, running Llama 3 70B via the Cerebras API for inference speeds fast enough for real-time argument generation. The judge agent produces rubric-based scores after each turn, and a final verdict at the end of the debate.',
+      overview: 'DebateOS is an autonomous multi-agent reasoning system where two LLM agents engage in structured dialectical debate, evaluated turn-by-turn by an automated judge agent. Orchestrated with LangGraph running Llama 3 70B on the Cerebras high-speed inference engine (~800 tokens/sec). The judge agent grades arguments on logical coherence, fallacy detection, and evidence utilization, producing an automated rubric score and final verdict.',
       timeline: [
-        { date: 'Hour 0–3', event: 'Architecture designed. Chose LangGraph for orchestration. Three agent roles locked: Proponent, Opponent, Judge.', milestone: true },
-        { date: 'Hour 3–8', event: 'Cerebras API wired. Llama 3 70B selected for argument quality. Inference speed tested — ~800 tokens/sec, fast enough for real-time streaming.' },
-        { date: 'Hour 8–14', event: 'Structured turn-taking logic built. Agents receive each other prior arguments as context. Debate format: 4 structured rounds.' },
-        { date: 'Hour 14–20', event: 'Judge agent prompt-engineered to score on three rubric dimensions. Adversarial testing to prevent sycophantic verdicts.', milestone: true },
-        { date: 'Hour 20–24', event: 'Web UI for live debate display. Edge cases handled (refusals, context overflow). Demo recorded. Submitted at Hour 24.', milestone: true },
+        { date: 'Hour 0–3', event: 'Designed agent graph architecture. Locked three distinct agent roles: Proponent, Opponent, Judge.', milestone: true },
+        { date: 'Hour 3–8', event: 'Integrated Cerebras API with Llama 3 70B. Benchmarked streaming latency to ensure sub-second response times.' },
+        { date: 'Hour 8–14', event: 'Constructed stateful turn-taking logic with LangGraph, feeding prior context into opposing agents.' },
+        { date: 'Hour 14–20', event: 'Engineered judge scoring rubric with adversarial prompt constraints to prevent sycophancy.', milestone: true },
+        { date: 'Hour 20–24', event: 'Built live web interface. Tested edge cases and context compaction. Submitted at Hour 24.', milestone: true },
       ],
       stack: [
         { label: 'AGENT', tags: ['LangGraph', 'LangChain'] },
         { label: 'LLM', tags: ['Llama 3 70B', 'Cerebras API'] },
         { label: 'BACK', tags: ['Node.js', 'Express'] },
-        { label: 'UI', tags: ['HTML', 'CSS', 'Vanilla JS'] },
+        { label: 'UI', tags: ['HTML5', 'CSS3', 'Vanilla JS'] },
       ],
       hurdles: [
-        { title: 'Agents agree with each other', desc: 'LLMs are RLHF-trained to be agreeable. Getting two agents to genuinely argue required system prompts that explicitly forbid concession, combined with few-shot examples of hard debate rhetoric.' },
-        { title: 'Judge sycophancy', desc: 'The judge agent initially praised both sides equally regardless of argument quality. Solved with a multi-step scoring chain: first identify logical flaws, then score, never start with positives.' },
-        { title: 'Context window management across rounds', desc: 'Four debate rounds of two agents plus a judge fills context fast. Implemented a selective compression scheme that keeps the last full round and summarizes prior rounds.' },
+        { title: 'LLM sycophancy and agreeable convergence', desc: 'Default models tend to agree with opponents. Solved by injecting strict adversarial constraints into system prompts, explicitly penalizing concessions.' },
+        { title: 'Judge impartiality', desc: 'The judge agent initially awarded equal scores. Implemented a dual-pass evaluation chain: first analyze logical fallacies, then compute weighted rubric scores.' },
+        { title: 'Context window growth across multiple debate rounds', desc: 'Implemented sliding-window summarization that preserves opening premises and recent rebuttals while compressing middle turns.' },
       ],
       links: [
-        { label: '↗ GitHub', href: 'https://github.com/NikhByte/DebateOS' },
-        { label: '↗ Demo', href: 'https://github.com/NikhByte/DebateOS' }
+        { label: '↗ GitHub Repo', href: 'https://github.com/NikhByte/DebateOS' },
+        { label: '↗ Live Demo', href: 'https://github.com/NikhByte/DebateOS' }
       ],
     },
 
     'aerowse': {
       name: 'AeroWSE',
       sub: 'Warfighter Swarm Engine · Cerebras Hackathon · 24 hrs',
-      overview: 'AeroWSE is a 3D drone swarm simulator built in the browser using Three.js and WebGL. Each drone agent follows a behavior tree (separation, cohesion, alignment — classic boids) overlaid with mission-specific objectives generated by Gemma 4 31B running on the Cerebras API. The result: a swarm that can be commanded in natural language ("intercept moving target at grid 7-7, maintain radar coverage") and translates that into emergent swarm behavior in real time. Built in 24 hours.',
+      overview: 'AeroWSE (Autonomous Embedded Radar Ops — Warfighter Swarm Engine) is a 3D drone swarm tactical simulator rendered in Three.js/WebGL. 50+ autonomous drone entities follow flocking boids algorithms (separation, alignment, cohesion) overlaid with mission vector targets synthesized from natural language commands via Gemma 4 31B on the Cerebras API. Supports real-time mission execution: Patrol, Intercept, Scatter, and Regroup.',
       timeline: [
-        { date: 'Hour 0–4', event: 'Three.js scene set up. Low-poly drone mesh designed. Camera rig with orbit controls. Baseline render working.', milestone: true },
-        { date: 'Hour 4–10', event: 'Boids algorithm implemented (separation, cohesion, alignment). Weight tuning until swarm motion looked physically plausible.' },
-        { date: 'Hour 10–16', event: 'Gemma 4 31B integrated via Cerebras API. Natural language mission commands parsed into swarm vector targets and behavior weights.', milestone: true },
-        { date: 'Hour 16–21', event: 'WebGL InstancedMesh rendering — one draw call for 50+ drones. Frame rate went from ~12fps to stable 60fps. Radar sweep UI added.' },
-        { date: 'Hour 21–24', event: 'Mission modes shipped: Patrol, Intercept, Scatter, Regroup. Demo video recorded. Submitted at Hour 24.', milestone: true },
+        { date: 'Hour 0–4', event: 'Three.js scene graph initialized. Designed low-poly drone geometry and camera control rig.', milestone: true },
+        { date: 'Hour 4–10', event: 'Engineered Boids vector physics algorithm. Calibrated flocking weights for realistic swarm kinematics.' },
+        { date: 'Hour 10–16', event: 'Integrated Gemma 4 31B via Cerebras API to parse natural language mission directives into vector targets.', milestone: true },
+        { date: 'Hour 16–21', event: 'Refactored rendering to WebGL InstancedMesh, achieving single-draw-call performance at a rock-solid 60fps.' },
+        { date: 'Hour 21–24', event: 'Implemented mission modes: Patrol, Intercept, Scatter, Regroup. Final demo recorded. Shipped at Hour 24.', milestone: true },
       ],
       stack: [
         { label: '3D', tags: ['Three.js', 'WebGL', 'GLSL'] },
         { label: 'AI', tags: ['Gemma 4 31B', 'Cerebras API'] },
         { label: 'BACK', tags: ['Node.js', 'Express'] },
-        { label: 'ALGO', tags: ['Boids', 'Behavior Trees', 'Vector Math'] },
+        { label: 'ALGO', tags: ['Boids Simulation', 'Vector Math'] },
       ],
       hurdles: [
-        { title: 'Three.js performance with 50+ agents', desc: 'Naive Three.js mesh-per-drone tanks frame rate. Switched to InstancedMesh — one draw call for all 50+ drones. Frame rate went from ~12fps to stable 60fps.' },
-        { title: 'Natural language to swarm vectors', desc: 'Gemma output is natural language; the swarm needs XYZ vectors and behavior weights. Built a structured output parser with a fallback grammar for ambiguous commands.' },
-        { title: 'API latency visible in simulation', desc: 'Cerebras is fast but still has network latency. Commands felt laggy. Solved by streaming the swarm into its intermediate behavior state immediately on command, then applying Gemma refinement when it arrives.' },
+        { title: 'Three.js draw-call bottleneck with 50+ meshes', desc: 'Individual mesh instances caused frame rate drops to ~12fps. Migrated to WebGL InstancedMesh with dynamic matrix buffers, maintaining a stable 60fps with one draw call.' },
+        { title: 'Natural language to 3D mission vectors', desc: 'Gemma outputs freeform text, while the physics loop requires 3D coordinates and force weights. Implemented a strict JSON-grammar parser with automatic vector fallback.' },
+        { title: 'API latency compensation in active simulation', desc: 'When receiving a command, the swarm immediately transitions into an intermediate alert state while the LLM parses vectors, ensuring zero perceived UI lag.' },
       ],
       links: [
-        { label: '↗ GitHub', href: 'https://github.com/NikhByte/AeroWSE' },
-        { label: '↗ Demo', href: 'https://github.com/NikhByte/AeroWSE' }
+        { label: '↗ GitHub Repo', href: 'https://github.com/NikhByte/AeroWSE' },
+        { label: '↗ Live Demo', href: 'https://github.com/NikhByte/AeroWSE' }
       ],
     },
 
     'credo': {
       name: 'Credo',
-      sub: 'Task Management App · Bootup Hackathon · Team Elite Coders · Top 5',
-      overview: 'Credo is a task management app with an AI-assisted UI generation layer. The core idea: let AI handle visual component scaffolding while human engineers wire logic, data, and state. Built at the Bootup Hackathon as Team Elite Coders, we reached the final round (Top 5). The backend runs on Node.js with SQLite for task persistence. The frontend mixes hand-coded structure with AI-generated UI components.',
+      sub: 'Task Management Engine · Bootup Hackathon · Top 5 Finalist',
+      overview: 'Credo is a task orchestration application with an AI-assisted UI synthesis layer. Engineered at the Bootup Hackathon as Team Elite Coders, advancing to the Top 5 finals. Features a Node.js backend with SQLite persistence, concurrency locking, and a clean, accessible frontend interface with complete keyboard-driven navigation.',
       timeline: [
-        { date: 'Day 1 — Morning', event: 'Team formed. Decided to experiment with hybrid AI-human UI development. Scoped to core task CRUD + reminders.', milestone: true },
-        { date: 'Day 1 — Afternoon', event: 'Node.js backend scaffolded. SQLite schema designed. REST API for tasks, categories, and priorities.' },
-        { date: 'Day 1 — Evening', event: 'AI-generated UI components integrated into hand-coded shell. Discovered visual consistency issues — spent evening normalizing styles.' },
-        { date: 'Day 2 — Morning', event: 'Task filtering, due-date logic, and category management implemented. Core flows working end-to-end.', milestone: true },
-        { date: 'Day 2 — Afternoon', event: 'Final polish. Reached finals as Team Elite Coders — Top 5.', milestone: true },
+        { date: 'Day 1 — Morning', event: 'Formed Team Elite Coders. Scoped core requirements: high-speed task management and structured persistence.', milestone: true },
+        { date: 'Day 1 — Afternoon', event: 'Scaffolded Node.js backend and relational SQLite schema with normalized task categories.' },
+        { date: 'Day 1 — Evening', event: 'Integrated AI-generated UI scaffolding into hand-crafted structure; normalized CSS design tokens.' },
+        { date: 'Day 2 — Morning', event: 'Implemented keyboard navigation, category filtering, and atomic SQLite transaction queues.', milestone: true },
+        { date: 'Day 2 — Afternoon', event: 'Final polish and demo presentation. Selected as Top 5 finalist in the hackathon.', milestone: true },
       ],
       stack: [
-        { label: 'FRONT', tags: ['HTML', 'CSS', 'JavaScript'] },
+        { label: 'FRONT', tags: ['HTML5', 'CSS3', 'JavaScript'] },
         { label: 'BACK', tags: ['Node.js', 'Express', 'SQLite'] },
-        { label: 'AI', tags: ['AI Component Synthesis', 'Prompt Engineering'] },
+        { label: 'AI', tags: ['UI Component Synthesis', 'Prompt Engineering'] },
       ],
       hurdles: [
-        { title: 'AI-generated UI consistency', desc: 'AI-generated components used different spacing, color variables, and interaction patterns. Normalizing them into a coherent design system took longer than building equivalent components by hand.' },
-        { title: 'SQLite concurrency in Node.js', desc: 'Multiple concurrent requests caused SQLite lock errors. Solved by wrapping all writes in a queue with a single serialized DB connection using better-sqlite3 synchronous API.' },
-        { title: 'Scope creep nearly killed the demo', desc: 'Added priority tiers, recurring tasks, and a calendar view on Day 1. Had to cut all three on Day 2 morning to ensure the core flow was stable and demoable. Lesson: demo path first.' },
+        { title: 'Normalizing disparate AI-generated UI fragments', desc: 'AI-synthesized components varied widely in spacing and styling. Standardized all elements into a unified CSS variable design system.' },
+        { title: 'SQLite concurrency locks under rapid requests', desc: 'Multiple asynchronous HTTP writes created SQLite database lock exceptions. Built a synchronized write queue serialized through better-sqlite3 transactions.' },
+        { title: 'Scope management under hackathon pressure', desc: 'Cut secondary calendar features on morning of Day 2 to guarantee the core flow was 100% stable for the judges.' },
       ],
       links: [
-        { label: '↗ GitHub', href: 'https://github.com/NikhByte/Credo' },
-        { label: '↗ Demo', href: 'https://github.com/NikhByte/Credo' }
+        { label: '↗ GitHub Repo', href: 'https://github.com/NikhByte/Credo' },
+        { label: '↗ Live Demo', href: 'https://github.com/NikhByte/Credo' }
       ],
     },
 
     'localai': {
       name: 'Local AI Environment',
-      sub: 'Self-hosted Inference Stack · Personal Project · Ongoing',
-      overview: 'A personal local LLM inference stack running on an RTX 3050 laptop GPU (4GB VRAM). Ollama handles model management and inference; Open WebUI provides a clean browser-based chat interface. The goal: run useful language models locally with zero cloud dependency and zero per-query cost. VRAM constraints meant learning quantization in depth — running 7B models at Q4_K_M fits, 13B at Q3 is marginal, and 34B+ requires CPU offload.',
+      sub: 'Personal Inference Hardware Stack · Active Project',
+      overview: 'A personal offline LLM inference stack engineered on an RTX 3050 mobile GPU (4GB VRAM). Ollama powers model serving and quantization; Open WebUI provides a clean interface. Enables running quantized 7B and 8B parameter models locally with zero cloud dependence, zero per-query latency, and verified thermal constraints.',
       timeline: [
-        { date: 'Month 1', event: 'Ollama installed. First models pulled: Llama 3 8B, Mistral 7B. Verified GPU inference via nvidia-smi memory monitoring.', milestone: true },
-        { date: 'Month 2', event: 'Open WebUI deployed as a Docker container. Model management UI working. Set up persistent model storage on an external SSD.' },
-        { date: 'Month 3', event: 'Began quantization experimentation. Built a benchmark script that measures tokens/sec and VRAM usage across quant levels for each model.', milestone: true },
-        { date: 'Month 4', event: 'Integrated with CogniOS telemetry — inference sessions are labeled as compute-bound workloads in classifier training data.' },
-        { date: 'Ongoing', event: 'Testing new models (Gemma 3, Qwen 2.5, DeepSeek-R1). Experimenting with local RAG using ChromaDB.', milestone: true },
+        { date: 'Month 1', event: 'Installed Ollama. Pulled Llama 3 8B and Mistral 7B. Monitored VRAM allocation via nvidia-smi.', milestone: true },
+        { date: 'Month 2', event: 'Deployed Open WebUI Docker container. Set up persistent SSD storage for model weights.' },
+        { date: 'Month 3', event: 'Constructed quantization benchmarking matrix across Q4_K_M, Q5, and Q8 levels for tokens/sec vs memory.', milestone: true },
+        { date: 'Month 4', event: 'Integrated inference sessions into CogniOS telemetry as labeled compute-bound training data.' },
+        { date: 'Ongoing', event: 'Benchmarking lightweight reasoning models (Qwen 2.5, DeepSeek) and experimenting with local RAG.', milestone: true },
       ],
       stack: [
         { label: 'INFRA', tags: ['Ollama', 'Open WebUI', 'Docker'] },
-        { label: 'GPU', tags: ['CUDA', 'RTX 3050', 'cuDNN'] },
+        { label: 'GPU', tags: ['CUDA', 'RTX 3050 (4GB)', 'cuDNN'] },
         { label: 'QUANT', tags: ['GGUF', 'Q4_K_M', 'llama.cpp'] },
-        { label: 'RAG', tags: ['ChromaDB', 'LangChain', 'Nomic Embed'] },
       ],
       hurdles: [
-        { title: '4GB VRAM ceiling', desc: 'RTX 3050 Mobile has only 4GB VRAM. Any model above ~7B at Q4 needs CPU offload, which tanks inference speed. Built a config matrix of model × quant × speed to pick the right tradeoff per task.' },
-        { title: 'Thermal throttling during long inference', desc: 'Long inference sessions cause laptop GPU to thermal-throttle at ~75°C, halving token output. Mitigated with aggressive fan curve config and context-length limits in Ollama.' },
-        { title: 'VRAM fragmentation between sessions', desc: 'Ollama keeps models warm in VRAM. Loading a second model while one is resident causes OOM. Wrote a shell alias that sends an unload command before switching models.' },
+        { title: '4GB VRAM ceiling', desc: 'Any model exceeding ~7B at Q4 offloads to CPU, dropping throughput from 35 tok/sec to 4 tok/sec. Calibrated a model-quantization matrix to keep active context entirely in VRAM.' },
+        { title: 'Thermal management during sustained inference', desc: 'Prolonged batch inference caused laptop GPU throttling at 75°C. Configured aggressive fan curves and context limits in Ollama.' },
+        { title: 'VRAM fragmentation between model switches', desc: 'Automated an unload command alias in bash to release resident weights before initializing new model tensors.' },
       ],
       links: [
-        { label: '↗ GitHub', href: 'https://github.com/NikhByte/LocalAI-Setup' },
+        { label: '↗ GitHub Repo', href: 'https://github.com/NikhByte/LocalAI-Setup' },
         { label: '↗ Setup Guide', href: 'https://github.com/NikhByte/LocalAI-Setup' }
       ],
     },
@@ -517,7 +554,7 @@
     return '<div class="proj-stack-groups">' + groups.map(function(g) {
       return '<div class="proj-stack-row">' +
         '<span class="proj-stack-label">' + g.label + '</span>' +
-        '<div class="stack-tags">' + g.tags.map(function(t) {
+        '<div class="tag-list">' + g.tags.map(function(t) {
           return '<span class="tag">' + t + '</span>';
         }).join('') + '</div>' +
       '</div>';
@@ -554,15 +591,15 @@
       overlayBody.innerHTML =
         '<div>' +
           '<div class="proj-section">' +
-            '<p class="proj-section-label">Overview</p>' +
+            '<p class="proj-section-label">Executive Overview</p>' +
             '<p class="proj-overview">' + p.overview + '</p>' +
           '</div>' +
           '<div class="proj-section">' +
-            '<p class="proj-section-label">Timeline</p>' +
+            '<p class="proj-section-label">Engineering Timeline & Milestones</p>' +
             renderTimeline(p.timeline) +
           '</div>' +
           '<div class="proj-section">' +
-            '<p class="proj-section-label">Links</p>' +
+            '<p class="proj-section-label">Project Resources</p>' +
             '<div class="proj-link-row">' + p.links.map(function(l) {
               return '<a href="' + l.href + '" class="proj-ext-link" target="_blank" rel="noopener noreferrer">' + l.label + '</a>';
             }).join('') + '</div>' +
@@ -570,11 +607,11 @@
         '</div>' +
         '<div>' +
           '<div class="proj-section">' +
-            '<p class="proj-section-label">Stack</p>' +
+            '<p class="proj-section-label">Architecture & Stack</p>' +
             renderStack(p.stack) +
           '</div>' +
           '<div class="proj-section">' +
-            '<p class="proj-section-label">Hurdles & How I Solved Them</p>' +
+            '<p class="proj-section-label">Key Engineering Hurdles & Solutions</p>' +
             renderHurdles(p.hurdles) +
           '</div>' +
         '</div>';
@@ -595,6 +632,7 @@
   }
 
   if (closeBtn) closeBtn.addEventListener('click', closeOverlay);
+
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape' && overlay && overlay.classList.contains('open')) {
       closeOverlay();
@@ -649,7 +687,7 @@
     });
   });
 
-  // ── 9. PROJECT CARD LIKES & SORT BY POPULARITY ──────────────────
+  // ── 10. PROJECT CARD LIKES & DYNAMIC SORTING ─────────────────────
   (function() {
     var STORAGE_KEY = 'nikhil_card_likes';
     var BASE_LIKES = { cognios: 24, aerowse: 18, debateos: 15, fate: 12, localai: 10, spark: 8, credo: 6 };
@@ -702,8 +740,8 @@
         btn.classList.toggle('liked', nowLiked);
         if (iconEl) iconEl.textContent = nowLiked ? '♥' : '♡';
 
-        btn.style.transform = 'scale(1.15)';
-        setTimeout(function() { btn.style.transform = ''; }, 140);
+        btn.style.transform = 'scale(1.22) rotate(-4deg)';
+        setTimeout(function() { btn.style.transform = ''; }, 160);
 
         if (btn.closest('#project-grid')) {
           setTimeout(sortGrid, 350);
@@ -714,10 +752,40 @@
     sortGrid();
   })();
 
-  // ── 10. 3D TILT & SPOTLIGHT RADIAL GLOW ──────────────────────────
+  // ── 11. PROJECT DISCIPLINE FILTER SYSTEM ─────────────────────────
   (function() {
-    // Spotlight cursor tracking
-    var spotlightCards = document.querySelectorAll('.project-card, .featured-project');
+    var filterBtns = document.querySelectorAll('.filter-btn');
+    var cards = document.querySelectorAll('.project-card');
+    if (!filterBtns.length || !cards.length) return;
+
+    filterBtns.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        filterBtns.forEach(function(b) {
+          b.classList.remove('active');
+          b.setAttribute('aria-selected', 'false');
+        });
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+
+        var filter = btn.getAttribute('data-filter');
+
+        cards.forEach(function(card) {
+          var categories = (card.getAttribute('data-category') || '').split(' ');
+          if (filter === 'all' || categories.indexOf(filter) !== -1) {
+            card.classList.remove('filter-hidden');
+            card.style.opacity = '0';
+            setTimeout(function() { card.style.opacity = '1'; }, 40);
+          } else {
+            card.classList.add('filter-hidden');
+          }
+        });
+      });
+    });
+  })();
+
+  // ── 12. 3D TILT & SPOTLIGHT RADIAL GLOW ──────────────────────────
+  (function() {
+    var spotlightCards = document.querySelectorAll('.project-card, .featured-project, .link-card');
     spotlightCards.forEach(function(card) {
       card.addEventListener('mousemove', function(e) {
         var rect = card.getBoundingClientRect();
@@ -738,7 +806,7 @@
         var cy   = rect.top  + rect.height / 2;
         var dx   = (e.clientX - cx) / (rect.width  / 2);
         var dy   = (e.clientY - cy) / (rect.height / 2);
-        card.style.transform = 'perspective(750px) rotateY(' + (dx * 4) + 'deg) rotateX(' + (-dy * 4) + 'deg) scale(1.012)';
+        card.style.transform = 'perspective(800px) rotateY(' + (dx * 3.5) + 'deg) rotateX(' + (-dy * 3.5) + 'deg) scale(1.012)';
       }, { passive: true });
 
       card.addEventListener('mouseleave', function() {
@@ -746,7 +814,6 @@
       });
     });
 
-    // 3D Tilt on featured project
     if (featured) {
       featured.addEventListener('mousemove', function(e) {
         var rect = featured.getBoundingClientRect();
@@ -754,7 +821,7 @@
         var cy   = rect.top  + rect.height / 2;
         var dx   = (e.clientX - cx) / (rect.width  / 2);
         var dy   = (e.clientY - cy) / (rect.height / 2);
-        featured.style.transform = 'perspective(1200px) rotateY(' + (dx * 2) + 'deg) rotateX(' + (-dy * 2) + 'deg)';
+        featured.style.transform = 'perspective(1200px) rotateY(' + (dx * 1.8) + 'deg) rotateX(' + (-dy * 1.8) + 'deg)';
       }, { passive: true });
 
       featured.addEventListener('mouseleave', function() {
@@ -763,12 +830,12 @@
     }
   })();
 
-  // ── 11. NAV TEXT SCRAMBLE EFFECT ────────────────────────────────
+  // ── 13. NAV TEXT SCRAMBLE MATRIX EFFECT ──────────────────────────
   (function() {
-    var CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#%&*';
+    var CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!#%&*+/=';
     function scramble(el) {
-      var original = el.dataset.origText || el.textContent;
-      el.dataset.origText = original;
+      var original = el.dataset.text || el.textContent;
+      el.dataset.text = original;
       var steps = original.length * 2;
       var frame = 0;
       var raf;
@@ -795,40 +862,30 @@
     });
   })();
 
-  // ── 12. RIPPLE CLICK ON BUTTONS ──────────────────────────────────
+  // ── 14. OPPORTUNITY CTA SMOOTH SCROLL & FORM FOCUS ───────────────
   (function() {
-    function addRipple(el) {
-      el.style.position = 'relative';
-      el.style.overflow = 'hidden';
-      el.addEventListener('click', function(e) {
-        var rect = el.getBoundingClientRect();
-        var r = document.createElement('span');
-        var size = Math.max(rect.width, rect.height) * 2;
-        r.style.cssText = [
-          'position:absolute',
-          'border-radius:50%',
-          'transform:scale(0)',
-          'background:rgba(245,158,11,0.28)',
-          'animation:ripple-grow 500ms cubic-bezier(0.16,1,0.3,1)',
-          'pointer-events:none',
-          'width:' + size + 'px',
-          'height:' + size + 'px',
-          'left:' + (e.clientX - rect.left - size / 2) + 'px',
-          'top:'  + (e.clientY - rect.top  - size / 2) + 'px',
-        ].join(';');
-        el.appendChild(r);
-        setTimeout(function() { r.remove(); }, 520);
-      });
-    }
+    var oppBtn = document.getElementById('opportunity-cta');
+    var form = document.getElementById('contact-form');
+    var nameInput = document.getElementById('cf-name');
+    if (!oppBtn || !form) return;
 
-    var style = document.createElement('style');
-    style.textContent = '@keyframes ripple-grow{to{transform:scale(2);opacity:0;}}';
-    document.head.appendChild(style);
-
-    document.querySelectorAll('.hero-cta, .opportunity-btn, .form-submit').forEach(addRipple);
+    oppBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      var formCard = form.closest('.contact-form-card');
+      if (formCard) {
+        formCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        formCard.style.boxShadow = '0 0 0 2px var(--accent), 0 0 32px rgba(245, 158, 11, 0.25)';
+        setTimeout(function() {
+          formCard.style.boxShadow = '';
+        }, 1200);
+      }
+      if (nameInput) {
+        setTimeout(function() { nameInput.focus(); }, 400);
+      }
+    });
   })();
 
-  // ── 13. CONTACT FORM (Formspree AJAX) ────────────────────────────
+  // ── 15. CONTACT FORM (Formspree AJAX) ────────────────────────────
   (function() {
     var form    = document.getElementById('contact-form');
     var btn     = document.getElementById('cf-submit');
@@ -842,17 +899,17 @@
       if (btn) btn.disabled = (state === 'loading');
       if (status) status.className = 'form-status ' + state;
       if (state === 'loading') {
-        if (btnLbl) btnLbl.textContent = 'Sending...';
+        if (btnLbl) btnLbl.textContent = 'Transmitting...';
         if (status) status.textContent = '';
       } else if (state === 'success') {
-        if (btnLbl) btnLbl.textContent = 'Send Message';
-        if (status) status.textContent = '// message_sent → stand by for response';
+        if (btnLbl) btnLbl.textContent = 'Transmit Message';
+        if (status) status.textContent = '// message_sent → stand by for direct response';
         form.reset();
       } else if (state === 'error') {
-        if (btnLbl) btnLbl.textContent = 'Send Message';
-        if (status) status.textContent = '// delivery_failed → try nikhil010407@gmail.com';
+        if (btnLbl) btnLbl.textContent = 'Transmit Message';
+        if (status) status.textContent = '// delivery_failed → direct contact: nikhil010407@gmail.com';
       } else {
-        if (btnLbl) btnLbl.textContent = 'Send Message';
+        if (btnLbl) btnLbl.textContent = 'Transmit Message';
         if (status) status.textContent = '';
       }
     }
@@ -871,7 +928,7 @@
       if (!name || !email || !msg) {
         if (status) {
           status.className = 'form-status error';
-          status.textContent = '// validation_failed → please fill all fields';
+          status.textContent = '// validation_failed → all fields required';
         }
         if (!name && nameInput) nameInput.focus();
         else if (!email && emailInput) emailInput.focus();

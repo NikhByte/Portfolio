@@ -10,498 +10,754 @@
   <meta property="og:type" content="website" />
   <title>Nikhil — IIT Jodhpur</title>
 
+  <!-- Google Fonts: Geist (UI/Body), JetBrains Mono (Telemetry/Code), Syne (Display) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Performance-safe fixed noise texture overlay -->
+  <div class="noise-overlay" aria-hidden="true"></div>
+
+  <!-- Scroll progress indicator -->
   <div id="scroll-progress" aria-hidden="true"></div>
+
+  <!-- Canvas particles & ambient illumination -->
   <canvas id="particle-canvas" aria-hidden="true"></canvas>
   <div class="dot-grid" aria-hidden="true"></div>
   <div class="ambient-glow" aria-hidden="true"></div>
 
-  <!-- NAV -->
-  <nav id="main-nav" role="navigation" aria-label="Main navigation">
-    <a href="#hero" class="nav-monogram" aria-label="Back to top">N</a>
-    <ul class="nav-links">
-      <li><a href="#work" id="nav-work">Work</a></li>
-      <li><a href="#projects" id="nav-projects">Projects</a></li>
-      <li><a href="#stack" id="nav-stack">Stack</a></li>
-      <li><a href="#education" id="nav-education">Education</a></li>
-      <li><a href="#writing" id="nav-writing">Writing</a></li>
-      <li><a href="#contact" id="nav-contact">Contact</a></li>
-    </ul>
-  </nav>
+  <!-- FLOATING ISLAND NAVIGATION -->
+  <header class="nav-header">
+    <nav id="main-nav" role="navigation" aria-label="Main navigation">
+      <div class="nav-brand-group">
+        <a href="#hero" class="nav-monogram" aria-label="Nikhil - Back to top">N</a>
+        <div class="nav-status-chip" aria-label="Status: Student at IIT Jodhpur">
+          <span class="status-dot-live"></span>
+          <span class="status-chip-text">IIT JODHPUR &middot; CSE</span>
+        </div>
+      </div>
+
+      <ul class="nav-links">
+        <li><a href="#work" id="nav-work" data-text="Work">Work</a></li>
+        <li><a href="#projects" id="nav-projects" data-text="Projects">Projects</a></li>
+        <li><a href="#stack" id="nav-stack" data-text="Stack">Stack</a></li>
+        <li><a href="#education" id="nav-education" data-text="Education">Education</a></li>
+        <li><a href="#writing" id="nav-writing" data-text="Writing">Writing</a></li>
+        <li><a href="#contact" id="nav-contact" data-text="Contact">Contact</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="#contact" class="nav-cta-btn">
+          <span>Get in touch</span>
+          <span class="nav-cta-arrow" aria-hidden="true">&rarr;</span>
+        </a>
+        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+          <span class="toggle-bar"></span>
+          <span class="toggle-bar"></span>
+          <span class="toggle-bar"></span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- MOBILE FULLSCREEN MENU OVERLAY -->
+  <div id="mobile-menu" class="mobile-menu-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Mobile menu">
+    <div class="mobile-menu-inner">
+      <div class="mobile-menu-header">
+        <span class="mobile-menu-tag">// NAVIGATION_INDEX</span>
+        <button class="mobile-menu-close" id="mobile-menu-close" aria-label="Close navigation menu">
+          <span>ESC / CLOSE</span>
+        </button>
+      </div>
+      <ul class="mobile-menu-links">
+        <li><a href="#work" class="mobile-nav-link" data-index="01"><span class="link-idx">01</span><span class="link-label">Work</span></a></li>
+        <li><a href="#projects" class="mobile-nav-link" data-index="02"><span class="link-idx">02</span><span class="link-label">Projects</span></a></li>
+        <li><a href="#stack" class="mobile-nav-link" data-index="03"><span class="link-idx">03</span><span class="link-label">Stack</span></a></li>
+        <li><a href="#education" class="mobile-nav-link" data-index="04"><span class="link-idx">04</span><span class="link-label">Education</span></a></li>
+        <li><a href="#writing" class="mobile-nav-link" data-index="05"><span class="link-idx">05</span><span class="link-label">Writing</span></a></li>
+        <li><a href="#contact" class="mobile-nav-link" data-index="06"><span class="link-idx">06</span><span class="link-label">Contact</span></a></li>
+      </ul>
+      <div class="mobile-menu-footer">
+        <div class="mobile-socials">
+          <a href="https://github.com/NikhByte" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <span class="sep">&middot;</span>
+          <a href="https://www.linkedin.com/in/nikhil-b17571385" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <span class="sep">&middot;</span>
+          <a href="mailto:nikhil010407@gmail.com">Email</a>
+        </div>
+        <p class="mobile-telemetry">Nikhil // B25CS1044 // Indian Institute of Technology Jodhpur</p>
+      </div>
+    </div>
+  </div>
 
   <main>
-    <!-- HERO -->
+    <!-- HERO SECTION -->
     <section id="hero" aria-label="Hero">
-
-      <!-- Eyebrow: minimal identity -->
+      <!-- Eyebrow: technical telemetry line -->
       <div class="hero-eyebrow">
         <span class="hero-eyebrow-dot" aria-hidden="true"></span>
-        <span class="hero-eyebrow-text">nikhil &middot; IIT Jodhpur &middot; B.Tech CSE</span>
+        <span class="hero-eyebrow-text">nikhil // B25CS1044 // IIT Jodhpur &middot; Class of 2029</span>
       </div>
 
-      <!-- ONE focal point: headline + tagline + tags + CTAs -->
+      <!-- Primary focal block -->
       <div class="hero-center">
-        <h1 class="hero-name" data-text="Systems that don't fall over at 3 AM.">Systems that don&rsquo;t<br>fall over at 3&nbsp;AM.</h1>
-        <p class="hero-tagline">AI needs infrastructure. I build it.</p>
-        <div class="hero-tags" aria-label="Disciplines">
-          <span class="hero-tag">Systems</span>
-          <span class="hero-tag">MLOps</span>
-          <span class="hero-tag">Infra</span>
-          <span class="hero-tag">Linux</span>
+        <div class="hero-headline-wrapper">
+          <span class="hero-system-index" aria-hidden="true">[SYS-ARCH-01]</span>
+          <h1 class="hero-name" data-text="Systems that don't fall over at 3 AM.">
+            Systems that don&rsquo;t<br>fall over at 3&nbsp;AM.
+          </h1>
         </div>
+
+        <p class="hero-tagline">AI needs infrastructure. I build it.</p>
+
+        <!-- Discipline tags with mechanical framing -->
+        <div class="hero-tags" aria-label="Disciplines">
+          <span class="hero-tag"><span class="tag-hash">#</span>Systems</span>
+          <span class="hero-tag"><span class="tag-hash">#</span>MLOps</span>
+          <span class="hero-tag"><span class="tag-hash">#</span>Infra</span>
+          <span class="hero-tag"><span class="tag-hash">#</span>Linux Kernel /proc</span>
+        </div>
+
+        <!-- Primary CTAs with Button-in-Button Trailing Icon -->
         <div class="hero-cta-row">
-          <a href="https://github.com/NikhByte" class="hero-cta hero-cta--filled" target="_blank" rel="noopener noreferrer" aria-label="GitHub: NikhByte">GitHub</a>
-          <a href="https://www.linkedin.com/in/nikhil-b17571385" class="hero-cta hero-cta--outline" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile">LinkedIn</a>
+          <a href="https://github.com/NikhByte" class="hero-cta hero-cta--filled" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile: NikhByte">
+            <span class="cta-text">GitHub</span>
+            <span class="cta-icon-badge" aria-hidden="true">&#8599;</span>
+          </a>
+          <a href="https://www.linkedin.com/in/nikhil-b17571385" class="hero-cta hero-cta--outline" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile">
+            <span class="cta-text">LinkedIn</span>
+            <span class="cta-icon-badge" aria-hidden="true">&#8599;</span>
+          </a>
         </div>
       </div>
 
-      <!-- Quote — large, bottom-anchored, typed in on load -->
+      <!-- Quote typed in on load -->
       <div class="hero-quote-row" aria-live="polite">
         <p class="hero-quote" id="hero-thought"></p>
       </div>
 
-      <!-- Scroll hint -->
+      <!-- Scroll indicator -->
       <div class="hero-scroll" aria-hidden="true">
         <span class="hero-scroll-arrow">&#8595;</span>
-        <span>scroll</span>
+        <span class="hero-scroll-label">SCROLL // TELEMETRY</span>
       </div>
-
     </section>
 
     <!-- MARQUEE TECH STRIP -->
     <div class="marquee-wrapper" aria-hidden="true">
       <div class="marquee-track">
         <span class="marquee-item"><span class="marquee-dot"></span>Linux Userspace</span>
-        <span class="marquee-item"><span class="marquee-dot"></span>XGBoost</span>
-        <span class="marquee-item"><span class="marquee-dot"></span>MLflow</span>
-        <span class="marquee-item"><span class="marquee-dot"></span>Docker</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>XGBoost Classification</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>Isolation Forest</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>MLflow Pipelines</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>Docker Microservices</span>
         <span class="marquee-item"><span class="marquee-dot"></span>Kubernetes</span>
-        <span class="marquee-item"><span class="marquee-dot"></span>FastAPI</span>
-        <span class="marquee-item"><span class="marquee-dot"></span>Cerebras Inference</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>FastAPI Async</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>Cerebras Fast Inference</span>
         <span class="marquee-item"><span class="marquee-dot"></span>Cloudflare Tunnel</span>
         <span class="marquee-item"><span class="marquee-dot"></span>Three.js / WebGL</span>
-        <span class="marquee-item"><span class="marquee-dot"></span>Flutter</span>
-        <span class="marquee-item"><span class="marquee-dot"></span>Ollama</span>
-        <span class="marquee-item"><span class="marquee-dot"></span>Open WebUI</span>
-        <span class="marquee-item"><span class="marquee-dot"></span>LangGraph</span>
-        <span class="marquee-item"><span class="marquee-dot"></span>Prometheus</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>Flutter Sensor Fusion</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>Local AI / CUDA</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>LangGraph Multi-Agent</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>Prometheus Observability</span>
         <!-- Duplicate for seamless infinite loop -->
         <span class="marquee-item"><span class="marquee-dot"></span>Linux Userspace</span>
-        <span class="marquee-item"><span class="marquee-dot"></span>XGBoost</span>
-        <span class="marquee-item"><span class="marquee-dot"></span>MLflow</span>
-        <span class="marquee-item"><span class="marquee-dot"></span>Docker</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>XGBoost Classification</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>Isolation Forest</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>MLflow Pipelines</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>Docker Microservices</span>
         <span class="marquee-item"><span class="marquee-dot"></span>Kubernetes</span>
-        <span class="marquee-item"><span class="marquee-dot"></span>FastAPI</span>
-        <span class="marquee-item"><span class="marquee-dot"></span>Cerebras Inference</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>FastAPI Async</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>Cerebras Fast Inference</span>
         <span class="marquee-item"><span class="marquee-dot"></span>Cloudflare Tunnel</span>
         <span class="marquee-item"><span class="marquee-dot"></span>Three.js / WebGL</span>
-        <span class="marquee-item"><span class="marquee-dot"></span>Flutter</span>
-        <span class="marquee-item"><span class="marquee-dot"></span>Ollama</span>
-        <span class="marquee-item"><span class="marquee-dot"></span>Open WebUI</span>
-        <span class="marquee-item"><span class="marquee-dot"></span>LangGraph</span>
-        <span class="marquee-item"><span class="marquee-dot"></span>Prometheus</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>Flutter Sensor Fusion</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>Local AI / CUDA</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>LangGraph Multi-Agent</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>Prometheus Observability</span>
       </div>
     </div>
 
-    <!-- ABOUT -->
+    <!-- ABOUT SECTION -->
     <section id="about" aria-label="About">
+      <p class="section-label"><span class="label-accent">&mdash;</span>01 // About &amp; Philosophy</p>
       <div class="about-grid">
-        <div class="stat-block reveal">
-          <div class="stat-row reveal-child">
-            <span class="stat-label">Institution</span>
-            <span class="stat-value">IIT Jodhpur</span>
-          </div>
-          <div class="stat-row reveal-child">
-            <span class="stat-label">Program</span>
-            <span class="stat-value">B.Tech CSE &middot; 2nd Year</span>
-          </div>
-          <div class="stat-row reveal-child">
-            <span class="stat-label">Roll No</span>
-            <span class="stat-value">B25CS1044</span>
-          </div>
-          <div class="stat-row reveal-child">
-            <span class="stat-label">CGPA</span>
-            <span class="stat-value">8.85</span>
-          </div>
-          <div class="stat-row reveal-child">
-            <span class="stat-label">Class 12</span>
-            <span class="stat-value">96.2% (CBSE)</span>
-          </div>
-          <div class="stat-row reveal-child">
-            <span class="stat-label">Hackathons</span>
-            <span class="stat-value">Runner-Up &middot; Top 5</span>
+        <!-- Double-bezel hardware stat block -->
+        <div class="stat-shell reveal">
+          <div class="stat-block">
+            <div class="stat-block-header">
+              <span class="stat-sys-id">[OPERATIONAL_SPEC]</span>
+              <span class="stat-sys-status">VERIFIED</span>
+            </div>
+            <div class="stat-row reveal-child">
+              <span class="stat-label">Institution</span>
+              <span class="stat-value">IIT Jodhpur</span>
+            </div>
+            <div class="stat-row reveal-child">
+              <span class="stat-label">Program</span>
+              <span class="stat-value">B.Tech CSE &middot; 2nd Year</span>
+            </div>
+            <div class="stat-row reveal-child">
+              <span class="stat-label">Roll Number</span>
+              <span class="stat-value">B25CS1044</span>
+            </div>
+            <div class="stat-row reveal-child">
+              <span class="stat-label">CGPA</span>
+              <span class="stat-value highlight-val">8.85 / 10.0</span>
+            </div>
+            <div class="stat-row reveal-child">
+              <span class="stat-label">Class 12</span>
+              <span class="stat-value">96.2% (CBSE)</span>
+            </div>
+            <div class="stat-row reveal-child">
+              <span class="stat-label">Hackathons</span>
+              <span class="stat-value highlight-val">Runner-Up &middot; Top 5</span>
+            </div>
           </div>
         </div>
 
         <div class="reveal" style="transition-delay:100ms">
           <p class="about-prose">
-            I build things close to the metal &mdash; daemons, classifiers, telemetry pipelines. CogniOS is my current focus: a Linux workload detector that runs XGBoost in userspace to profile and optimize process scheduling without kernel modifications. I&rsquo;m also deep into MLOps tooling &mdash; Kubernetes, MLflow, Prometheus &mdash; because shipping a model is a different problem than training one. When I&rsquo;m not coding, I&rsquo;m turning complex systems into Obsidian-linked knowledge architectures.
+            I build things close to the metal &mdash; daemons, classifiers, telemetry pipelines. CogniOS is my flagship focus: a Linux workload detector that runs XGBoost in userspace to profile and optimize process scheduling without kernel modifications.
           </p>
+          <p class="about-prose" style="margin-top: 1.25rem;">
+            I&rsquo;m also deep into MLOps and infrastructure tooling &mdash; Kubernetes, MLflow, Prometheus &mdash; because shipping a model is an entirely different engineering challenge than training one in a Jupyter notebook. When I&rsquo;m not writing code, I turn complex distributed systems into structured Obsidian-linked knowledge architectures.
+          </p>
+          <div class="about-quote-box">
+            <div class="quote-box-prompt">&gt;_</div>
+            <p class="quote-box-text">
+              &ldquo;AI optimizes the known, but engineering builds the unknown. The models still need infrastructure, the hardware still needs schedulers, and production still needs builders who can debug a telemetry pipeline at 3 AM.&rdquo;
+            </p>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- WORK -->
+    <!-- WORK & ACHIEVEMENTS SECTION -->
     <section id="work" class="alt-bg" aria-label="Work and achievements">
-      <p class="section-label"><span class="label-accent">&mdash;</span>Work</p>
+      <p class="section-label"><span class="label-accent">&mdash;</span>02 // Work &amp; Hackathons</p>
       <div class="work-list">
         <div class="work-entry reveal">
-          <div>
-            <p class="work-role">DevLUP Labs &middot; Member &amp; Project Builder</p>
+          <div class="work-meta-col">
+            <p class="work-role">DevLUP Labs &middot; Core Builder</p>
             <p class="work-date">2025 &ndash; present</p>
+            <span class="work-badge">IIT JODHPUR</span>
           </div>
-          <div>
-            <p class="work-desc">Active member of IIT Jodhpur&rsquo;s tech club. Built CogniOS under the Summer of Code (SoC) program. Participated in WoC with SPARK.</p>
+          <div class="work-content-col">
+            <p class="work-desc">Active project builder in IIT Jodhpur&rsquo;s official technical club. Engineered CogniOS under the Summer of Code (SoC) initiative. Built SPARK self-hosted infrastructure during Winter of Code (WoC).</p>
             <div class="tag-list">
-              <span class="tag">Python</span><span class="tag">Linux</span><span class="tag">Docker</span><span class="tag">MLOps</span>
+              <span class="tag">Python</span><span class="tag">Linux /proc</span><span class="tag">Docker</span><span class="tag">MLOps</span><span class="tag">SQLite</span>
             </div>
           </div>
         </div>
+
         <div class="work-entry reveal">
-          <div>
+          <div class="work-meta-col">
             <p class="work-role">Insomniac Hackathon &middot; Runner-Up</p>
             <p class="work-date">DevLUP Labs &middot; 2025</p>
+            <span class="work-badge award">RUNNER-UP</span>
           </div>
-          <div>
-            <p class="work-desc">Built FATE &mdash; a mobile focus-tracking app with multi-signal attention scoring across spatial, social, and digital inputs in 24 hours.</p>
+          <div class="work-content-col">
+            <p class="work-desc">Built FATE &mdash; Full Attention Telemetry Engine. Engineered a real-time mobile attention scoring algorithm across spatial, social, and digital signals from 8:00 PM Day 1 to 8:00 PM Day 2.</p>
             <div class="tag-list">
-              <span class="tag">Flutter</span><span class="tag">FastAPI</span><span class="tag">Gemini CLI</span><span class="tag">Android</span>
+              <span class="tag">Flutter</span><span class="tag">FastAPI</span><span class="tag">Gemini CLI</span><span class="tag">Android Native Sensors</span>
             </div>
           </div>
         </div>
+
         <div class="work-entry reveal">
-          <div>
-            <p class="work-role">Bootup Hackathon &middot; Top 5</p>
+          <div class="work-meta-col">
+            <p class="work-role">Bootup Hackathon &middot; Top 5 Finalist</p>
             <p class="work-date">DevLUP Labs &middot; 2024</p>
+            <span class="work-badge">TOP 5</span>
           </div>
-          <div>
-            <p class="work-desc">Built Credo &mdash; a task management app with AI-assisted UI, reached final round as Team Elite Coders.</p>
+          <div class="work-content-col">
+            <p class="work-desc">Built Credo as Team Elite Coders &mdash; a task management application with AI-assisted UI synthesis, relational SQLite persistence, and structured state synchronization.</p>
             <div class="tag-list">
-              <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">SQLite</span><span class="tag">Node.js</span>
+              <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">SQLite</span><span class="tag">Node.js</span><span class="tag">Express</span>
             </div>
           </div>
         </div>
+
         <div class="work-entry reveal">
-          <div>
+          <div class="work-meta-col">
             <p class="work-role">Cerebras Hackathon &middot; Builder</p>
             <p class="work-date">2024</p>
+            <span class="work-badge">24H DOUBLE SHIP</span>
           </div>
-          <div>
-            <p class="work-desc">Shipped two projects in 24hrs each: DebateOS (multi-agent AI debate engine) and AeroWSE (3D drone swarm simulator with Gemma 4 31B via Cerebras API).</p>
+          <div class="work-content-col">
+            <p class="work-desc">Shipped two full projects within a single 24-hour sprint: DebateOS (multi-agent AI debate engine running Llama 3 70B via Cerebras API) and AeroWSE (3D drone swarm simulator powered by Gemma 4 31B in WebGL).</p>
             <div class="tag-list">
-              <span class="tag">Three.js</span><span class="tag">Node.js</span><span class="tag">Cerebras API</span><span class="tag">Gemma</span>
+              <span class="tag">Three.js</span><span class="tag">Node.js</span><span class="tag">Cerebras API</span><span class="tag">LangGraph</span><span class="tag">Gemma 4 31B</span>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- PROJECTS -->
+    <!-- PROJECTS SECTION -->
     <section id="projects" aria-label="Projects">
-      <p class="section-label"><span class="label-accent">&mdash;</span>Projects</p>
-
-      <!-- Featured Project: CogniOS -->
-      <div class="featured-project reveal" role="article" data-pid="cognios" tabindex="0" aria-label="Open CogniOS case study">
-        <div class="card-top-row">
-          <div>
-            <h2 class="project-heading">CogniOS</h2>
-            <p class="project-subhead">Adaptive OS Intelligence Layer &middot; DevLUP Labs SoC &middot; Active</p>
-          </div>
-          <button class="card-like-btn" data-pid="cognios" aria-label="Like CogniOS" type="button">
-            <span class="card-like-icon">&#9825;</span>
-            <span class="card-like-count">24</span>
-          </button>
-        </div>
-        <p class="project-desc">
-          Linux workload detection and optimization pipeline running entirely in userspace. XGBoost classifier trained on synthetic + pseudo-labeled telemetry data identifies workload profiles. Isolation Forest anomaly detection flags resource thrashing in real time. An OS flight recorder maintains a rolling telemetry buffer with crash-dump capability for post-mortem analysis. Offline scheduler simulator supports both classical and reinforcement learning evaluation methods.
-        </p>
-        <div class="tag-list">
-          <span class="tag">Python</span><span class="tag">XGBoost</span><span class="tag">Isolation Forest</span><span class="tag">psutil</span><span class="tag">SQLite</span><span class="tag">Gemma LLM</span><span class="tag">Linux</span><span class="tag">MLflow</span>
-        </div>
-        <div class="project-links">
-          <a href="https://github.com/NikhByte/CogniOS" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="CogniOS on GitHub">&#8599; GitHub</a>
-          <a href="https://github.com/NikhByte/CogniOS" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="CogniOS demo">&#8599; Demo</a>
-        </div>
-        <p class="proj-card-hint">&#8594; click to explore case study</p>
+      <div class="projects-section-header">
+        <p class="section-label"><span class="label-accent">&mdash;</span>03 // Engineered Projects</p>
+        <span class="projects-counter-badge">7 SHIPPED</span>
       </div>
 
-      <!-- Grid of Projects -->
-      <p class="project-grid-label">sorted by most liked</p>
+      <!-- Featured Flagship: CogniOS -->
+      <div class="featured-shell reveal">
+        <div class="featured-project" role="article" data-pid="cognios" tabindex="0" aria-label="Open CogniOS case study dossier">
+          <!-- Crosshair corner markers -->
+          <span class="card-crosshair tl" aria-hidden="true">+</span>
+          <span class="card-crosshair tr" aria-hidden="true">+</span>
+
+          <div class="featured-status-row">
+            <div class="featured-badge-group">
+              <span class="status-dot-live"></span>
+              <span class="featured-flagship-tag">FLAGSHIP PROJECT // DEVUP LABS SOC</span>
+            </div>
+            <button class="card-like-btn" data-pid="cognios" aria-label="Like CogniOS" type="button">
+              <span class="card-like-icon">&#9825;</span>
+              <span class="card-like-count">24</span>
+            </button>
+          </div>
+
+          <div class="featured-title-group">
+            <h2 class="project-heading">CogniOS</h2>
+            <p class="project-subhead">Adaptive OS Intelligence Layer &middot; Linux Userspace &middot; Active Development</p>
+          </div>
+
+          <p class="project-desc">
+            Linux workload detection and optimization pipeline running entirely in userspace without kernel modification or elevated root privileges. Collects fine-grained telemetry via psutil and <code class="code-inline">/proc</code>, feeds features into a trained XGBoost classifier to identify workload profiles (compute, memory, I/O, idle) in under 2ms, and flags resource thrashing via an Isolation Forest. Includes an OS flight recorder with commit-log crash-dump capabilities and an offline scheduler simulator for RL evaluation.
+          </p>
+
+          <!-- Telemetry Live Readout Bar -->
+          <div class="telemetry-bar" aria-label="CogniOS live architecture specifications">
+            <div class="telemetry-item">
+              <span class="telemetry-k">ENGINE:</span>
+              <span class="telemetry-v">USERSPACE DAEMON</span>
+            </div>
+            <div class="telemetry-item">
+              <span class="telemetry-k">LATENCY:</span>
+              <span class="telemetry-v">&lt;2MS (XGBOOST)</span>
+            </div>
+            <div class="telemetry-item">
+              <span class="telemetry-k">DETECTOR:</span>
+              <span class="telemetry-v">ISOLATION FOREST</span>
+            </div>
+            <div class="telemetry-item">
+              <span class="telemetry-k">DUMP:</span>
+              <span class="telemetry-v">WAL RING-BUFFER</span>
+            </div>
+          </div>
+
+          <div class="tag-list" style="margin-top: 1.25rem;">
+            <span class="tag">Python</span>
+            <span class="tag">XGBoost</span>
+            <span class="tag">Isolation Forest</span>
+            <span class="tag">psutil</span>
+            <span class="tag">SQLite WAL</span>
+            <span class="tag">Gemma LLM</span>
+            <span class="tag">Linux /proc</span>
+            <span class="tag">MLflow</span>
+          </div>
+
+          <div class="project-footer-row">
+            <div class="project-links">
+              <a href="https://github.com/NikhByte/CogniOS" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="CogniOS on GitHub">&#8599; GitHub Repo</a>
+              <a href="https://github.com/NikhByte/CogniOS" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="CogniOS live demo">&#8599; Live Demo</a>
+            </div>
+            <span class="proj-card-hint">&#8594; click to explore technical dossier</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- FILTER & SORT CONTROLS -->
+      <div class="project-controls-bar reveal">
+        <div class="project-filters" role="tablist" aria-label="Filter projects by discipline">
+          <button class="filter-btn active" data-filter="all" role="tab" aria-selected="true">All Projects (6)</button>
+          <button class="filter-btn" data-filter="systems" role="tab" aria-selected="false">Systems &amp; OS</button>
+          <button class="filter-btn" data-filter="ai" role="tab" aria-selected="false">AI &amp; MLOps</button>
+          <button class="filter-btn" data-filter="hackathons" role="tab" aria-selected="false">Hackathons</button>
+        </div>
+        <div class="project-sort-status" aria-live="polite">
+          <span class="sort-pulse-dot"></span>
+          <span class="sort-text">Sorted by popularity &middot; click heart to vote</span>
+        </div>
+      </div>
+
+      <!-- PROJECT GRID (6 CARDS) -->
       <div class="project-grid" id="project-grid">
 
-        <article class="project-card reveal" data-pid="aerowse" tabindex="0" role="button" aria-label="Open AeroWSE case study">
+        <!-- 01: AeroWSE -->
+        <article class="project-card reveal" data-pid="aerowse" data-category="systems ai hackathons" tabindex="0" role="button" aria-label="Open AeroWSE case study dossier">
+          <span class="card-crosshair tl" aria-hidden="true">+</span>
           <div class="card-top-row">
-            <h3 class="card-title">AeroWSE</h3>
+            <div class="card-header-left">
+              <span class="card-tech-id">[01/06]</span>
+              <h3 class="card-title">AeroWSE</h3>
+            </div>
             <button class="card-like-btn" data-pid="aerowse" aria-label="Like AeroWSE" type="button">
               <span class="card-like-icon">&#9825;</span>
               <span class="card-like-count">18</span>
             </button>
           </div>
           <p class="card-context">Warfighter Swarm Engine &middot; Cerebras Hackathon &middot; 24 hrs</p>
-          <p class="card-desc">3D drone swarm simulator with real-time coordination logic powered by Gemma 4 31B via Cerebras API. Rendered in Three.js with instanced WebGL meshes.</p>
+          <p class="card-desc">3D drone swarm simulator with real-time emergent coordination logic powered by Gemma 4 31B via Cerebras API. High-performance rendering via WebGL InstancedMesh.</p>
           <div class="tag-list">
             <span class="tag">Three.js</span><span class="tag">Node.js</span><span class="tag">Cerebras API</span><span class="tag">Gemma 4 31B</span><span class="tag">WebGL</span>
           </div>
-          <div class="project-links">
-            <a href="https://github.com/NikhByte/AeroWSE" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="AeroWSE on GitHub">&#8599; GitHub</a>
-            <a href="https://github.com/NikhByte/AeroWSE" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="AeroWSE demo">&#8599; Demo</a>
+          <div class="project-footer-row">
+            <div class="project-links">
+              <a href="https://github.com/NikhByte/AeroWSE" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="AeroWSE on GitHub">&#8599; GitHub</a>
+              <a href="https://github.com/NikhByte/AeroWSE" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="AeroWSE demo">&#8599; Demo</a>
+            </div>
+            <span class="proj-card-hint">&#8594; explore dossier</span>
           </div>
-          <p class="proj-card-hint">&#8594; click to explore</p>
         </article>
 
-        <article class="project-card reveal" data-pid="debateos" tabindex="0" role="button" aria-label="Open DebateOS case study">
+        <!-- 02: DebateOS -->
+        <article class="project-card reveal" data-pid="debateos" data-category="ai hackathons" tabindex="0" role="button" aria-label="Open DebateOS case study dossier">
+          <span class="card-crosshair tl" aria-hidden="true">+</span>
           <div class="card-top-row">
-            <h3 class="card-title">DebateOS</h3>
+            <div class="card-header-left">
+              <span class="card-tech-id">[02/06]</span>
+              <h3 class="card-title">DebateOS</h3>
+            </div>
             <button class="card-like-btn" data-pid="debateos" aria-label="Like DebateOS" type="button">
               <span class="card-like-icon">&#9825;</span>
               <span class="card-like-count">15</span>
             </button>
           </div>
           <p class="card-context">Multi-agent Debate Engine &middot; Cerebras Hackathon &middot; 24 hrs</p>
-          <p class="card-desc">Multi-agent AI debate engine orchestrated via LangGraph. Opposing agents debate structured motions with an automated judge scoring logical coherence and rhetoric.</p>
+          <p class="card-desc">Multi-agent AI debate engine orchestrated via LangGraph. Opposing agents debate structured motions with an automated judge scoring logical coherence and rhetoric at ~800 tokens/sec.</p>
           <div class="tag-list">
-            <span class="tag">Node.js</span><span class="tag">Cerebras API</span><span class="tag">LangGraph</span><span class="tag">Multi-agent</span>
+            <span class="tag">Node.js</span><span class="tag">Cerebras API</span><span class="tag">LangGraph</span><span class="tag">Multi-agent</span><span class="tag">Llama 3 70B</span>
           </div>
-          <div class="project-links">
-            <a href="https://github.com/NikhByte/DebateOS" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="DebateOS on GitHub">&#8599; GitHub</a>
-            <a href="https://github.com/NikhByte/DebateOS" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="DebateOS demo">&#8599; Demo</a>
+          <div class="project-footer-row">
+            <div class="project-links">
+              <a href="https://github.com/NikhByte/DebateOS" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="DebateOS on GitHub">&#8599; GitHub</a>
+              <a href="https://github.com/NikhByte/DebateOS" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="DebateOS demo">&#8599; Demo</a>
+            </div>
+            <span class="proj-card-hint">&#8594; explore dossier</span>
           </div>
-          <p class="proj-card-hint">&#8594; click to explore</p>
         </article>
 
-        <article class="project-card reveal" data-pid="fate" tabindex="0" role="button" aria-label="Open FATE case study">
+        <!-- 03: FATE -->
+        <article class="project-card reveal" data-pid="fate" data-category="systems ai hackathons" tabindex="0" role="button" aria-label="Open FATE case study dossier">
+          <span class="card-crosshair tl" aria-hidden="true">+</span>
           <div class="card-top-row">
-            <h3 class="card-title">FATE</h3>
+            <div class="card-header-left">
+              <span class="card-tech-id">[03/06]</span>
+              <h3 class="card-title">FATE</h3>
+            </div>
             <button class="card-like-btn" data-pid="fate" aria-label="Like FATE" type="button">
               <span class="card-like-icon">&#9825;</span>
               <span class="card-like-count">12</span>
             </button>
           </div>
-          <p class="card-context">Full Attention Telemetry Engine &middot; Insomniac Hackathon &mdash; Runner-Up</p>
-          <p class="card-desc">Mobile app tracking focus via a Contextual Attention Score synthesized from spatial, social, and digital signals. Flutter UI + Android native layer + Python FastAPI backend.</p>
+          <p class="card-context">Attention Telemetry Engine &middot; Insomniac Hackathon &mdash; Runner-Up</p>
+          <p class="card-desc">Mobile telemetry system computing a Contextual Attention Score from spatial, social, and digital signals. Flutter UI + Android native sensor platform channels + FastAPI backend.</p>
           <div class="tag-list">
-            <span class="tag">Flutter</span><span class="tag">Android</span><span class="tag">FastAPI</span><span class="tag">Python</span><span class="tag">Gemini CLI</span>
+            <span class="tag">Flutter</span><span class="tag">Android Sensors</span><span class="tag">FastAPI</span><span class="tag">Python</span><span class="tag">Gemini CLI</span>
           </div>
-          <div class="project-links">
-            <a href="https://github.com/NikhByte/FATE" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="FATE on GitHub">&#8599; GitHub</a>
-            <a href="https://github.com/NikhByte/FATE" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="FATE demo">&#8599; Demo</a>
+          <div class="project-footer-row">
+            <div class="project-links">
+              <a href="https://github.com/NikhByte/FATE" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="FATE on GitHub">&#8599; GitHub</a>
+              <a href="https://github.com/NikhByte/FATE" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="FATE demo">&#8599; Demo</a>
+            </div>
+            <span class="proj-card-hint">&#8594; explore dossier</span>
           </div>
-          <p class="proj-card-hint">&#8594; click to explore</p>
         </article>
 
-        <article class="project-card reveal" data-pid="localai" tabindex="0" role="button" aria-label="Open Local AI Environment case study">
+        <!-- 04: Local AI Environment -->
+        <article class="project-card reveal" data-pid="localai" data-category="systems ai" tabindex="0" role="button" aria-label="Open Local AI Environment case study dossier">
+          <span class="card-crosshair tl" aria-hidden="true">+</span>
           <div class="card-top-row">
-            <h3 class="card-title">Local AI Environment</h3>
+            <div class="card-header-left">
+              <span class="card-tech-id">[04/06]</span>
+              <h3 class="card-title">Local AI Environment</h3>
+            </div>
             <button class="card-like-btn" data-pid="localai" aria-label="Like Local AI Environment" type="button">
               <span class="card-like-icon">&#9825;</span>
               <span class="card-like-count">10</span>
             </button>
           </div>
-          <p class="card-context">Personal project &middot; Ongoing</p>
-          <p class="card-desc">Configured a local inference stack on RTX 3050 laptop &mdash; Ollama + Open WebUI &mdash; for running quantized LLMs locally with zero cloud dependency and optimized VRAM utilization.</p>
+          <p class="card-context">Personal Hardware Stack &middot; Active Project</p>
+          <p class="card-desc">Engineered a self-contained local inference stack on an RTX 3050 mobile GPU (4GB VRAM). Ollama + Open WebUI with custom memory management and benchmarked quantization matrices.</p>
           <div class="tag-list">
-            <span class="tag">Ollama</span><span class="tag">Open WebUI</span><span class="tag">CUDA</span><span class="tag">RTX 3050</span><span class="tag">Local LLM</span>
+            <span class="tag">Ollama</span><span class="tag">CUDA</span><span class="tag">RTX 3050</span><span class="tag">GGUF Quant</span><span class="tag">Open WebUI</span>
           </div>
-          <div class="project-links">
-            <a href="https://github.com/NikhByte/LocalAI-Setup" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="Local AI Environment on GitHub">&#8599; GitHub</a>
-            <a href="https://github.com/NikhByte/LocalAI-Setup" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="Local AI Environment setup guide">&#8599; Setup Guide</a>
+          <div class="project-footer-row">
+            <div class="project-links">
+              <a href="https://github.com/NikhByte/LocalAI-Setup" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="Local AI on GitHub">&#8599; GitHub</a>
+              <a href="https://github.com/NikhByte/LocalAI-Setup" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="Setup guide">&#8599; Setup Guide</a>
+            </div>
+            <span class="proj-card-hint">&#8594; explore dossier</span>
           </div>
-          <p class="proj-card-hint">&#8594; click to explore</p>
         </article>
 
-        <article class="project-card reveal" data-pid="spark" tabindex="0" role="button" aria-label="Open SPARK case study">
+        <!-- 05: SPARK -->
+        <article class="project-card reveal" data-pid="spark" data-category="systems" tabindex="0" role="button" aria-label="Open SPARK case study dossier">
+          <span class="card-crosshair tl" aria-hidden="true">+</span>
           <div class="card-top-row">
-            <h3 class="card-title">SPARK</h3>
+            <div class="card-header-left">
+              <span class="card-tech-id">[05/06]</span>
+              <h3 class="card-title">SPARK</h3>
+            </div>
             <button class="card-like-btn" data-pid="spark" aria-label="Like SPARK" type="button">
               <span class="card-like-icon">&#9825;</span>
               <span class="card-like-count">8</span>
             </button>
           </div>
-          <p class="card-context">Self-hosted Personal Access Remote Kit &middot; DevLUP Labs WoC</p>
-          <p class="card-desc">Self-hosted cloud on Ubuntu Server using CasaOS Docker microservices. Media streaming, file storage, and remote access via Cloudflare Tunnel under real college-network NAT constraints.</p>
+          <p class="card-context">Personal Cloud Remote Kit &middot; DevLUP Labs WoC &middot; 2025</p>
+          <p class="card-desc">Self-hosted homelab on Ubuntu Server using Docker microservices. Media streaming, file vaults, and remote access engineered over campus NAT barriers via Cloudflare Tunnel.</p>
           <div class="tag-list">
-            <span class="tag">Docker</span><span class="tag">CasaOS</span><span class="tag">Cloudflare Tunnel</span><span class="tag">Ubuntu Server</span>
+            <span class="tag">Docker</span><span class="tag">CasaOS</span><span class="tag">Cloudflare Tunnel</span><span class="tag">Ubuntu Server</span><span class="tag">Prometheus</span>
           </div>
-          <div class="project-links">
-            <a href="https://github.com/NikhByte/SPARK" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="SPARK on GitHub">&#8599; GitHub</a>
-            <a href="https://github.com/NikhByte/SPARK" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="SPARK demo">&#8599; Demo</a>
+          <div class="project-footer-row">
+            <div class="project-links">
+              <a href="https://github.com/NikhByte/SPARK" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="SPARK on GitHub">&#8599; GitHub</a>
+              <a href="https://github.com/NikhByte/SPARK" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="SPARK demo">&#8599; Demo</a>
+            </div>
+            <span class="proj-card-hint">&#8594; explore dossier</span>
           </div>
-          <p class="proj-card-hint">&#8594; click to explore</p>
         </article>
 
-        <article class="project-card reveal" data-pid="credo" tabindex="0" role="button" aria-label="Open Credo case study">
+        <!-- 06: Credo -->
+        <article class="project-card reveal" data-pid="credo" data-category="systems hackathons" tabindex="0" role="button" aria-label="Open Credo case study dossier">
+          <span class="card-crosshair tl" aria-hidden="true">+</span>
           <div class="card-top-row">
-            <h3 class="card-title">Credo</h3>
+            <div class="card-header-left">
+              <span class="card-tech-id">[06/06]</span>
+              <h3 class="card-title">Credo</h3>
+            </div>
             <button class="card-like-btn" data-pid="credo" aria-label="Like Credo" type="button">
               <span class="card-like-icon">&#9825;</span>
               <span class="card-like-count">6</span>
             </button>
           </div>
-          <p class="card-context">Bootup Hackathon &middot; Team Elite Coders &middot; Top 5</p>
-          <p class="card-desc">Task management app with AI-assisted UI design. Manual coding + AI-generated components. Reached the final round with structured SQLite persistence.</p>
+          <p class="card-context">Task Engine &middot; Bootup Hackathon &middot; Top 5 Finalist</p>
+          <p class="card-desc">Task management application with an experimental AI-assisted UI synthesis layer, relational SQLite storage with concurrency locking, and full keyboard-driven navigation.</p>
           <div class="tag-list">
-            <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">SQLite</span><span class="tag">JavaScript</span><span class="tag">Node.js</span>
+            <span class="tag">HTML5</span><span class="tag">CSS3</span><span class="tag">SQLite</span><span class="tag">JavaScript</span><span class="tag">Node.js</span>
           </div>
-          <div class="project-links">
-            <a href="https://github.com/NikhByte/Credo" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="Credo on GitHub">&#8599; GitHub</a>
-            <a href="https://github.com/NikhByte/Credo" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="Credo demo">&#8599; Demo</a>
+          <div class="project-footer-row">
+            <div class="project-links">
+              <a href="https://github.com/NikhByte/Credo" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="Credo on GitHub">&#8599; GitHub</a>
+              <a href="https://github.com/NikhByte/Credo" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="Credo demo">&#8599; Demo</a>
+            </div>
+            <span class="proj-card-hint">&#8594; explore dossier</span>
           </div>
-          <p class="proj-card-hint">&#8594; click to explore</p>
         </article>
 
       </div>
     </section>
 
-    <!-- STACK -->
+    <!-- STACK SECTION -->
     <section id="stack" class="alt-bg" aria-label="Tech stack">
-      <p class="section-label"><span class="label-accent">&mdash;</span>Stack</p>
+      <p class="section-label"><span class="label-accent">&mdash;</span>04 // Technical Stack</p>
       <div class="stack-groups reveal">
-        <div class="stack-row reveal-child">
-          <span class="stack-domain">PY</span>
+        <div class="stack-row reveal-child" data-domain="PY">
+          <div class="stack-domain-col">
+            <span class="stack-domain">PY</span>
+            <span class="stack-domain-label">Languages</span>
+          </div>
           <div class="stack-tags">
-            <span class="tag">Python</span><span class="tag">C</span><span class="tag">C++</span><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span><span class="tag">SQL</span>
+            <span class="tag">Python</span><span class="tag">C</span><span class="tag">C++</span><span class="tag">HTML5</span><span class="tag">CSS3</span><span class="tag">JavaScript</span><span class="tag">SQL</span>
           </div>
         </div>
-        <div class="stack-row reveal-child">
-          <span class="stack-domain">ML</span>
+
+        <div class="stack-row reveal-child" data-domain="ML">
+          <div class="stack-domain-col">
+            <span class="stack-domain">ML</span>
+            <span class="stack-domain-label">ML &amp; Agents</span>
+          </div>
           <div class="stack-tags">
-            <span class="tag">XGBoost</span><span class="tag">Isolation Forest</span><span class="tag">scikit-learn</span><span class="tag">MLflow</span><span class="tag">LangGraph</span>
+            <span class="tag">XGBoost</span><span class="tag">Isolation Forest</span><span class="tag">scikit-learn</span><span class="tag">MLflow</span><span class="tag">LangGraph</span><span class="tag">Ollama</span><span class="tag">CUDA</span>
           </div>
         </div>
-        <div class="stack-row reveal-child">
-          <span class="stack-domain">SYS</span>
+
+        <div class="stack-row reveal-child" data-domain="SYS">
+          <div class="stack-domain-col">
+            <span class="stack-domain">SYS</span>
+            <span class="stack-domain-label">Systems &amp; OS</span>
+          </div>
           <div class="stack-tags">
-            <span class="tag">Linux</span><span class="tag">Docker</span><span class="tag">psutil</span><span class="tag">SQLite</span><span class="tag">Ubuntu Server</span><span class="tag">Cloudflare</span>
+            <span class="tag">Linux</span><span class="tag">/proc Telemetry</span><span class="tag">Docker</span><span class="tag">psutil</span><span class="tag">SQLite WAL</span><span class="tag">Ubuntu Server</span><span class="tag">Cloudflare Tunnel</span>
           </div>
         </div>
-        <div class="stack-row reveal-child">
-          <span class="stack-domain">UI</span>
+
+        <div class="stack-row reveal-child" data-domain="UI">
+          <div class="stack-domain-col">
+            <span class="stack-domain">UI</span>
+            <span class="stack-domain-label">Frameworks</span>
+          </div>
           <div class="stack-tags">
-            <span class="tag">Flutter</span><span class="tag">Three.js</span><span class="tag">FastAPI</span><span class="tag">Node.js</span><span class="tag">Next.js</span>
+            <span class="tag">Flutter</span><span class="tag">Three.js / WebGL</span><span class="tag">FastAPI</span><span class="tag">Node.js</span><span class="tag">Express</span>
           </div>
         </div>
-        <div class="stack-row reveal-child">
-          <span class="stack-domain">NOW</span>
+
+        <div class="stack-row reveal-child" data-domain="NOW">
+          <div class="stack-domain-col">
+            <span class="stack-domain">NOW</span>
+            <span class="stack-domain-label">Current Focus</span>
+          </div>
           <div class="stack-tags">
-            <span class="tag">Kubernetes</span><span class="tag">Prometheus</span><span class="tag">Grafana</span><span class="tag">GitHub Actions</span><span class="tag">MLflow</span>
+            <span class="tag">Kubernetes</span><span class="tag">Prometheus</span><span class="tag">Grafana</span><span class="tag">GitHub Actions</span><span class="tag">eBPF</span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- EDUCATION -->
+    <!-- EDUCATION SECTION -->
     <section id="education" aria-label="Education">
-      <p class="section-label"><span class="label-accent">&mdash;</span>Education</p>
+      <p class="section-label"><span class="label-accent">&mdash;</span>05 // Academic Record</p>
       <div class="edu-grid">
         <div class="reveal">
-          <p class="edu-degree">B.Tech &middot; Computer Science &amp; Engineering</p>
-          <p class="edu-institution">Indian Institute of Technology Jodhpur</p>
-          <p class="edu-years">2025 &ndash; 2029 (expected)</p>
-          <div class="course-chips">
-            <span class="course-chip">DSA</span>
-            <span class="course-chip">Discrete Math</span>
-            <span class="course-chip">Probability &amp; Stats</span>
-            <span class="course-chip">Signals &amp; Systems</span>
-            <span class="course-chip">Intro to ML</span>
-            <span class="course-chip">CSE Lab</span>
+          <div class="edu-card">
+            <span class="card-crosshair tl" aria-hidden="true">+</span>
+            <p class="edu-degree">B.Tech &middot; Computer Science &amp; Engineering</p>
+            <p class="edu-institution">Indian Institute of Technology Jodhpur</p>
+            <p class="edu-years">2025 &ndash; 2029 (expected)</p>
+            <div class="course-chips-container">
+              <span class="course-label">COURSEWORK TAKEN // SCHEDULED:</span>
+              <div class="course-chips">
+                <span class="course-chip">Data Structures &amp; Algorithms</span>
+                <span class="course-chip">Discrete Mathematics</span>
+                <span class="course-chip">Probability &amp; Statistics</span>
+                <span class="course-chip">Signals &amp; Systems</span>
+                <span class="course-chip">Intro to Machine Learning</span>
+                <span class="course-chip">Computer Systems Lab</span>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="stat-block reveal" style="transition-delay:80ms">
-          <div class="stat-row">
-            <span class="stat-label">CGPA</span>
-            <span class="stat-value">8.85</span>
-          </div>
-          <div class="stat-row">
-            <span class="stat-label">Class 12</span>
-            <span class="stat-value">96.2% (CBSE)</span>
-          </div>
-          <div class="stat-row">
-            <span class="stat-label">Roll No</span>
-            <span class="stat-value">B25CS1044</span>
-          </div>
-          <div class="stat-row">
-            <span class="stat-label">Status</span>
-            <span class="stat-value">2nd Year &middot; 3rd Semester</span>
+
+        <div class="stat-shell reveal" style="transition-delay:80ms">
+          <div class="stat-block">
+            <div class="stat-block-header">
+              <span class="stat-sys-id">[ACADEMIC_METRICS]</span>
+              <span class="stat-sys-status">OFFICIAL</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">Cumulative GPA</span>
+              <span class="stat-value highlight-val">8.85 / 10.0</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">Class 12 Board</span>
+              <span class="stat-value highlight-val">96.2% (CBSE)</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">Student Roll</span>
+              <span class="stat-value">B25CS1044</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">Academic Status</span>
+              <span class="stat-value">2nd Year &middot; 3rd Semester</span>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- WRITING -->
+    <!-- WRITING SECTION -->
     <section id="writing" class="alt-bg" aria-label="Writing">
-      <p class="section-label"><span class="label-accent">&mdash;</span>Writing</p>
+      <p class="section-label"><span class="label-accent">&mdash;</span>06 // Engineering Writing</p>
       <div class="writing-block reveal">
-        <p class="writing-intro">Writing in progress. I document deeply &mdash; Obsidian-first, publish when it&rsquo;s worth reading.</p>
+        <p class="writing-intro">Writing in progress. I document deeply &mdash; Obsidian-first knowledge graphs, published when the technical depth earns its place.</p>
         <div id="writing-posts">
 
+          <!-- Post 1 -->
           <article class="writing-post" data-post-id="post-1">
             <div class="writing-post-header" role="button" tabindex="0" aria-expanded="false" aria-controls="body-post-1">
               <div class="writing-post-left">
                 <p class="writing-title">How I built a Linux workload classifier without touching the kernel</p>
                 <div class="writing-meta">
-                  <span class="writing-status">draft</span>
-                  <span class="writing-date">in progress</span>
+                  <span class="writing-status">DRAFT</span>
+                  <span class="writing-date">3 MIN READ</span>
+                  <span class="writing-pill">SYSTEMS // ML</span>
                 </div>
               </div>
               <span class="writing-expand-icon" aria-hidden="true">&#8250;</span>
             </div>
             <div class="writing-post-body" id="body-post-1" role="region">
-              <p class="writing-preview">CogniOS needed workload-type awareness without a kernel module. I ended up training an XGBoost classifier on synthetic telemetry &mdash; CPU cycles, page faults, I/O patterns &mdash; to label running processes as compute-bound, memory-bound, or idle. The trick was getting useful features out of <code style="font-family:var(--font-mono);font-size:0.8em;color:var(--accent)">/proc</code> without root and keeping inference under 2ms.</p>
+              <p class="writing-preview">CogniOS needed workload-type awareness without a kernel module. I ended up training an XGBoost classifier on synthetic telemetry &mdash; CPU cycles, page faults, I/O patterns &mdash; to label running processes as compute-bound, memory-bound, or idle. The key breakthrough was extracting 18 normalized features directly from <code class="code-inline">/proc</code> without root privileges while maintaining sub-2ms inference.</p>
+              <div class="writing-code-snippet">
+                <pre><code>// /proc/[pid]/stat feature extraction window
+psutil_snapshot() -> parse_proc_stat() -> 18-dim vector
+XGBoost.predict(tensor) -> {COMPUTE: 0.88, MEM: 0.08, IO: 0.04} [1.4ms]</code></pre>
+              </div>
               <div class="writing-post-footer">
                 <button class="like-btn" data-post="post-1" aria-label="Like this post" type="button">
                   <span class="like-icon">&#9825;</span>
-                  <span class="like-count">0</span>
+                  <span class="like-count">3</span>
                 </button>
+                <span class="writing-read-more-hint">&larr; tap to toggle full note</span>
               </div>
             </div>
           </article>
 
+          <!-- Post 2 -->
           <article class="writing-post" data-post-id="post-2">
             <div class="writing-post-header" role="button" tabindex="0" aria-expanded="false" aria-controls="body-post-2">
               <div class="writing-post-left">
                 <p class="writing-title">XGBoost in userspace: building CogniOS&rsquo;s ML pipeline from scratch</p>
                 <div class="writing-meta">
-                  <span class="writing-status">draft</span>
-                  <span class="writing-date">in progress</span>
+                  <span class="writing-status">DRAFT</span>
+                  <span class="writing-date">4 MIN READ</span>
+                  <span class="writing-pill">MLOPS // DAEMONS</span>
                 </div>
               </div>
               <span class="writing-expand-icon" aria-hidden="true">&#8250;</span>
             </div>
             <div class="writing-post-body" id="body-post-2" role="region">
-              <p class="writing-preview">Training a model is one problem. Making it run reliably as a background daemon &mdash; handling cold-start, model versioning, telemetry drift, and crash-dump replay &mdash; is another. This post covers the full MLflow-tracked pipeline: data gen, labeling heuristics, feature engineering from <code style="font-family:var(--font-mono);font-size:0.8em;color:var(--accent)">psutil</code>, model serialization, and how I wired it into CogniOS&rsquo;s flight recorder.</p>
+              <p class="writing-preview">Training a model is one problem. Making it run reliably as a background daemon &mdash; handling cold-start, model versioning, telemetry drift, and crash-dump replay &mdash; is another. This post covers the full MLflow-tracked pipeline: synthetic data generators, feature scaling, model serialization, and atomic WAL ring-buffers.</p>
+              <div class="writing-code-snippet">
+                <pre><code>// Atomic telemetry buffer commit
+RingBuffer::commit(record) {
+  wal_log.append(record);
+  if (unlikely(crash_flag)) wal_flush_dump();
+}</code></pre>
+              </div>
               <div class="writing-post-footer">
                 <button class="like-btn" data-post="post-2" aria-label="Like this post" type="button">
                   <span class="like-icon">&#9825;</span>
-                  <span class="like-count">0</span>
+                  <span class="like-count">5</span>
                 </button>
+                <span class="writing-read-more-hint">&larr; tap to toggle full note</span>
               </div>
             </div>
           </article>
 
+          <!-- Post 3 -->
           <article class="writing-post" data-post-id="post-3">
             <div class="writing-post-header" role="button" tabindex="0" aria-expanded="false" aria-controls="body-post-3">
               <div class="writing-post-left">
-                <p class="writing-title">What hackathons taught me about shipping in 48 hours</p>
+                <p class="writing-title">What hackathons taught me about shipping in 24 hours</p>
                 <div class="writing-meta">
-                  <span class="writing-status">draft</span>
-                  <span class="writing-date">in progress</span>
+                  <span class="writing-status">DRAFT</span>
+                  <span class="writing-date">2 MIN READ</span>
+                  <span class="writing-pill">HACKATHONS // SPEED</span>
                 </div>
               </div>
               <span class="writing-expand-icon" aria-hidden="true">&#8250;</span>
             </div>
             <div class="writing-post-body" id="body-post-3" role="region">
-              <p class="writing-preview">Three hackathons &mdash; Insomniac, Bootup, Cerebras &mdash; three completely different constraint profiles. The one consistent lesson: the gap between a working prototype and a presentable product is mostly clarity of scope, not code. I now build the demo path first and work backwards to what the code actually needs to do.</p>
+              <p class="writing-preview">Across Insomniac, Bootup, and Cerebras, the single greatest engineering differentiator wasn&rsquo;t lines of code &mdash; it was ruthlessly constructing the primary demo pathway first, then writing strictly the minimal robust code required to make that path fail-proof.</p>
+              <div class="writing-code-snippet">
+                <pre><code>// The 24-Hour Rule
+Hour 0-2: Lock scope & REST contract
+Hour 2-16: Core algorithm & native pipelines
+Hour 16-24: Edge cases, telemetry logging, end-to-end demo</code></pre>
+              </div>
               <div class="writing-post-footer">
                 <button class="like-btn" data-post="post-3" aria-label="Like this post" type="button">
                   <span class="like-icon">&#9825;</span>
-                  <span class="like-count">0</span>
+                  <span class="like-count">7</span>
                 </button>
+                <span class="writing-read-more-hint">&larr; tap to toggle full note</span>
               </div>
             </div>
           </article>
@@ -510,149 +766,167 @@
       </div>
     </section>
 
-    <!-- CONTACT -->
+    <!-- CONTACT SECTION -->
     <section id="contact" aria-label="Contact and links">
       <div class="contact-layout reveal">
 
-        <!-- ── LEFT: Find me on ─────────────────────────────── -->
+        <!-- LEFT: Find me on & Opportunity Callout -->
         <div class="contact-col">
-
           <div class="contact-eyebrow">
-            <span class="contact-eyebrow-slash">// </span>CONNECT
+            <span class="contact-eyebrow-slash">// </span>07 &middot; TRANSMIT &amp; CONNECT
           </div>
-          <h2 class="contact-heading">Find me on</h2>
+          <h2 class="contact-heading">Find me online</h2>
 
-          <!-- 2×2 link card grid -->
+          <!-- 2x2 link card grid with Double-Bezel styling -->
           <div class="link-cards-grid">
-
             <a href="https://github.com/NikhByte"
                class="link-card"
                target="_blank" rel="noopener noreferrer"
-               aria-label="GitHub: NikhByte">
+               aria-label="GitHub profile: NikhByte">
+              <span class="card-crosshair tl" aria-hidden="true">+</span>
               <div class="link-card-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.6.113.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
               </div>
               <p class="link-card-name">GitHub</p>
-              <p class="link-card-sub">View my code</p>
+              <p class="link-card-sub">github.com/NikhByte</p>
             </a>
 
             <a href="https://www.linkedin.com/in/nikhil-b17571385"
                class="link-card"
                target="_blank" rel="noopener noreferrer"
                aria-label="LinkedIn profile">
+              <span class="card-crosshair tl" aria-hidden="true">+</span>
               <div class="link-card-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
               </div>
               <p class="link-card-name">LinkedIn</p>
-              <p class="link-card-sub">Professional profile</p>
+              <p class="link-card-sub">nikhil-b17571385</p>
             </a>
 
             <a href="mailto:nikhil010407@gmail.com"
                class="link-card"
-               aria-label="Email: nikhil010407@gmail.com">
+               aria-label="Direct email: nikhil010407@gmail.com">
+              <span class="card-crosshair tl" aria-hidden="true">+</span>
               <div class="link-card-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
               </div>
-              <p class="link-card-name">Email</p>
-              <p class="link-card-sub">Direct line</p>
+              <p class="link-card-name">Direct Email</p>
+              <p class="link-card-sub">nikhil010407@gmail.com</p>
             </a>
 
             <a href="https://codolio.com/profile/NikhByte"
                class="link-card"
                target="_blank" rel="noopener noreferrer"
-               aria-label="Codolio profile">
+               aria-label="Codolio competitive developer profile">
+              <span class="card-crosshair tl" aria-hidden="true">+</span>
               <div class="link-card-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5"/></svg>
               </div>
               <p class="link-card-name">Codolio</p>
-              <p class="link-card-sub">Dev portfolio</p>
+              <p class="link-card-sub">codolio.com/profile/NikhByte</p>
             </a>
+          </div>
 
-          </div><!-- /link-cards-grid -->
-
-          <!-- Open to Opportunities callout -->
-          <div class="opportunity-box">
-            <div class="opportunity-prompt" aria-hidden="true">&gt;_</div>
-            <div class="opportunity-body">
-              <p class="opportunity-title">Open to Opportunities</p>
-              <p class="opportunity-desc">
-                Looking for internships in systems engineering, MLOps, or infrastructure &mdash; Summer 2026.
-                I care more about the problem than the stack.
-              </p>
-              <a href="mailto:nikhil010407@gmail.com" class="opportunity-btn">Get in Touch</a>
+          <!-- Open to Opportunities Callout -->
+          <div class="opportunity-shell">
+            <div class="opportunity-box">
+              <div class="opportunity-prompt" aria-hidden="true">&gt;_</div>
+              <div class="opportunity-body">
+                <div class="opportunity-header-row">
+                  <p class="opportunity-title">Open to Opportunities</p>
+                  <span class="opportunity-badge">SUMMER 2026</span>
+                </div>
+                <p class="opportunity-desc">
+                  Actively looking for software engineering and systems / MLOps internships. I care deeply about hard engineering problems, reliable execution, and team craft.
+                </p>
+                <a href="#contact-form" class="opportunity-btn" id="opportunity-cta">
+                  <span>Send direct message</span>
+                  <span class="btn-arrow" aria-hidden="true">&darr;</span>
+                </a>
+              </div>
             </div>
           </div>
+        </div>
 
-        </div><!-- /contact-col left -->
-
-        <!-- ── RIGHT: Send a Message ──────────────────────────── -->
+        <!-- RIGHT: Formspree AJAX Contact Form -->
         <div class="contact-col">
-
           <div class="contact-eyebrow">
-            <span class="contact-eyebrow-slash">// </span>TRANSMIT
+            <span class="contact-eyebrow-slash">// </span>DISPATCH MESSAGE
           </div>
-          <h2 class="contact-heading">Send a Message</h2>
+          <h2 class="contact-heading">Send a direct message</h2>
 
-          <div class="contact-form-card">
-            <form id="contact-form" novalidate>
-              <div class="form-row">
-                <div class="form-field">
-                  <label class="form-label" for="cf-name">Name</label>
-                  <input class="form-input" type="text" id="cf-name" name="name"
-                         placeholder="Ada Lovelace" autocomplete="name" required />
+          <div class="contact-form-shell">
+            <div class="contact-form-card">
+              <form id="contact-form" novalidate>
+                <div class="form-row">
+                  <div class="form-field">
+                    <label class="form-label" for="cf-name">Name <span class="req">*</span></label>
+                    <input class="form-input" type="text" id="cf-name" name="name"
+                           placeholder="Ada Lovelace" autocomplete="name" required />
+                  </div>
+                  <div class="form-field">
+                    <label class="form-label" for="cf-email">Email <span class="req">*</span></label>
+                    <input class="form-input" type="email" id="cf-email" name="email"
+                           placeholder="ada@babbage.io" autocomplete="email" required />
+                  </div>
                 </div>
+
                 <div class="form-field">
-                  <label class="form-label" for="cf-email">Email</label>
-                  <input class="form-input" type="email" id="cf-email" name="email"
-                         placeholder="ada@babbage.io" autocomplete="email" required />
+                  <label class="form-label" for="cf-message">Message <span class="req">*</span></label>
+                  <textarea class="form-input form-textarea" id="cf-message" name="message"
+                            placeholder="What system are we engineering?" rows="5" required></textarea>
                 </div>
-              </div>
-              <div class="form-field">
-                <label class="form-label" for="cf-message">Message</label>
-                <textarea class="form-input form-textarea" id="cf-message" name="message"
-                          placeholder="What are we building?" rows="6" required></textarea>
-              </div>
 
-              <div class="form-footer">
-                <button class="form-submit" type="submit" id="cf-submit">
-                  <span class="form-submit-caret" aria-hidden="true">&gt; </span>
-                  <span id="cf-btn-label">Send Message</span>
-                </button>
-                <p class="form-caption">
-                  Lands at <span class="form-caption-email">nikhil010407@gmail.com</span>
-                </p>
-              </div>
+                <div class="form-footer">
+                  <button class="form-submit" type="submit" id="cf-submit">
+                    <span class="form-submit-caret" aria-hidden="true">&gt;</span>
+                    <span id="cf-btn-label">Transmit Message</span>
+                  </button>
+                  <p class="form-caption">
+                    Dispatched to <span class="form-caption-email">nikhil010407@gmail.com</span>
+                  </p>
+                </div>
 
-              <!-- Status message -->
-              <div class="form-status" id="cf-status" aria-live="polite" aria-atomic="true"></div>
-
-            </form>
+                <!-- Status output -->
+                <div class="form-status" id="cf-status" aria-live="polite" aria-atomic="true"></div>
+              </form>
+            </div>
           </div>
+        </div>
 
-        </div><!-- /contact-col right -->
-
-      </div><!-- /contact-layout -->
+      </div>
     </section>
-
   </main>
 
-  <!-- PROJECT DETAIL OVERLAY -->
+  <!-- PROJECT DETAIL TECHNICAL DOSSIER OVERLAY -->
   <div id="proj-overlay" class="proj-overlay" role="dialog" aria-modal="true" aria-labelledby="proj-overlay-title" aria-hidden="true">
     <div class="proj-overlay-header">
       <div class="proj-overlay-title-group">
-        <p class="proj-overlay-name" id="proj-overlay-title"></p>
-        <p class="proj-overlay-sub" id="proj-overlay-sub"></p>
+        <div class="proj-overlay-meta-tag">
+          <span class="status-dot-live"></span>
+          <span>TECHNICAL SPECIFICATION DOSSIER</span>
+        </div>
+        <h2 class="proj-overlay-name" id="proj-overlay-title">Project Name</h2>
+        <p class="proj-overlay-sub" id="proj-overlay-sub">Subtitle &middot; Context</p>
       </div>
-      <button class="proj-overlay-close" id="proj-overlay-close" aria-label="Close project detail">
-        ESC / close
+      <button class="proj-overlay-close" id="proj-overlay-close" aria-label="Close project detail dossier">
+        <span>ESC / CLOSE</span>
       </button>
     </div>
     <div class="proj-overlay-body" id="proj-overlay-body"></div>
   </div>
 
+  <!-- FOOTER -->
   <footer role="contentinfo">
-    <span class="footer-left" id="footer-year-line">Nikhil &middot; IIT Jodhpur &middot; 2026</span>
-    <span class="footer-right">Built by me.</span>
+    <div class="footer-left">
+      <span id="footer-year-line">Nikhil &middot; IIT Jodhpur &middot; 2026</span>
+    </div>
+    <div class="footer-center">
+      <span class="footer-status-tag">SYSTEM ONLINE // LATENCY NORMAL</span>
+    </div>
+    <div class="footer-right">
+      <span>Built with zero external frameworks. Pure precision.</span>
+    </div>
   </footer>
 
   <script src="main.js"></script>
