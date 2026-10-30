@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
   <!-- Performance-safe fixed noise texture overlay -->
   <div class="noise-overlay" aria-hidden="true"></div>
 
@@ -67,9 +68,9 @@
   <div id="mobile-menu" class="mobile-menu-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Mobile menu">
     <div class="mobile-menu-inner">
       <div class="mobile-menu-header">
-        <span class="mobile-menu-tag">// NAVIGATION_INDEX</span>
+        <span class="mobile-menu-tag">Navigation</span>
         <button class="mobile-menu-close" id="mobile-menu-close" aria-label="Close navigation menu">
-          <span>ESC / CLOSE</span>
+          <span>Close</span>
         </button>
       </div>
       <ul class="mobile-menu-links">
@@ -88,41 +89,24 @@
           <span class="sep">&middot;</span>
           <a href="mailto:nikhil010407@gmail.com">Email</a>
         </div>
-        <p class="mobile-telemetry">Nikhil // B25CS1044 // Indian Institute of Technology Jodhpur</p>
+        <p class="mobile-telemetry">Nikhil · CSE at IIT Jodhpur, '29</p>
       </div>
     </div>
   </div>
 
-  <main>
+  <main id="main-content" tabindex="-1">
     <!-- HERO SECTION -->
     <section id="hero" aria-label="Hero">
-      <!-- Eyebrow: technical telemetry line -->
-      <div class="hero-eyebrow">
-        <span class="hero-eyebrow-dot" aria-hidden="true"></span>
-        <span class="hero-eyebrow-text">nikhil // B25CS1044 // IIT Jodhpur &middot; Class of 2029</span>
-      </div>
-
-      <!-- Primary focal block -->
-      <div class="hero-center">
-        <div class="hero-headline-wrapper">
-          <span class="hero-system-index" aria-hidden="true">[SYS-ARCH-01]</span>
-          <h1 class="hero-name" data-text="Systems that don't fall over at 3 AM.">
-            Systems that don&rsquo;t<br>fall over at 3&nbsp;AM.
-          </h1>
-        </div>
-
-        <p class="hero-tagline">AI needs infrastructure. I build it.</p>
-
-        <!-- Discipline tags with mechanical framing -->
-        <div class="hero-tags" aria-label="Disciplines">
-          <span class="hero-tag"><span class="tag-hash">#</span>Systems</span>
-          <span class="hero-tag"><span class="tag-hash">#</span>MLOps</span>
-          <span class="hero-tag"><span class="tag-hash">#</span>Infra</span>
-          <span class="hero-tag"><span class="tag-hash">#</span>Linux Kernel /proc</span>
-        </div>
-
-        <!-- Primary CTAs with Button-in-Button Trailing Icon -->
-        <div class="hero-cta-row">
+      <!-- Discipline tags with mechanical framing -->
+      <!-- Primary CTAs with Button-in-Button Trailing Icon -->
+      <!-- Quote typed in on load -->
+      <!-- Scroll indicator -->
+      <div class="hero-eyebrow"><span class="hero-eyebrow-text">Nikhil · CSE at IIT Jodhpur, '29</span></div>
+      <div class="hero-grid">
+        <div class="hero-content">
+          <h1 class="hero-name">I build ML tools that read Linux workloads.</h1>
+          <p class="hero-tagline">I’m a CSE student at IIT Jodhpur. I work with Python and Linux, and I’m learning how to turn models into useful tools.</p>
+          <div class="hero-cta-row">
           <a href="https://github.com/NikhByte" class="hero-cta hero-cta--filled" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile: NikhByte">
             <span class="cta-text">GitHub</span>
             <span class="cta-icon-badge" aria-hidden="true">&#8599;</span>
@@ -132,18 +116,10 @@
             <span class="cta-icon-badge" aria-hidden="true">&#8599;</span>
           </a>
         </div>
+        </div>
+        <aside class="hero-project-note" aria-label="Current project"><p>I’m building <strong>CogniOS</strong>, an ML pipeline that detects Linux workloads by reading <code>/proc</code>.</p></aside>
       </div>
-
-      <!-- Quote typed in on load -->
-      <div class="hero-quote-row" aria-live="polite">
-        <p class="hero-quote" id="hero-thought"></p>
-      </div>
-
-      <!-- Scroll indicator -->
-      <div class="hero-scroll" aria-hidden="true">
-        <span class="hero-scroll-arrow">&#8595;</span>
-        <span class="hero-scroll-label">SCROLL // TELEMETRY</span>
-      </div>
+      <div class="hero-scroll" aria-hidden="true"><span class="hero-scroll-arrow">&#8595;</span><span class="hero-scroll-label">Explore my projects</span></div>
     </section>
 
     <!-- MARQUEE TECH STRIP -->
@@ -183,13 +159,13 @@
 
     <!-- ABOUT SECTION -->
     <section id="about" aria-label="About">
-      <p class="section-label"><span class="label-accent">&mdash;</span>01 // About &amp; Philosophy</p>
+      <h2 class="section-label"><span class="label-accent">&mdash;</span>About me</h2>
       <div class="about-grid">
         <!-- Double-bezel hardware stat block -->
         <div class="stat-shell reveal">
           <div class="stat-block">
             <div class="stat-block-header">
-              <span class="stat-sys-id">[OPERATIONAL_SPEC]</span>
+              <span class="stat-sys-id">About me</span>
               <span class="stat-sys-status">VERIFIED</span>
             </div>
             <div class="stat-row reveal-child">
@@ -200,10 +176,7 @@
               <span class="stat-label">Program</span>
               <span class="stat-value">B.Tech CSE &middot; 2nd Year</span>
             </div>
-            <div class="stat-row reveal-child">
-              <span class="stat-label">Roll Number</span>
-              <span class="stat-value">B25CS1044</span>
-            </div>
+
             <div class="stat-row reveal-child">
               <span class="stat-label">CGPA</span>
               <span class="stat-value highlight-val">8.85 / 10.0</span>
@@ -238,7 +211,7 @@
 
     <!-- WORK & ACHIEVEMENTS SECTION -->
     <section id="work" class="alt-bg" aria-label="Work and achievements">
-      <p class="section-label"><span class="label-accent">&mdash;</span>02 // Work &amp; Hackathons</p>
+      <h2 class="section-label"><span class="label-accent">&mdash;</span>Work &amp; hackathons</h2>
       <div class="work-list">
         <div class="work-entry reveal">
           <div class="work-meta-col">
@@ -286,7 +259,7 @@
           <div class="work-meta-col">
             <p class="work-role">Cerebras Hackathon &middot; Builder</p>
             <p class="work-date">2024</p>
-            <span class="work-badge">24H DOUBLE SHIP</span>
+            <span class="work-badge">Two projects in 24 hours</span>
           </div>
           <div class="work-content-col">
             <p class="work-desc">Shipped two full projects within a single 24-hour sprint: DebateOS (multi-agent AI debate engine running Llama 3 70B via Cerebras API) and AeroWSE (3D drone swarm simulator powered by Gemma 4 31B in WebGL).</p>
@@ -301,8 +274,8 @@
     <!-- PROJECTS SECTION -->
     <section id="projects" aria-label="Projects">
       <div class="projects-section-header">
-        <p class="section-label"><span class="label-accent">&mdash;</span>03 // Engineered Projects</p>
-        <span class="projects-counter-badge">7 SHIPPED</span>
+        <h2 class="section-label"><span class="label-accent">&mdash;</span>Projects</h2>
+        <span class="projects-counter-badge">7 PROJECTS</span>
       </div>
 
       <!-- Featured Flagship: CogniOS -->
@@ -315,7 +288,7 @@
           <div class="featured-status-row">
             <div class="featured-badge-group">
               <span class="status-dot-live"></span>
-              <span class="featured-flagship-tag">FLAGSHIP PROJECT // DEVUP LABS SOC</span>
+              <span class="featured-flagship-tag">CogniOS · DevLUP Labs Summer of Code</span>
             </div>
             <button class="card-like-btn" data-pid="cognios" aria-label="Like CogniOS" type="button">
               <span class="card-like-icon">&#9825;</span>
@@ -324,7 +297,7 @@
           </div>
 
           <div class="featured-title-group">
-            <h2 class="project-heading">CogniOS</h2>
+            <h3 class="project-heading">CogniOS</h3>
             <p class="project-subhead">Adaptive OS Intelligence Layer &middot; Linux Userspace &middot; Active Development</p>
           </div>
 
@@ -366,24 +339,23 @@
           <div class="project-footer-row">
             <div class="project-links">
               <a href="https://github.com/NikhByte/CogniOS" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="CogniOS on GitHub">&#8599; GitHub Repo</a>
-              <a href="https://github.com/NikhByte/CogniOS" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="CogniOS live demo">&#8599; Live Demo</a>
+              <button type="button" class="project-link case-study-trigger">Read case study</button>
             </div>
-            <span class="proj-card-hint">&#8594; click to explore technical dossier</span>
           </div>
         </div>
       </div>
 
       <!-- FILTER & SORT CONTROLS -->
       <div class="project-controls-bar reveal">
-        <div class="project-filters" role="tablist" aria-label="Filter projects by discipline">
-          <button class="filter-btn active" data-filter="all" role="tab" aria-selected="true">All Projects (6)</button>
-          <button class="filter-btn" data-filter="systems" role="tab" aria-selected="false">Systems &amp; OS</button>
-          <button class="filter-btn" data-filter="ai" role="tab" aria-selected="false">AI &amp; MLOps</button>
-          <button class="filter-btn" data-filter="hackathons" role="tab" aria-selected="false">Hackathons</button>
+        <div class="project-filters" role="group" aria-label="Filter projects by discipline">
+          <button class="filter-btn active" data-filter="all" aria-pressed="true">All Projects (6)</button>
+          <button class="filter-btn" data-filter="systems" aria-pressed="false">Systems &amp; OS</button>
+          <button class="filter-btn" data-filter="ai" aria-pressed="false">AI &amp; MLOps</button>
+          <button class="filter-btn" data-filter="hackathons" aria-pressed="false">Hackathons</button>
         </div>
         <div class="project-sort-status" aria-live="polite">
           <span class="sort-pulse-dot"></span>
-          <span class="sort-text">Sorted by popularity &middot; click heart to vote</span>
+          <span class="sort-text">Likes are saved on this device</span>
         </div>
       </div>
 
@@ -395,7 +367,7 @@
           <span class="card-crosshair tl" aria-hidden="true">+</span>
           <div class="card-top-row">
             <div class="card-header-left">
-              <span class="card-tech-id">[01/06]</span>
+              <span class="card-tech-id"></span>
               <h3 class="card-title">AeroWSE</h3>
             </div>
             <button class="card-like-btn" data-pid="aerowse" aria-label="Like AeroWSE" type="button">
@@ -411,9 +383,8 @@
           <div class="project-footer-row">
             <div class="project-links">
               <a href="https://github.com/NikhByte/AeroWSE" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="AeroWSE on GitHub">&#8599; GitHub</a>
-              <a href="https://github.com/NikhByte/AeroWSE" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="AeroWSE demo">&#8599; Demo</a>
+              <button type="button" class="project-link case-study-trigger">Read case study</button>
             </div>
-            <span class="proj-card-hint">&#8594; explore dossier</span>
           </div>
         </article>
 
@@ -422,7 +393,7 @@
           <span class="card-crosshair tl" aria-hidden="true">+</span>
           <div class="card-top-row">
             <div class="card-header-left">
-              <span class="card-tech-id">[02/06]</span>
+              <span class="card-tech-id"></span>
               <h3 class="card-title">DebateOS</h3>
             </div>
             <button class="card-like-btn" data-pid="debateos" aria-label="Like DebateOS" type="button">
@@ -438,9 +409,8 @@
           <div class="project-footer-row">
             <div class="project-links">
               <a href="https://github.com/NikhByte/DebateOS" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="DebateOS on GitHub">&#8599; GitHub</a>
-              <a href="https://github.com/NikhByte/DebateOS" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="DebateOS demo">&#8599; Demo</a>
+              <button type="button" class="project-link case-study-trigger">Read case study</button>
             </div>
-            <span class="proj-card-hint">&#8594; explore dossier</span>
           </div>
         </article>
 
@@ -449,7 +419,7 @@
           <span class="card-crosshair tl" aria-hidden="true">+</span>
           <div class="card-top-row">
             <div class="card-header-left">
-              <span class="card-tech-id">[03/06]</span>
+              <span class="card-tech-id"></span>
               <h3 class="card-title">FATE</h3>
             </div>
             <button class="card-like-btn" data-pid="fate" aria-label="Like FATE" type="button">
@@ -465,9 +435,8 @@
           <div class="project-footer-row">
             <div class="project-links">
               <a href="https://github.com/NikhByte/FATE" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="FATE on GitHub">&#8599; GitHub</a>
-              <a href="https://github.com/NikhByte/FATE" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="FATE demo">&#8599; Demo</a>
+              <button type="button" class="project-link case-study-trigger">Read case study</button>
             </div>
-            <span class="proj-card-hint">&#8594; explore dossier</span>
           </div>
         </article>
 
@@ -476,7 +445,7 @@
           <span class="card-crosshair tl" aria-hidden="true">+</span>
           <div class="card-top-row">
             <div class="card-header-left">
-              <span class="card-tech-id">[04/06]</span>
+              <span class="card-tech-id"></span>
               <h3 class="card-title">Local AI Environment</h3>
             </div>
             <button class="card-like-btn" data-pid="localai" aria-label="Like Local AI Environment" type="button">
@@ -494,7 +463,6 @@
               <a href="https://github.com/NikhByte/LocalAI-Setup" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="Local AI on GitHub">&#8599; GitHub</a>
               <a href="https://github.com/NikhByte/LocalAI-Setup" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="Setup guide">&#8599; Setup Guide</a>
             </div>
-            <span class="proj-card-hint">&#8594; explore dossier</span>
           </div>
         </article>
 
@@ -503,7 +471,7 @@
           <span class="card-crosshair tl" aria-hidden="true">+</span>
           <div class="card-top-row">
             <div class="card-header-left">
-              <span class="card-tech-id">[05/06]</span>
+              <span class="card-tech-id"></span>
               <h3 class="card-title">SPARK</h3>
             </div>
             <button class="card-like-btn" data-pid="spark" aria-label="Like SPARK" type="button">
@@ -519,9 +487,8 @@
           <div class="project-footer-row">
             <div class="project-links">
               <a href="https://github.com/NikhByte/SPARK" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="SPARK on GitHub">&#8599; GitHub</a>
-              <a href="https://github.com/NikhByte/SPARK" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="SPARK demo">&#8599; Demo</a>
+              <button type="button" class="project-link case-study-trigger">Read case study</button>
             </div>
-            <span class="proj-card-hint">&#8594; explore dossier</span>
           </div>
         </article>
 
@@ -530,7 +497,7 @@
           <span class="card-crosshair tl" aria-hidden="true">+</span>
           <div class="card-top-row">
             <div class="card-header-left">
-              <span class="card-tech-id">[06/06]</span>
+              <span class="card-tech-id"></span>
               <h3 class="card-title">Credo</h3>
             </div>
             <button class="card-like-btn" data-pid="credo" aria-label="Like Credo" type="button">
@@ -546,9 +513,8 @@
           <div class="project-footer-row">
             <div class="project-links">
               <a href="https://github.com/NikhByte/Credo" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="Credo on GitHub">&#8599; GitHub</a>
-              <a href="https://github.com/NikhByte/Credo" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="Credo demo">&#8599; Demo</a>
+              <button type="button" class="project-link case-study-trigger">Read case study</button>
             </div>
-            <span class="proj-card-hint">&#8594; explore dossier</span>
           </div>
         </article>
 
@@ -557,7 +523,7 @@
 
     <!-- STACK SECTION -->
     <section id="stack" class="alt-bg" aria-label="Tech stack">
-      <p class="section-label"><span class="label-accent">&mdash;</span>04 // Technical Stack</p>
+      <h2 class="section-label"><span class="label-accent">&mdash;</span>Tools I use</h2>
       <div class="stack-groups reveal">
         <div class="stack-row reveal-child" data-domain="PY">
           <div class="stack-domain-col">
@@ -613,7 +579,7 @@
 
     <!-- EDUCATION SECTION -->
     <section id="education" aria-label="Education">
-      <p class="section-label"><span class="label-accent">&mdash;</span>05 // Academic Record</p>
+      <h2 class="section-label"><span class="label-accent">&mdash;</span>Education</h2>
       <div class="edu-grid">
         <div class="reveal">
           <div class="edu-card">
@@ -622,7 +588,7 @@
             <p class="edu-institution">Indian Institute of Technology Jodhpur</p>
             <p class="edu-years">2025 &ndash; 2029 (expected)</p>
             <div class="course-chips-container">
-              <span class="course-label">COURSEWORK TAKEN // SCHEDULED:</span>
+              <span class="course-label">Completed and planned coursework:</span>
               <div class="course-chips">
                 <span class="course-chip">Data Structures &amp; Algorithms</span>
                 <span class="course-chip">Discrete Mathematics</span>
@@ -638,7 +604,7 @@
         <div class="stat-shell reveal" style="transition-delay:80ms">
           <div class="stat-block">
             <div class="stat-block-header">
-              <span class="stat-sys-id">[ACADEMIC_METRICS]</span>
+              <span class="stat-sys-id">Academic record</span>
               <span class="stat-sys-status">OFFICIAL</span>
             </div>
             <div class="stat-row">
@@ -649,10 +615,7 @@
               <span class="stat-label">Class 12 Board</span>
               <span class="stat-value highlight-val">96.2% (CBSE)</span>
             </div>
-            <div class="stat-row">
-              <span class="stat-label">Student Roll</span>
-              <span class="stat-value">B25CS1044</span>
-            </div>
+
             <div class="stat-row">
               <span class="stat-label">Academic Status</span>
               <span class="stat-value">2nd Year &middot; 3rd Semester</span>
@@ -664,7 +627,7 @@
 
     <!-- WRITING SECTION -->
     <section id="writing" class="alt-bg" aria-label="Writing">
-      <p class="section-label"><span class="label-accent">&mdash;</span>06 // Engineering Writing</p>
+      <h2 class="section-label"><span class="label-accent">&mdash;</span>Writing</h2>
       <div class="writing-block reveal">
         <p class="writing-intro">Writing in progress. I document deeply &mdash; Obsidian-first knowledge graphs, published when the technical depth earns its place.</p>
         <div id="writing-posts">
@@ -677,7 +640,7 @@
                 <div class="writing-meta">
                   <span class="writing-status">DRAFT</span>
                   <span class="writing-date">3 MIN READ</span>
-                  <span class="writing-pill">SYSTEMS // ML</span>
+                  <span class="writing-pill">Systems & ML</span>
                 </div>
               </div>
               <span class="writing-expand-icon" aria-hidden="true">&#8250;</span>
@@ -707,7 +670,7 @@ XGBoost.predict(tensor) -> {COMPUTE: 0.88, MEM: 0.08, IO: 0.04} [1.4ms]</code></
                 <div class="writing-meta">
                   <span class="writing-status">DRAFT</span>
                   <span class="writing-date">4 MIN READ</span>
-                  <span class="writing-pill">MLOPS // DAEMONS</span>
+                  <span class="writing-pill">MLOps & background processes</span>
                 </div>
               </div>
               <span class="writing-expand-icon" aria-hidden="true">&#8250;</span>
@@ -739,7 +702,7 @@ RingBuffer::commit(record) {
                 <div class="writing-meta">
                   <span class="writing-status">DRAFT</span>
                   <span class="writing-date">2 MIN READ</span>
-                  <span class="writing-pill">HACKATHONS // SPEED</span>
+                  <span class="writing-pill">Hackathon notes</span>
                 </div>
               </div>
               <span class="writing-expand-icon" aria-hidden="true">&#8250;</span>
@@ -773,7 +736,7 @@ Hour 16-24: Edge cases, telemetry logging, end-to-end demo</code></pre>
         <!-- LEFT: Find me on & Opportunity Callout -->
         <div class="contact-col">
           <div class="contact-eyebrow">
-            <span class="contact-eyebrow-slash">// </span>07 &middot; TRANSMIT &amp; CONNECT
+            <span class="contact-eyebrow-slash"> </span>Get in touch
           </div>
           <h2 class="contact-heading">Find me online</h2>
 
@@ -834,7 +797,7 @@ Hour 16-24: Edge cases, telemetry logging, end-to-end demo</code></pre>
               <div class="opportunity-body">
                 <div class="opportunity-header-row">
                   <p class="opportunity-title">Open to Opportunities</p>
-                  <span class="opportunity-badge">SUMMER 2026</span>
+                  <span class="opportunity-badge">INTERNSHIPS</span>
                 </div>
                 <p class="opportunity-desc">
                   Actively looking for software engineering and systems / MLOps internships. I care deeply about hard engineering problems, reliable execution, and team craft.
@@ -851,13 +814,13 @@ Hour 16-24: Edge cases, telemetry logging, end-to-end demo</code></pre>
         <!-- RIGHT: Formspree AJAX Contact Form -->
         <div class="contact-col">
           <div class="contact-eyebrow">
-            <span class="contact-eyebrow-slash">// </span>DISPATCH MESSAGE
+            <span class="contact-eyebrow-slash"> </span>Message me
           </div>
           <h2 class="contact-heading">Send a direct message</h2>
 
           <div class="contact-form-shell">
             <div class="contact-form-card">
-              <form id="contact-form" novalidate>
+              <form id="contact-form">
                 <div class="form-row">
                   <div class="form-field">
                     <label class="form-label" for="cf-name">Name <span class="req">*</span></label>
@@ -880,10 +843,10 @@ Hour 16-24: Edge cases, telemetry logging, end-to-end demo</code></pre>
                 <div class="form-footer">
                   <button class="form-submit" type="submit" id="cf-submit">
                     <span class="form-submit-caret" aria-hidden="true">&gt;</span>
-                    <span id="cf-btn-label">Transmit Message</span>
+                    <span id="cf-btn-label">Send message</span>
                   </button>
                   <p class="form-caption">
-                    Dispatched to <span class="form-caption-email">nikhil010407@gmail.com</span>
+                    Delivered to <span class="form-caption-email">nikhil010407@gmail.com</span>
                   </p>
                 </div>
 
@@ -904,13 +867,13 @@ Hour 16-24: Edge cases, telemetry logging, end-to-end demo</code></pre>
       <div class="proj-overlay-title-group">
         <div class="proj-overlay-meta-tag">
           <span class="status-dot-live"></span>
-          <span>TECHNICAL SPECIFICATION DOSSIER</span>
+          <span>Project details</span>
         </div>
         <h2 class="proj-overlay-name" id="proj-overlay-title">Project Name</h2>
         <p class="proj-overlay-sub" id="proj-overlay-sub">Subtitle &middot; Context</p>
       </div>
       <button class="proj-overlay-close" id="proj-overlay-close" aria-label="Close project detail dossier">
-        <span>ESC / CLOSE</span>
+        <span>Close</span>
       </button>
     </div>
     <div class="proj-overlay-body" id="proj-overlay-body"></div>
@@ -922,10 +885,10 @@ Hour 16-24: Edge cases, telemetry logging, end-to-end demo</code></pre>
       <span id="footer-year-line">Nikhil &middot; IIT Jodhpur &middot; 2026</span>
     </div>
     <div class="footer-center">
-      <span class="footer-status-tag">SYSTEM ONLINE // LATENCY NORMAL</span>
+      <span class="footer-status-tag">Thanks for stopping by.</span>
     </div>
     <div class="footer-right">
-      <span>Built with zero external frameworks. Pure precision.</span>
+      <span>Built with HTML, CSS, and JavaScript.</span>
     </div>
   </footer>
 
