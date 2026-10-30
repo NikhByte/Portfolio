@@ -23,3 +23,20 @@ Personal portfolio and interactive project case-studies.
 python3 -m http.server 8080
 ```
 Open `http://localhost:8080` in your browser.
+
+## Browser regression checks
+
+The browser suite checks responsive overflow, dialog keyboard behavior, project filters,
+local likes, reduced motion, and contact-form validation/error/success states. Contact
+requests are intercepted; the suite does not send messages.
+
+```bash
+python3 -m venv /tmp/portfolio-test-env
+/tmp/portfolio-test-env/bin/pip install playwright
+/tmp/portfolio-test-env/bin/python -m playwright install chromium
+# With the local server running on port 8080:
+/tmp/portfolio-test-env/bin/python tests/browser_check.py
+```
+
+Set `PORTFOLIO_URL` to test another local server. Screenshots default to
+`/tmp/portfolio-screenshots`; override with `PORTFOLIO_SCREENSHOTS`.
