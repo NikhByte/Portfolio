@@ -1,7 +1,9 @@
 (function() {
   'use strict';
 
-  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var prefersReduced = motionPreference.matches;
+  motionPreference.addEventListener('change', function(e) { prefersReduced = e.matches; });
 
   // ── 1. SCROLL PROGRESS & FLOATING NAV SCROLL EFFECT ──────────────
   var nav = document.getElementById('main-nav');
@@ -27,24 +29,54 @@
     var navLinks = document.querySelectorAll('.nav-links a');
     if (!sections.length || !navLinks.length) return;
 
-    var spyObserver = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
-        if (entry.isIntersecting) {
-          var id = entry.target.id;
-          navLinks.forEach(function(link) {
-            var href = link.getAttribute('href');
-            if (href === '#' + id) {
-              link.classList.add('active');
-            } else {
-              link.classList.remove('active');
-            }
-          });
-        }
+    var spyFrame;
+    function updateSpy() {
+      spyFrame = null;
+      var activeId = '';
+      sections.forEach(function(section) {
+        if (section.getBoundingClientRect().top <= window.innerHeight * 0.3) activeId = section.id;
       });
-    }, { rootMargin: '-25% 0px -65% 0px', threshold: 0 });
-
-    sections.forEach(function(sec) { spyObserver.observe(sec); });
+      navLinks.forEach(function(link) {
+        var active = link.getAttribute('href') === '#' + activeId;
+        link.classList.toggle('active', active);
+        if (active) link.setAttribute('aria-current', 'location');
+        else link.removeAttribute('aria-current');
+      });
+    }
+    function scheduleSpy() {
+      if (!spyFrame) spyFrame = requestAnimationFrame(updateSpy);
+    }
+    window.addEventListener('scroll', scheduleSpy, { passive: true });
+    window.addEventListener('resize', scheduleSpy, { passive: true });
+    updateSpy();
   })();
+
+  function setDialogBackground(dialog, locked) {
+    Array.from(document.body.children).forEach(function(el) {
+      if (el === dialog || el.tagName === 'SCRIPT') return;
+      if (locked) {
+        if (!el.inert) { el.inert = true; el.dataset.dialogInert = 'true'; }
+      } else if (el.dataset.dialogInert) {
+        el.inert = false;
+        delete el.dataset.dialogInert;
+      }
+    });
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key !== 'Tab') return;
+    var dialog = document.querySelector('[role="dialog"].open');
+    if (!dialog) return;
+    var items = Array.from(dialog.querySelectorAll('a[href], button:not([disabled]), input, textarea, [tabindex="0"]'))
+      .filter(function(el) { return el.getClientRects().length > 0; });
+    var first = items[0], last = items[items.length - 1];
+    if (!first) return;
+    if (e.shiftKey && (document.activeElement === first || !dialog.contains(document.activeElement))) {
+      e.preventDefault(); last.focus();
+    } else if (!e.shiftKey && (document.activeElement === last || !dialog.contains(document.activeElement))) {
+      e.preventDefault(); first.focus();
+    }
+  });
 
   // ── 3. MOBILE FULLSCREEN MENU ───────────────────────────────────
   (function() {
@@ -58,6 +90,8 @@
       mobileMenu.classList.add('open');
       mobileMenu.setAttribute('aria-hidden', 'false');
       toggleBtn.setAttribute('aria-expanded', 'true');
+      setDialogBackground(mobileMenu, true);
+      if (closeBtn) closeBtn.focus();
       document.body.style.overflow = 'hidden';
     }
 
@@ -65,6 +99,8 @@
       mobileMenu.classList.remove('open');
       mobileMenu.setAttribute('aria-hidden', 'true');
       toggleBtn.setAttribute('aria-expanded', 'false');
+      setDialogBackground(mobileMenu, false);
+      toggleBtn.focus();
       document.body.style.overflow = '';
     }
 
@@ -76,7 +112,11 @@
     if (closeBtn) closeBtn.addEventListener('click', closeMobileMenu);
 
     mobileLinks.forEach(function(link) {
-      link.addEventListener('click', closeMobileMenu);
+      link.addEventListener('click', function() {
+        closeMobileMenu();
+        var target = document.querySelector(link.getAttribute('href'));
+        if (target) { target.setAttribute('tabindex', '-1'); target.focus({ preventScroll: true }); }
+      });
     });
 
     document.addEventListener('keydown', function(e) {
@@ -118,7 +158,7 @@
   (function() {
     var el = document.getElementById('hero-thought');
     if (!el) return;
-    var text = '“The best way to predict the future is to compile it.”';
+    var text = '';
     if (prefersReduced) {
       el.textContent = text;
     } else {
@@ -145,11 +185,10 @@
       }
     }, { passive: true });
 
-    if (prefersReduced) return;
     var canvas = document.getElementById('particle-canvas');
     if (!canvas) return;
     var ctx = canvas.getContext('2d');
-    var W, H, nodes;
+    var W, H, nodes, animationFrame, resizeFrame;
     var mouse = { x: -9999, y: -9999 };
     var CONNECT_DIST = 145;
     var REPEL_DIST = 90;
@@ -157,8 +196,17 @@
     var MAX_SPEED = 0.32;
 
     function resize() {
-      W = canvas.width = window.innerWidth;
-      H = canvas.height = window.innerHeight;
+      var oldW = W, oldH = H;
+      W = window.innerWidth;
+      H = window.innerHeight;
+      var scale = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(W * scale);
+      canvas.height = Math.round(H * scale);
+      ctx.setTransform(scale, 0, 0, scale, 0, 0);
+      if (nodes && oldW && oldH) nodes.forEach(function(n) {
+        n.x *= W / oldW;
+        n.y *= H / oldH;
+      });
     }
 
     function createNode() {
@@ -179,6 +227,7 @@
     }
 
     function tick() {
+      if (document.hidden || prefersReduced) { animationFrame = null; return; }
       ctx.clearRect(0, 0, W, H);
 
       for (var i = 0; i < nodes.length; i++) {
@@ -233,7 +282,7 @@
         ctx.fill();
       }
 
-      requestAnimationFrame(tick);
+      animationFrame = requestAnimationFrame(tick);
     }
 
     window.addEventListener('mousemove', function(e) {
@@ -248,17 +297,28 @@
 
     var prevWidth = window.innerWidth;
     window.addEventListener('resize', function() {
-      var currentWidth = window.innerWidth;
-      resize();
-      if (currentWidth !== prevWidth) {
-        initNodes();
-        prevWidth = currentWidth;
-      }
+      if (resizeFrame) return;
+      resizeFrame = requestAnimationFrame(function() {
+        resizeFrame = null;
+        var currentWidth = window.innerWidth;
+        resize();
+        if (currentWidth !== prevWidth) {
+          initNodes();
+          prevWidth = currentWidth;
+        }
+      });
     }, { passive: true });
 
     resize();
     initNodes();
-    tick();
+    function updateAnimation() {
+      cancelAnimationFrame(animationFrame);
+      animationFrame = null;
+      if (!document.hidden && !prefersReduced) animationFrame = requestAnimationFrame(tick);
+    }
+    document.addEventListener('visibilitychange', updateAnimation);
+    motionPreference.addEventListener('change', updateAnimation);
+    updateAnimation();
   })();
 
   // ── 7. DYNAMIC FOOTER YEAR ──────────────────────────────────────
@@ -293,6 +353,7 @@
       var postId = btn.getAttribute('data-post');
       var personal = getLikes();
       var liked = !!personal[postId];
+      btn.setAttribute('aria-pressed', String(liked));
       var countEl = btn.querySelector('.like-count');
       var iconEl = btn.querySelector('.like-icon');
 
@@ -309,6 +370,7 @@
         saveLikes(p);
 
         var nowLiked = !!p[postId];
+        btn.setAttribute('aria-pressed', String(nowLiked));
         if (countEl) countEl.textContent = getDisplayCount(postId, nowLiked);
         btn.classList.toggle('liked', nowLiked);
         if (iconEl) iconEl.textContent = nowLiked ? '♥' : '♡';
@@ -375,7 +437,6 @@
       ],
       links: [
         { label: '↗ GitHub Repo', href: 'https://github.com/NikhByte/CogniOS' },
-        { label: '↗ Live Demo', href: 'https://github.com/NikhByte/CogniOS' }
       ],
     },
 
@@ -405,7 +466,6 @@
       ],
       links: [
         { label: '↗ GitHub Repo', href: 'https://github.com/NikhByte/FATE' },
-        { label: '↗ Live Demo', href: 'https://github.com/NikhByte/FATE' }
       ],
     },
 
@@ -433,7 +493,6 @@
       ],
       links: [
         { label: '↗ GitHub Repo', href: 'https://github.com/NikhByte/SPARK' },
-        { label: '↗ Live Demo', href: 'https://github.com/NikhByte/SPARK' }
       ],
     },
 
@@ -461,7 +520,6 @@
       ],
       links: [
         { label: '↗ GitHub Repo', href: 'https://github.com/NikhByte/DebateOS' },
-        { label: '↗ Live Demo', href: 'https://github.com/NikhByte/DebateOS' }
       ],
     },
 
@@ -489,7 +547,6 @@
       ],
       links: [
         { label: '↗ GitHub Repo', href: 'https://github.com/NikhByte/AeroWSE' },
-        { label: '↗ Live Demo', href: 'https://github.com/NikhByte/AeroWSE' }
       ],
     },
 
@@ -516,7 +573,6 @@
       ],
       links: [
         { label: '↗ GitHub Repo', href: 'https://github.com/NikhByte/Credo' },
-        { label: '↗ Live Demo', href: 'https://github.com/NikhByte/Credo' }
       ],
     },
 
@@ -584,11 +640,21 @@
     }).join('') + '</div>';
   }
 
+  var dialogTriggers = document.querySelectorAll('.case-study-trigger, .featured-project, .project-card');
+  dialogTriggers.forEach(function(trigger) {
+    trigger.setAttribute('aria-haspopup', 'dialog');
+    trigger.setAttribute('aria-controls', 'proj-overlay');
+    trigger.setAttribute('aria-expanded', 'false');
+  });
+
   function openOverlay(projectId) {
     var p = PROJECTS[projectId];
     if (!p || !overlay) return;
 
     lastFocus = document.activeElement;
+    dialogTriggers.forEach(function(trigger) {
+      trigger.setAttribute('aria-expanded', String(trigger === lastFocus || trigger.contains(lastFocus)));
+    });
     if (overlayTitle) overlayTitle.textContent = p.name;
     if (overlaySub) overlaySub.textContent = p.sub;
 
@@ -596,15 +662,15 @@
       overlayBody.innerHTML =
         '<div>' +
           '<div class="proj-section">' +
-            '<p class="proj-section-label">Executive Overview</p>' +
+            '<p class="proj-section-label">The short version</p>' +
             '<p class="proj-overview">' + p.overview + '</p>' +
           '</div>' +
           '<div class="proj-section">' +
-            '<p class="proj-section-label">Engineering Timeline & Milestones</p>' +
+            '<p class="proj-section-label">Build notes</p>' +
             renderTimeline(p.timeline) +
           '</div>' +
           '<div class="proj-section">' +
-            '<p class="proj-section-label">Project Resources</p>' +
+            '<p class="proj-section-label">Links</p>' +
             '<div class="proj-link-row">' + p.links.map(function(l) {
               return '<a href="' + l.href + '" class="proj-ext-link" target="_blank" rel="noopener noreferrer">' + l.label + '</a>';
             }).join('') + '</div>' +
@@ -612,11 +678,11 @@
         '</div>' +
         '<div>' +
           '<div class="proj-section">' +
-            '<p class="proj-section-label">Architecture & Stack</p>' +
+            '<p class="proj-section-label">Tools and structure</p>' +
             renderStack(p.stack) +
           '</div>' +
           '<div class="proj-section">' +
-            '<p class="proj-section-label">Key Engineering Hurdles & Solutions</p>' +
+            '<p class="proj-section-label">Problems I worked through</p>' +
             renderHurdles(p.hurdles) +
           '</div>' +
         '</div>';
@@ -624,6 +690,7 @@
 
     overlay.classList.add('open');
     overlay.setAttribute('aria-hidden', 'false');
+    setDialogBackground(overlay, true);
     document.body.style.overflow = 'hidden';
     if (closeBtn) closeBtn.focus();
   }
@@ -631,7 +698,9 @@
   function closeOverlay() {
     if (!overlay) return;
     overlay.classList.remove('open');
+    dialogTriggers.forEach(function(trigger) { trigger.setAttribute('aria-expanded', 'false'); });
     overlay.setAttribute('aria-hidden', 'true');
+    setDialogBackground(overlay, false);
     document.body.style.overflow = '';
     if (lastFocus) lastFocus.focus();
   }
@@ -654,6 +723,12 @@
   document.querySelectorAll('.project-link, .project-links a, .card-like-btn').forEach(function(el) {
     el.addEventListener('click', function(e) {
       e.stopPropagation();
+    });
+  });
+
+  document.querySelectorAll('.case-study-trigger').forEach(function(button) {
+    button.addEventListener('click', function() {
+      openOverlay(button.closest('[data-pid]').getAttribute('data-pid'));
     });
   });
 
@@ -727,6 +802,7 @@
       var countEl = btn.querySelector('.card-like-count');
       var iconEl  = btn.querySelector('.card-like-icon');
       var liked = !!getLikes()[pid];
+      btn.setAttribute('aria-pressed', String(liked));
 
       if (countEl) countEl.textContent = getCount(pid);
       if (liked) {
@@ -741,6 +817,7 @@
         saveLikes(p);
 
         var nowLiked = !!p[pid];
+        btn.setAttribute('aria-pressed', String(nowLiked));
         if (countEl) countEl.textContent = getCount(pid);
         btn.classList.toggle('liked', nowLiked);
         if (iconEl) iconEl.textContent = nowLiked ? '♥' : '♡';
@@ -748,9 +825,7 @@
         btn.style.transform = 'scale(1.22) rotate(-4deg)';
         setTimeout(function() { btn.style.transform = ''; }, 160);
 
-        if (btn.closest('#project-grid')) {
-          setTimeout(sortGrid, 350);
-        }
+
       });
     });
 
@@ -767,10 +842,10 @@
       btn.addEventListener('click', function() {
         filterBtns.forEach(function(b) {
           b.classList.remove('active');
-          b.setAttribute('aria-selected', 'false');
+          b.setAttribute('aria-pressed', 'false');
         });
         btn.classList.add('active');
-        btn.setAttribute('aria-selected', 'true');
+        btn.setAttribute('aria-pressed', 'true');
 
         var filter = btn.getAttribute('data-filter');
 
@@ -790,55 +865,40 @@
 
   // ── 12. 3D TILT & SPOTLIGHT RADIAL GLOW ──────────────────────────
   (function() {
-    var spotlightCards = document.querySelectorAll('.project-card, .featured-project, .link-card');
-    spotlightCards.forEach(function(card) {
+    if (prefersReduced || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    document.querySelectorAll('.project-card, .featured-project, .link-card').forEach(function(card) {
+      var frame, pointerX, pointerY;
       card.addEventListener('mousemove', function(e) {
-        var rect = card.getBoundingClientRect();
-        var x = ((e.clientX - rect.left) / rect.width  * 100).toFixed(1) + '%';
-        var y = ((e.clientY - rect.top)  / rect.height * 100).toFixed(1) + '%';
-        card.style.setProperty('--mx', x);
-        card.style.setProperty('--my', y);
+        pointerX = e.clientX;
+        pointerY = e.clientY;
+        if (prefersReduced || frame) return;
+        frame = requestAnimationFrame(function() {
+          frame = null;
+          if (prefersReduced) return;
+          var rect = card.getBoundingClientRect();
+          var x = (pointerX - rect.left) / rect.width;
+          var y = (pointerY - rect.top) / rect.height;
+          card.style.setProperty('--mx', (x * 100).toFixed(1) + '%');
+          card.style.setProperty('--my', (y * 100).toFixed(1) + '%');
+          if (card.classList.contains('project-card') || card.classList.contains('featured-project')) {
+            var amount = card.classList.contains('featured-project') ? 1.8 : 3.5;
+            card.style.transform = 'perspective(1200px) rotateY(' + ((x * 2 - 1) * amount) + 'deg) rotateX(' + (-(y * 2 - 1) * amount) + 'deg)';
+          }
+        });
       }, { passive: true });
+      function reset() { cancelAnimationFrame(frame); frame = null; card.style.transform = ''; }
+      card.addEventListener('mouseleave', reset);
+      motionPreference.addEventListener('change', reset);
     });
-
-    if (prefersReduced) return;
-
-    // 3D Perspective Tilt on project cards
-    document.querySelectorAll('.project-card').forEach(function(card) {
-      card.addEventListener('mousemove', function(e) {
-        var rect = card.getBoundingClientRect();
-        var cx   = rect.left + rect.width  / 2;
-        var cy   = rect.top  + rect.height / 2;
-        var dx   = (e.clientX - cx) / (rect.width  / 2);
-        var dy   = (e.clientY - cy) / (rect.height / 2);
-        card.style.transform = 'perspective(800px) rotateY(' + (dx * 3.5) + 'deg) rotateX(' + (-dy * 3.5) + 'deg) scale(1.012)';
-      }, { passive: true });
-
-      card.addEventListener('mouseleave', function() {
-        card.style.transform = '';
-      });
-    });
-
-    if (featured) {
-      featured.addEventListener('mousemove', function(e) {
-        var rect = featured.getBoundingClientRect();
-        var cx   = rect.left + rect.width  / 2;
-        var cy   = rect.top  + rect.height / 2;
-        var dx   = (e.clientX - cx) / (rect.width  / 2);
-        var dy   = (e.clientY - cy) / (rect.height / 2);
-        featured.style.transform = 'perspective(1200px) rotateY(' + (dx * 1.8) + 'deg) rotateX(' + (-dy * 1.8) + 'deg)';
-      }, { passive: true });
-
-      featured.addEventListener('mouseleave', function() {
-        featured.style.transform = '';
-      });
-    }
   })();
 
   // ── 13. NAV TEXT SCRAMBLE MATRIX EFFECT ──────────────────────────
   (function() {
     var CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!#%&*+/=';
+    var scrambleFrames = new WeakMap();
     function scramble(el) {
+      if (prefersReduced) return;
+      cancelAnimationFrame(scrambleFrames.get(el));
       var original = el.dataset.text || el.textContent;
       el.dataset.text = original;
       var steps = original.length * 2;
@@ -846,6 +906,7 @@
       var raf;
 
       function tick() {
+        if (prefersReduced) { el.textContent = original; return; }
         el.textContent = original.split('').map(function(ch, i) {
           if (ch === ' ') return ' ';
           if (i < frame / 2) return original[i];
@@ -854,6 +915,7 @@
         frame++;
         if (frame <= steps) {
           raf = requestAnimationFrame(tick);
+          scrambleFrames.set(el, raf);
         } else {
           el.textContent = original;
         }
@@ -904,17 +966,17 @@
       if (btn) btn.disabled = (state === 'loading');
       if (status) status.className = 'form-status ' + state;
       if (state === 'loading') {
-        if (btnLbl) btnLbl.textContent = 'Transmitting...';
+        if (btnLbl) btnLbl.textContent = 'Sending…';
         if (status) status.textContent = '';
       } else if (state === 'success') {
-        if (btnLbl) btnLbl.textContent = 'Transmit Message';
-        if (status) status.textContent = '// message_sent → stand by for direct response';
+        if (btnLbl) btnLbl.textContent = 'Send message';
+        if (status) status.textContent = 'Message sent. Thanks for getting in touch.';
         form.reset();
       } else if (state === 'error') {
-        if (btnLbl) btnLbl.textContent = 'Transmit Message';
-        if (status) status.textContent = '// delivery_failed → direct contact: nikhil010407@gmail.com';
+        if (btnLbl) btnLbl.textContent = 'Send message';
+        if (status) status.textContent = 'Message could not be sent. Please try again or email nikhil010407@gmail.com.';
       } else {
-        if (btnLbl) btnLbl.textContent = 'Transmit Message';
+        if (btnLbl) btnLbl.textContent = 'Send message';
         if (status) status.textContent = '';
       }
     }
@@ -933,7 +995,7 @@
       if (!name || !email || !msg) {
         if (status) {
           status.className = 'form-status error';
-          status.textContent = '// validation_failed → all fields required';
+          status.textContent = 'Please complete all fields.';
         }
         if (!name && nameInput) nameInput.focus();
         else if (!email && emailInput) emailInput.focus();
@@ -941,6 +1003,7 @@
         return;
       }
 
+      if (!form.reportValidity() || btn.disabled) return;
       setState('loading');
 
       fetch(ENDPOINT, {
