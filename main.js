@@ -631,7 +631,7 @@
     }).join('') + '</div>';
   }
 
-  var dialogTriggers = document.querySelectorAll('.case-study-trigger, .featured-project, .project-card');
+  var dialogTriggers = document.querySelectorAll('.case-study-trigger');
   dialogTriggers.forEach(function(trigger) {
     trigger.setAttribute('aria-haspopup', 'dialog');
     trigger.setAttribute('aria-controls', 'proj-overlay');
@@ -720,41 +720,6 @@
   document.querySelectorAll('.case-study-trigger').forEach(function(button) {
     button.addEventListener('click', function() {
       openOverlay(button.closest('[data-pid]').getAttribute('data-pid'));
-    });
-  });
-
-  // Featured project click
-  var featured = document.querySelector('.featured-project');
-  if (featured) {
-    featured.addEventListener('click', function(e) {
-      if (e.target.closest('.card-like-btn') || e.target.closest('.project-link') || e.target.closest('a')) return;
-      openOverlay('cognios');
-    });
-    featured.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter' || e.key === ' ') {
-        if (e.target.closest('.card-like-btn') || e.target.closest('.project-link') || e.target.closest('a')) return;
-        e.preventDefault();
-        openOverlay('cognios');
-      }
-    });
-  }
-
-  // Project cards click
-  document.querySelectorAll('.project-card').forEach(function(card) {
-    var pid = card.getAttribute('data-pid');
-    if (!pid) return;
-
-    card.addEventListener('click', function(e) {
-      if (e.target.closest('.card-like-btn') || e.target.closest('.project-link') || e.target.closest('a')) return;
-      openOverlay(pid);
-    });
-
-    card.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter' || e.key === ' ') {
-        if (e.target.closest('.card-like-btn') || e.target.closest('.project-link') || e.target.closest('a')) return;
-        e.preventDefault();
-        openOverlay(pid);
-      }
     });
   });
 

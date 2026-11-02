@@ -1177,7 +1177,6 @@ section.alt-bg > * {
 }
 
 .featured-project:hover::before { opacity: 1; }
-.featured-project > * { position: relative; z-index: 1; }
 .featured-project:hover { background: var(--surface-hover); }
 
 .featured-status-row {
@@ -1282,6 +1281,13 @@ section.alt-bg > * {
 
 .project-link:hover {
   color: var(--accent);
+}
+
+.case-study-trigger::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
 }
 
 .proj-card-hint {
@@ -1402,7 +1408,6 @@ section.alt-bg > * {
 }
 
 .project-card:hover::before { opacity: 1; }
-.project-card > * { position: relative; z-index: 1; }
 .project-card:hover { background: var(--surface-hover); }
 
 .project-card.filter-hidden {
@@ -1455,6 +1460,12 @@ section.alt-bg > * {
   flex-shrink: 0;
   box-shadow: inset 0 1px 0 0 var(--white-04);
   transition: border-color 150ms var(--ease-spring), color 150ms var(--ease-spring), background 150ms var(--ease-spring), transform 150ms var(--ease-spring);
+  position: relative;
+  z-index: 2;
+}
+
+.project-links a {
+  position: relative;
   z-index: 2;
 }
 
