@@ -858,15 +858,30 @@
   // ── 13. NAV TEXT SCRAMBLE MATRIX EFFECT ──────────────────────────
   (function() {
     var CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!#%&*+/=';
-    var scrambleFrames = new WeakMap();
+    var scrambleRegistry = new WeakMap();
+
     function scramble(el) {
       if (prefersReduced) return;
-      cancelAnimationFrame(scrambleFrames.get(el));
-      var original = el.dataset.text || el.textContent;
-      el.dataset.text = original;
+      if (!el.dataset.origText) {
+        el.dataset.origText = el.textContent;
+      }
+      var entry = scrambleRegistry.get(el);
+      if (!entry) {
+        entry = {
+          originalText: el.dataset.origText || el.textContent,
+          rafId: null
+        };
+        scrambleRegistry.set(el, entry);
+      }
+
+      if (entry.rafId !== null) {
+        cancelAnimationFrame(entry.rafId);
+        entry.rafId = null;
+      }
+
+      var original = entry.originalText;
       var steps = original.length * 2;
       var frame = 0;
-      var raf;
 
       function tick() {
         if (prefersReduced) { el.textContent = original; return; }
@@ -877,13 +892,12 @@
         }).join('');
         frame++;
         if (frame <= steps) {
-          raf = requestAnimationFrame(tick);
-          scrambleFrames.set(el, raf);
+          entry.rafId = requestAnimationFrame(tick);
         } else {
           el.textContent = original;
+          entry.rafId = null;
         }
       }
-      cancelAnimationFrame(raf);
       tick();
     }
 
@@ -1033,3 +1047,4 @@
   })();
 
 })();
+
