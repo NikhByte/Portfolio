@@ -202,6 +202,8 @@
       var scale = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = Math.round(W * scale);
       canvas.height = Math.round(H * scale);
+      canvas.style.width = W + 'px';
+      canvas.style.height = H + 'px';
       ctx.setTransform(scale, 0, 0, scale, 0, 0);
       if (nodes && oldW && oldH) nodes.forEach(function(n) {
         n.x *= W / oldW;
