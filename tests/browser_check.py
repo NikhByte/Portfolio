@@ -29,9 +29,18 @@ with sync_playwright() as p:
     expect(page.locator('#nav-toggle')).to_be_focused()
     assert not page.locator('main').evaluate('(el) => el.inert')
     page.set_viewport_size({'width':1440,'height':900})
+    assert page.locator('.project-card[role], .project-card[tabindex], .featured-project[tabindex]').count() == 0
+    assert page.locator('.case-study-trigger[aria-haspopup="dialog"][aria-controls="proj-overlay"]').count() == 6
+    assert page.locator('#stack h3.stack-domain-label').count() == 5
+    assert page.locator('#work h3.work-role').count() == 4
+    assert page.locator('#education h3.edu-degree').count() == 1
+    assert page.locator('#writing h3 .writing-post-header').count() == 3
+    assert page.locator('.writing-post-body[role="region"][aria-labelledby]').count() == 3
     trigger = page.locator('.case-study-trigger').first
+    expect(page.locator('#proj-overlay')).to_have_attribute('inert', '')
     trigger.click()
     expect(page.locator('#proj-overlay')).to_have_attribute('aria-hidden','false')
+    assert not page.locator('#proj-overlay').evaluate('(el) => el.inert')
     expect(page.locator('#proj-overlay-close')).to_be_focused()
     page.keyboard.press('Shift+Tab')
     expect(page.locator('#proj-overlay a').last).to_be_focused()
@@ -40,8 +49,10 @@ with sync_playwright() as p:
     page.screenshot(path=str(OUTPUT / 'case-study.png'))
     page.keyboard.press('Escape')
     expect(trigger).to_be_focused()
+    assert page.locator('#proj-overlay').evaluate('(el) => el.inert')
     page.locator('[data-filter="hackathons"]').click()
     expect(page.locator('.project-card:visible')).to_have_count(4)
+    expect(page.locator('#project-filter-status')).to_have_text('Showing 4 projects for Hackathons.')
     page.locator('[data-filter="all"]').click()
     expect(page.locator('.project-card:visible')).to_have_count(6)
     like = page.locator('.card-like-btn[data-pid="fate"]')
@@ -64,7 +75,10 @@ with sync_playwright() as p:
     page.locator('#cf-message').fill('Local automated test; never sent.')
     page.locator('#cf-submit').click()
     assert not calls
+    expect(page.locator('#cf-email')).to_have_attribute('aria-invalid', 'true')
+    expect(page.locator('#cf-email-error')).to_have_text('Enter a valid email address.')
     page.locator('#cf-email').fill('test@example.com')
+    expect(page.locator('#cf-email')).to_have_attribute('aria-invalid', 'false')
     page.locator('#cf-submit').click()
     expect(page.locator('#cf-status')).to_contain_text('could not be sent')
     expect(page.locator('#cf-message')).to_have_value('Local automated test; never sent.')
@@ -75,14 +89,19 @@ with sync_playwright() as p:
     expect(page.locator('#cf-message')).to_have_value('')
     assert page.locator('#particle-canvas').evaluate('(el) => getComputedStyle(el).display') == 'none'
     page.set_viewport_size({'width':320,'height':740})
-    for selector in ['#nav-toggle', '.filter-btn', '.card-like-btn', '.like-btn']:
-        for control in page.locator(selector).all():
-            box = control.bounding_box()
-            if box:
-                assert box['width'] >= 44 and box['height'] >= 44, (selector, box)
+    assert page.locator('#cf-name').evaluate('(el) => parseFloat(getComputedStyle(el).fontSize) >= 16')
+    page.locator('#contact').screenshot(path=str(OUTPUT / 'contact-320.png'))
+    for control in page.locator('a[href]:visible, button:visible').all():
+        box = control.bounding_box()
+        if box:
+            assert box['width'] >= 44 and box['height'] >= 44, (control.get_attribute('class'), control.inner_text(), box)
     panel = page.locator('.writing-post-body').first
+    expect(panel).to_be_hidden()
     assert panel.evaluate('(el) => getComputedStyle(el).visibility') == 'hidden'
     page.locator('.writing-post-header').first.click()
+    expect(panel).to_be_visible()
+    expect(page.locator('.writing-post-header').first).to_have_attribute('aria-expanded', 'true')
+    page.locator('#writing').screenshot(path=str(OUTPUT / 'writing-expanded-320.png'))
     assert panel.evaluate('(el) => el.scrollHeight <= el.clientHeight + 1')
     writing_like = page.locator('.writing-post .like-btn').first
     expect(writing_like).to_have_attribute('aria-pressed', 'false')
