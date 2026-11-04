@@ -215,7 +215,7 @@
       <div class="work-list">
         <div class="work-entry reveal">
           <div class="work-meta-col">
-            <p class="work-role">DevLUP Labs &middot; Core Builder</p>
+            <h3 class="work-role">DevLUP Labs &middot; Core Builder</h3>
             <p class="work-date">2025 &ndash; present</p>
             <span class="work-badge">IIT JODHPUR</span>
           </div>
@@ -229,7 +229,7 @@
 
         <div class="work-entry reveal">
           <div class="work-meta-col">
-            <p class="work-role">Insomniac Hackathon &middot; Runner-Up</p>
+            <h3 class="work-role">Insomniac Hackathon &middot; Runner-Up</h3>
             <p class="work-date">DevLUP Labs &middot; 2025</p>
             <span class="work-badge award">RUNNER-UP</span>
           </div>
@@ -243,7 +243,7 @@
 
         <div class="work-entry reveal">
           <div class="work-meta-col">
-            <p class="work-role">Bootup Hackathon &middot; Top 5 Finalist</p>
+            <h3 class="work-role">Bootup Hackathon &middot; Top 5 Finalist</h3>
             <p class="work-date">DevLUP Labs &middot; 2024</p>
             <span class="work-badge">TOP 5</span>
           </div>
@@ -257,7 +257,7 @@
 
         <div class="work-entry reveal">
           <div class="work-meta-col">
-            <p class="work-role">Cerebras Hackathon &middot; Builder</p>
+            <h3 class="work-role">Cerebras Hackathon &middot; Builder</h3>
             <p class="work-date">2024</p>
             <span class="work-badge">Two projects in 24 hours</span>
           </div>
@@ -280,7 +280,7 @@
 
       <!-- Featured Flagship: CogniOS -->
       <div class="featured-shell reveal">
-        <div class="featured-project" role="article" data-pid="cognios">
+        <article class="featured-project" data-pid="cognios">
           <!-- Crosshair corner markers -->
           <span class="card-crosshair tl" aria-hidden="true">+</span>
           <span class="card-crosshair tr" aria-hidden="true">+</span>
@@ -342,7 +342,7 @@
               <button type="button" class="project-link case-study-trigger">Read case study</button>
             </div>
           </div>
-        </div>
+        </article>
       </div>
 
       <!-- FILTER & SORT CONTROLS -->
@@ -353,6 +353,7 @@
           <button class="filter-btn" data-filter="ai" aria-pressed="false">AI &amp; MLOps</button>
           <button class="filter-btn" data-filter="hackathons" aria-pressed="false">Hackathons</button>
         </div>
+        <p class="sr-only" id="project-filter-status" aria-live="polite" aria-atomic="true">Showing 6 projects.</p>
         <div class="project-sort-status" aria-live="polite">
           <span class="sort-pulse-dot"></span>
           <span class="sort-text">Likes are saved on this device</span>
@@ -462,7 +463,6 @@
             <div class="project-links">
               <a href="https://github.com/NikhByte/LocalAI-Setup" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="Local AI on GitHub">&#8599; GitHub</a>
               <a href="https://github.com/NikhByte/LocalAI-Setup" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="Setup guide">&#8599; Setup Guide</a>
-              <button type="button" class="project-link case-study-trigger">Read case study</button>
             </div>
           </div>
         </article>
@@ -529,51 +529,51 @@
         <div class="stack-row reveal-child" data-domain="PY">
           <div class="stack-domain-col">
             <span class="stack-domain">PY</span>
-            <span class="stack-domain-label">Languages</span>
+            <h3 class="stack-domain-label">Languages</h3>
           </div>
-          <div class="stack-tags">
-            <span class="tag">Python</span><span class="tag">C</span><span class="tag">C++</span><span class="tag">HTML5</span><span class="tag">CSS3</span><span class="tag">JavaScript</span><span class="tag">SQL</span>
-          </div>
+          <ul class="stack-tags">
+            <li class="tag">Python</li><li class="tag">C</li><li class="tag">C++</li><li class="tag">HTML5</li><li class="tag">CSS3</li><li class="tag">JavaScript</li><li class="tag">SQL</li>
+          </ul>
         </div>
 
         <div class="stack-row reveal-child" data-domain="ML">
           <div class="stack-domain-col">
             <span class="stack-domain">ML</span>
-            <span class="stack-domain-label">ML &amp; Agents</span>
+            <h3 class="stack-domain-label">ML &amp; Agents</h3>
           </div>
-          <div class="stack-tags">
-            <span class="tag">XGBoost</span><span class="tag">Isolation Forest</span><span class="tag">scikit-learn</span><span class="tag">MLflow</span><span class="tag">LangGraph</span><span class="tag">Ollama</span><span class="tag">CUDA</span>
-          </div>
+          <ul class="stack-tags">
+            <li class="tag">XGBoost</li><li class="tag">Isolation Forest</li><li class="tag">scikit-learn</li><li class="tag">MLflow</li><li class="tag">LangGraph</li><li class="tag">Ollama</li><li class="tag">CUDA</li>
+          </ul>
         </div>
 
         <div class="stack-row reveal-child" data-domain="SYS">
           <div class="stack-domain-col">
             <span class="stack-domain">SYS</span>
-            <span class="stack-domain-label">Systems &amp; OS</span>
+            <h3 class="stack-domain-label">Systems &amp; OS</h3>
           </div>
-          <div class="stack-tags">
-            <span class="tag">Linux</span><span class="tag">/proc Telemetry</span><span class="tag">Docker</span><span class="tag">psutil</span><span class="tag">SQLite WAL</span><span class="tag">Ubuntu Server</span><span class="tag">Cloudflare Tunnel</span>
-          </div>
+          <ul class="stack-tags">
+            <li class="tag">Linux</li><li class="tag">/proc Telemetry</li><li class="tag">Docker</li><li class="tag">psutil</li><li class="tag">SQLite WAL</li><li class="tag">Ubuntu Server</li><li class="tag">Cloudflare Tunnel</li>
+          </ul>
         </div>
 
         <div class="stack-row reveal-child" data-domain="UI">
           <div class="stack-domain-col">
             <span class="stack-domain">UI</span>
-            <span class="stack-domain-label">Frameworks</span>
+            <h3 class="stack-domain-label">Frameworks</h3>
           </div>
-          <div class="stack-tags">
-            <span class="tag">Flutter</span><span class="tag">Three.js / WebGL</span><span class="tag">FastAPI</span><span class="tag">Node.js</span><span class="tag">Express</span>
-          </div>
+          <ul class="stack-tags">
+            <li class="tag">Flutter</li><li class="tag">Three.js / WebGL</li><li class="tag">FastAPI</li><li class="tag">Node.js</li><li class="tag">Express</li>
+          </ul>
         </div>
 
         <div class="stack-row reveal-child" data-domain="NOW">
           <div class="stack-domain-col">
             <span class="stack-domain">NOW</span>
-            <span class="stack-domain-label">Current Focus</span>
+            <h3 class="stack-domain-label">Current Focus</h3>
           </div>
-          <div class="stack-tags">
-            <span class="tag">Kubernetes</span><span class="tag">Prometheus</span><span class="tag">Grafana</span><span class="tag">GitHub Actions</span><span class="tag">eBPF</span>
-          </div>
+          <ul class="stack-tags">
+            <li class="tag">Kubernetes</li><li class="tag">Prometheus</li><li class="tag">Grafana</li><li class="tag">GitHub Actions</li><li class="tag">eBPF</li>
+          </ul>
         </div>
       </div>
     </section>
@@ -585,7 +585,7 @@
         <div class="reveal">
           <div class="edu-card">
             <span class="card-crosshair tl" aria-hidden="true">+</span>
-            <p class="edu-degree">B.Tech &middot; Computer Science &amp; Engineering</p>
+            <h3 class="edu-degree">B.Tech &middot; Computer Science &amp; Engineering</h3>
             <p class="edu-institution">Indian Institute of Technology Jodhpur</p>
             <p class="edu-years">2025 &ndash; 2029 (expected)</p>
             <div class="course-chips-container">
@@ -635,18 +635,20 @@
 
           <!-- Post 1 -->
           <article class="writing-post" data-post-id="post-1">
-            <div class="writing-post-header" role="button" tabindex="0" aria-expanded="false" aria-controls="body-post-1">
-              <div class="writing-post-left">
-                <p class="writing-title">How I built a Linux workload classifier without touching the kernel</p>
-                <div class="writing-meta">
+            <h3 class="writing-post-heading">
+              <button class="writing-post-header" type="button" aria-expanded="false" aria-controls="body-post-1">
+                <span class="writing-post-left">
+                  <span class="writing-title" id="title-post-1">How I built a Linux workload classifier without touching the kernel</span>
+                  <span class="writing-meta">
                   <span class="writing-status">DRAFT</span>
                   <span class="writing-date">3 MIN READ</span>
                   <span class="writing-pill">Systems & ML</span>
-                </div>
-              </div>
-              <span class="writing-expand-icon" aria-hidden="true">&#8250;</span>
-            </div>
-            <div class="writing-post-body" id="body-post-1" role="region">
+                  </span>
+                </span>
+                <span class="writing-expand-icon" aria-hidden="true">&#8250;</span>
+              </button>
+            </h3>
+            <div class="writing-post-body" id="body-post-1" role="region" aria-labelledby="title-post-1" hidden>
               <p class="writing-preview">CogniOS needed workload-type awareness without a kernel module. I ended up training an XGBoost classifier on synthetic telemetry &mdash; CPU cycles, page faults, I/O patterns &mdash; to label running processes as compute-bound, memory-bound, or idle. The key breakthrough was extracting 18 normalized features directly from <code class="code-inline">/proc</code> without root privileges while maintaining sub-2ms inference.</p>
               <div class="writing-code-snippet">
                 <pre><code>// /proc/[pid]/stat feature extraction window
@@ -665,18 +667,20 @@ XGBoost.predict(tensor) -> {COMPUTE: 0.88, MEM: 0.08, IO: 0.04} [1.4ms]</code></
 
           <!-- Post 2 -->
           <article class="writing-post" data-post-id="post-2">
-            <div class="writing-post-header" role="button" tabindex="0" aria-expanded="false" aria-controls="body-post-2">
-              <div class="writing-post-left">
-                <p class="writing-title">XGBoost in userspace: building CogniOS&rsquo;s ML pipeline from scratch</p>
-                <div class="writing-meta">
+            <h3 class="writing-post-heading">
+              <button class="writing-post-header" type="button" aria-expanded="false" aria-controls="body-post-2">
+                <span class="writing-post-left">
+                  <span class="writing-title" id="title-post-2">XGBoost in userspace: building CogniOS&rsquo;s ML pipeline from scratch</span>
+                  <span class="writing-meta">
                   <span class="writing-status">DRAFT</span>
                   <span class="writing-date">4 MIN READ</span>
                   <span class="writing-pill">MLOps & background processes</span>
-                </div>
-              </div>
-              <span class="writing-expand-icon" aria-hidden="true">&#8250;</span>
-            </div>
-            <div class="writing-post-body" id="body-post-2" role="region">
+                  </span>
+                </span>
+                <span class="writing-expand-icon" aria-hidden="true">&#8250;</span>
+              </button>
+            </h3>
+            <div class="writing-post-body" id="body-post-2" role="region" aria-labelledby="title-post-2" hidden>
               <p class="writing-preview">Training a model is one problem. Making it run reliably as a background daemon &mdash; handling cold-start, model versioning, telemetry drift, and crash-dump replay &mdash; is another. This post covers the full MLflow-tracked pipeline: synthetic data generators, feature scaling, model serialization, and atomic WAL ring-buffers.</p>
               <div class="writing-code-snippet">
                 <pre><code>// Atomic telemetry buffer commit
@@ -697,18 +701,20 @@ RingBuffer::commit(record) {
 
           <!-- Post 3 -->
           <article class="writing-post" data-post-id="post-3">
-            <div class="writing-post-header" role="button" tabindex="0" aria-expanded="false" aria-controls="body-post-3">
-              <div class="writing-post-left">
-                <p class="writing-title">What hackathons taught me about shipping in 24 hours</p>
-                <div class="writing-meta">
+            <h3 class="writing-post-heading">
+              <button class="writing-post-header" type="button" aria-expanded="false" aria-controls="body-post-3">
+                <span class="writing-post-left">
+                  <span class="writing-title" id="title-post-3">What hackathons taught me about shipping in 24 hours</span>
+                  <span class="writing-meta">
                   <span class="writing-status">DRAFT</span>
                   <span class="writing-date">2 MIN READ</span>
                   <span class="writing-pill">Hackathon notes</span>
-                </div>
-              </div>
-              <span class="writing-expand-icon" aria-hidden="true">&#8250;</span>
-            </div>
-            <div class="writing-post-body" id="body-post-3" role="region">
+                  </span>
+                </span>
+                <span class="writing-expand-icon" aria-hidden="true">&#8250;</span>
+              </button>
+            </h3>
+            <div class="writing-post-body" id="body-post-3" role="region" aria-labelledby="title-post-3" hidden>
               <p class="writing-preview">Across Insomniac, Bootup, and Cerebras, the single greatest engineering differentiator wasn&rsquo;t lines of code &mdash; it was ruthlessly constructing the primary demo pathway first, then writing strictly the minimal robust code required to make that path fail-proof.</p>
               <div class="writing-code-snippet">
                 <pre><code>// The 24-Hour Rule
@@ -732,6 +738,7 @@ Hour 16-24: Edge cases, telemetry logging, end-to-end demo</code></pre>
 
     <!-- CONTACT SECTION -->
     <section id="contact" aria-label="Contact and links">
+      <h2 class="section-label"><span class="label-accent">&mdash;</span>Contact</h2>
       <div class="contact-layout reveal">
 
         <!-- LEFT: Find me on & Opportunity Callout -->
@@ -739,7 +746,7 @@ Hour 16-24: Edge cases, telemetry logging, end-to-end demo</code></pre>
           <div class="contact-eyebrow">
             <span class="contact-eyebrow-slash"> </span>Get in touch
           </div>
-          <h2 class="contact-heading">Find me online</h2>
+          <h3 class="contact-heading">Find me online</h3>
 
           <!-- 2x2 link card grid with Double-Bezel styling -->
           <div class="link-cards-grid">
@@ -817,7 +824,7 @@ Hour 16-24: Edge cases, telemetry logging, end-to-end demo</code></pre>
           <div class="contact-eyebrow">
             <span class="contact-eyebrow-slash"> </span>Message me
           </div>
-          <h2 class="contact-heading">Send a direct message</h2>
+          <h3 class="contact-heading">Send a direct message</h3>
 
           <div class="contact-form-shell">
             <div class="contact-form-card">
@@ -826,19 +833,22 @@ Hour 16-24: Edge cases, telemetry logging, end-to-end demo</code></pre>
                   <div class="form-field">
                     <label class="form-label" for="cf-name">Name <span class="req">*</span></label>
                     <input class="form-input" type="text" id="cf-name" name="name"
-                           placeholder="Ada Lovelace" autocomplete="name" required />
+                           placeholder="Ada Lovelace" autocomplete="name" aria-describedby="cf-name-error" required />
+                    <span class="form-field-error" id="cf-name-error"></span>
                   </div>
                   <div class="form-field">
                     <label class="form-label" for="cf-email">Email <span class="req">*</span></label>
                     <input class="form-input" type="email" id="cf-email" name="email"
-                           placeholder="ada@babbage.io" autocomplete="email" required />
+                           placeholder="ada@babbage.io" autocomplete="email" aria-describedby="cf-email-error" required />
+                    <span class="form-field-error" id="cf-email-error"></span>
                   </div>
                 </div>
 
                 <div class="form-field">
                   <label class="form-label" for="cf-message">Message <span class="req">*</span></label>
                   <textarea class="form-input form-textarea" id="cf-message" name="message"
-                            placeholder="What system are we engineering?" rows="5" required></textarea>
+                            placeholder="What system are we engineering?" rows="5" aria-describedby="cf-message-error" required></textarea>
+                  <span class="form-field-error" id="cf-message-error"></span>
                 </div>
 
                 <div class="form-footer">
@@ -863,7 +873,7 @@ Hour 16-24: Edge cases, telemetry logging, end-to-end demo</code></pre>
   </main>
 
   <!-- PROJECT DETAIL TECHNICAL DOSSIER OVERLAY -->
-  <div id="proj-overlay" class="proj-overlay" role="dialog" aria-modal="true" aria-labelledby="proj-overlay-title" aria-hidden="true">
+  <div id="proj-overlay" class="proj-overlay" role="dialog" aria-modal="true" aria-labelledby="proj-overlay-title" aria-hidden="true" inert>
     <div class="proj-overlay-header">
       <div class="proj-overlay-title-group">
         <div class="proj-overlay-meta-tag">

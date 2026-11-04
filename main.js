@@ -383,20 +383,18 @@
             p.classList.remove('open');
             var h = p.querySelector('.writing-post-header');
             if (h) h.setAttribute('aria-expanded', 'false');
+            var b = p.querySelector('.writing-post-body');
+            if (b) b.hidden = true;
           }
         });
 
         post.classList.toggle('open', !isOpen);
         header.setAttribute('aria-expanded', !isOpen ? 'true' : 'false');
+        var body = post.querySelector('.writing-post-body');
+        if (body) body.hidden = isOpen;
       }
 
       header.addEventListener('click', toggle);
-      header.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          toggle();
-        }
-      });
     });
   })();
 
@@ -605,7 +603,7 @@
   function renderStack(groups) {
     return '<div class="proj-stack-groups">' + groups.map(function(g) {
       return '<div class="proj-stack-row">' +
-        '<span class="proj-stack-label">' + g.label + '</span>' +
+        '<h4 class="proj-stack-label">' + g.label + '</h4>' +
         '<div class="tag-list">' + g.tags.map(function(t) {
           return '<span class="tag">' + t + '</span>';
         }).join('') + '</div>' +
@@ -625,7 +623,7 @@
   function renderHurdles(hurdles) {
     return '<div class="proj-hurdle-list">' + hurdles.map(function(h) {
       return '<div class="proj-hurdle">' +
-        '<p class="proj-hurdle-title">' + h.title + '</p>' +
+        '<h4 class="proj-hurdle-title">' + h.title + '</h4>' +
         '<p class="proj-hurdle-desc">' + h.desc + '</p>' +
       '</div>';
     }).join('') + '</div>';
@@ -653,15 +651,15 @@
       overlayBody.innerHTML =
         '<div>' +
           '<div class="proj-section">' +
-            '<p class="proj-section-label">The short version</p>' +
+            '<h3 class="proj-section-label">The short version</h3>' +
             '<p class="proj-overview">' + p.overview + '</p>' +
           '</div>' +
           '<div class="proj-section">' +
-            '<p class="proj-section-label">Build notes</p>' +
+            '<h3 class="proj-section-label">Build notes</h3>' +
             renderTimeline(p.timeline) +
           '</div>' +
           '<div class="proj-section">' +
-            '<p class="proj-section-label">Links</p>' +
+            '<h3 class="proj-section-label">Links</h3>' +
             '<div class="proj-link-row">' + p.links.map(function(l) {
               return '<a href="' + l.href + '" class="proj-ext-link" target="_blank" rel="noopener noreferrer">' + l.label + '</a>';
             }).join('') + '</div>' +
@@ -669,11 +667,11 @@
         '</div>' +
         '<div>' +
           '<div class="proj-section">' +
-            '<p class="proj-section-label">Tools and structure</p>' +
+            '<h3 class="proj-section-label">Tools and structure</h3>' +
             renderStack(p.stack) +
           '</div>' +
           '<div class="proj-section">' +
-            '<p class="proj-section-label">Problems I worked through</p>' +
+            '<h3 class="proj-section-label">Problems I worked through</h3>' +
             renderHurdles(p.hurdles) +
           '</div>' +
         '</div>';
@@ -681,6 +679,7 @@
 
     overlay.classList.add('open');
     overlay.setAttribute('aria-hidden', 'false');
+    overlay.inert = false;
     setDialogBackground(overlay, true);
     document.body.style.overflow = 'hidden';
     if (closeBtn) closeBtn.focus();
@@ -691,6 +690,7 @@
     overlay.classList.remove('open');
     dialogTriggers.forEach(function(trigger) { trigger.setAttribute('aria-expanded', 'false'); });
     overlay.setAttribute('aria-hidden', 'true');
+    overlay.inert = true;
     setDialogBackground(overlay, false);
     document.body.style.overflow = '';
     if (lastFocus) lastFocus.focus();
@@ -792,6 +792,7 @@
   (function() {
     var filterBtns = document.querySelectorAll('.filter-btn');
     var cards = document.querySelectorAll('.project-card');
+    var status = document.getElementById('project-filter-status');
     if (!filterBtns.length || !cards.length) return;
 
     filterBtns.forEach(function(btn) {
@@ -804,10 +805,12 @@
         btn.setAttribute('aria-pressed', 'true');
 
         var filter = btn.getAttribute('data-filter');
+        var visibleCount = 0;
 
         cards.forEach(function(card) {
           var categories = (card.getAttribute('data-category') || '').split(' ');
           if (filter === 'all' || categories.indexOf(filter) !== -1) {
+            visibleCount++;
             card.classList.remove('filter-hidden');
             card.style.opacity = '0';
             setTimeout(function() { card.style.opacity = '1'; }, 40);
@@ -815,6 +818,10 @@
             card.classList.add('filter-hidden');
           }
         });
+        if (status) {
+          var label = btn.textContent.replace(/\s*\(\d+\)\s*$/, '').trim();
+          status.textContent = 'Showing ' + visibleCount + ' project' + (visibleCount === 1 ? '' : 's') + ' for ' + label + '.';
+        }
       });
     });
   })();
@@ -915,8 +922,48 @@
     var btnLbl  = document.getElementById('cf-btn-label');
     var status  = document.getElementById('cf-status');
     if (!form) return;
+    var fields = Array.from(form.querySelectorAll('.form-input'));
 
     var ENDPOINT = 'https://formspree.io/f/xeajzddb';
+
+    function fieldLabel(input) {
+      var label = form.querySelector('label[for="' + input.id + '"]');
+      return label ? label.textContent.replace('*', '').trim() : 'This field';
+    }
+
+    function setFieldError(input, message) {
+      var error = document.getElementById(input.id + '-error');
+      input.setAttribute('aria-invalid', message ? 'true' : 'false');
+      if (error) error.textContent = message || '';
+    }
+
+    function validationMessage(input) {
+      if (!input.value.trim()) return fieldLabel(input) + ' is required.';
+      if (input.validity.typeMismatch) return 'Enter a valid email address.';
+      return '';
+    }
+
+    fields.forEach(function(input) {
+      input.addEventListener('invalid', function(e) {
+        e.preventDefault();
+        var isFirstInvalid = !form.querySelector('.form-input[aria-invalid="true"]');
+        setFieldError(input, validationMessage(input));
+        if (status) {
+          status.className = 'form-status error';
+          status.textContent = 'Please correct the highlighted fields.';
+        }
+        if (isFirstInvalid) setTimeout(function() { input.focus(); }, 0);
+      });
+      input.addEventListener('input', function() {
+        if (input.getAttribute('aria-invalid') === 'true') {
+          setFieldError(input, validationMessage(input));
+          if (!form.querySelector('.form-input[aria-invalid="true"]') && status) {
+            status.className = 'form-status';
+            status.textContent = '';
+          }
+        }
+      });
+    });
 
     function setState(state) {
       if (btn) btn.disabled = (state === 'loading');
@@ -928,6 +975,7 @@
         if (btnLbl) btnLbl.textContent = 'Send message';
         if (status) status.textContent = 'Message sent. Thanks for getting in touch.';
         form.reset();
+        fields.forEach(function(input) { setFieldError(input, ''); });
       } else if (state === 'error') {
         if (btnLbl) btnLbl.textContent = 'Send message';
         if (status) status.textContent = 'Message could not be sent. Please try again or email nikhil010407@gmail.com.';
@@ -949,9 +997,10 @@
       var msg   = msgInput ? msgInput.value.trim() : '';
 
       if (!name || !email || !msg) {
+        fields.forEach(function(input) { setFieldError(input, validationMessage(input)); });
         if (status) {
           status.className = 'form-status error';
-          status.textContent = 'Please complete all fields.';
+          status.textContent = 'Please correct the highlighted fields.';
         }
         if (!name && nameInput) nameInput.focus();
         else if (!email && emailInput) emailInput.focus();
