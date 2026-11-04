@@ -830,7 +830,10 @@
   (function() {
     if (prefersReduced || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
     document.querySelectorAll('.project-card, .featured-project, .link-card').forEach(function(card) {
-      var frame, pointerX, pointerY;
+      var frame, pointerX, pointerY, cachedRect;
+      card.addEventListener('mouseenter', function() {
+        cachedRect = card.getBoundingClientRect();
+      }, { passive: true });
       card.addEventListener('mousemove', function(e) {
         pointerX = e.clientX;
         pointerY = e.clientY;
@@ -838,7 +841,7 @@
         frame = requestAnimationFrame(function() {
           frame = null;
           if (prefersReduced) return;
-          var rect = card.getBoundingClientRect();
+          var rect = cachedRect || card.getBoundingClientRect();
           var x = (pointerX - rect.left) / rect.width;
           var y = (pointerY - rect.top) / rect.height;
           card.style.setProperty('--mx', (x * 100).toFixed(1) + '%');
@@ -849,7 +852,7 @@
           }
         });
       }, { passive: true });
-      function reset() { cancelAnimationFrame(frame); frame = null; card.style.transform = ''; }
+      function reset() { cancelAnimationFrame(frame); frame = null; cachedRect = null; card.style.transform = ''; }
       card.addEventListener('mouseleave', reset);
       motionPreference.addEventListener('change', reset);
     });
