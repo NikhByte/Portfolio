@@ -295,9 +295,18 @@
       mouse.y = -9999;
     });
 
+    var prevWidth = window.innerWidth;
     window.addEventListener('resize', function() {
       if (resizeFrame) return;
-      resizeFrame = requestAnimationFrame(function() { resizeFrame = null; resize(); });
+      resizeFrame = requestAnimationFrame(function() {
+        resizeFrame = null;
+        var currentWidth = window.innerWidth;
+        resize();
+        if (currentWidth !== prevWidth) {
+          initNodes();
+          prevWidth = currentWidth;
+        }
+      });
     }, { passive: true });
 
     resize();
