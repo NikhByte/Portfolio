@@ -402,15 +402,15 @@
   var PROJECTS = {
     'cognios': {
       name: 'CogniOS',
-      sub: 'Adaptive OS Intelligence Layer · DevLUP Labs SoC · Active',
-      overview: 'CogniOS is a Linux workload detection and scheduling-optimization layer that runs entirely in userspace — no kernel patches, no elevated root privileges. The system collects fine-grained telemetry via psutil and /proc, feeds an 18-dimensional feature vector into a trained XGBoost classifier to identify workload profiles (compute-bound, memory-bound, I/O-bound, idle), and utilizes an Isolation Forest model to flag resource thrashing in real time. An OS flight recorder maintains a rolling ring-buffer of system state with crash-dump capability. An offline scheduler simulator benchmarks classical scheduling against RL-based approaches using replayed telemetry traces.',
+      sub: 'Linux workload detector · DevLUP Labs SoC · In progress',
+      overview: 'CogniOS reads Linux process data from /proc and psutil, then uses an XGBoost model to classify a workload as compute-bound, memory-bound, I/O-bound, or idle. It runs in userspace, so it does not need kernel patches or root access. I also added an Isolation Forest for unusual behavior, a rolling crash log, and a simulator for trying scheduler ideas against recorded traces.',
       timeline: [
-        { date: 'Apr 2025', event: 'Joined DevLUP Labs SoC. Proposed CogniOS architecture: userspace workload-aware scheduling without kernel modification.', milestone: true },
-        { date: 'May 2025', event: 'Engineered telemetry collection layer. Wrote /proc parsers for CPU, memory, I/O, and context-switch metrics via psutil.' },
-        { date: 'Jun 2025', event: 'Constructed synthetic dataset generation pipeline. Generated ~50,000 labeled samples across four workload classes.' },
-        { date: 'Jul 2025', event: 'Trained XGBoost classifier with MLflow experiment tracking. Achieved <2ms inference latency on target hardware.', milestone: true },
-        { date: 'Aug 2025', event: 'Integrated Isolation Forest for anomaly detection. Wired real-time anomaly alerts directly into flight recorder.' },
-        { date: 'Ongoing', event: 'Building offline scheduler simulator to evaluate CFS vs EDF vs PPO reinforcement learning policies on recorded traces.', milestone: true },
+        { date: 'Apr 2025', event: 'I joined DevLUP Labs SoC and sketched the first version: workload detection in userspace, with no kernel changes.', milestone: true },
+        { date: 'May 2025', event: 'I wrote the /proc and psutil collectors for CPU, memory, I/O, and context-switch data.' },
+        { date: 'Jun 2025', event: 'I built a synthetic-data generator and produced about 50,000 labeled samples across four workload classes.' },
+        { date: 'Jul 2025', event: 'I trained the XGBoost model, tracked runs in MLflow, and brought inference below 2 ms in my tests.', milestone: true },
+        { date: 'Aug 2025', event: 'I added an Isolation Forest and started saving anomaly events in the rolling recorder.' },
+        { date: 'Ongoing', event: 'I am building a simulator to compare CFS, EDF, and PPO policies on recorded workloads.', milestone: true },
       ],
       stack: [
         { label: 'CORE', tags: ['Python', 'C', 'psutil', 'SQLite WAL'] },
@@ -419,10 +419,10 @@
         { label: 'LLM', tags: ['Gemma LLM', 'Ollama'] },
       ],
       hurdles: [
-        { title: 'Feature engineering without root privileges', desc: 'Standard hardware counters and perf events require root. Engineered 18 normalized signals entirely from unprivileged /proc and psutil telemetry, applying rolling differential smoothing to eliminate noise.' },
-        { title: 'Strict sub-2ms inference ceiling', desc: 'To prevent the scheduling daemon from creating overhead, inference must stay under 2ms. Achieved 1.4ms by trimming features, pre-allocating numpy arrays, and compiling XGBoost with native serialization.' },
-        { title: 'Telemetry drift in synthetic generation', desc: 'Synthetically generated workload traces initially over-fit to uniform distributions. Tuned generators with randomized stochastic burstiness to match real production Linux server behavior.' },
-        { title: 'Crash-dump WAL ring-buffer', desc: 'Built a two-file write-ahead-log commit mechanism ensuring system state remains fully readable even if the flight recorder itself is terminated.' },
+        { title: 'Working without root', desc: 'Many useful hardware counters need root access. I limited the model to 18 signals available through /proc and psutil, then smoothed the differences between samples to cut down noise.' },
+        { title: 'Keeping inference cheap', desc: 'The detector should not become part of the problem. Trimming features, reusing NumPy arrays, and loading the native XGBoost model brought prediction time to about 1.4 ms in my tests.' },
+        { title: 'Making synthetic data less tidy', desc: 'My first generated traces were too uniform, so the model learned patterns that did not look much like real workloads. I added bursts and uneven timing to make the samples less predictable.' },
+        { title: 'Keeping crash data readable', desc: 'The recorder writes through a two-file WAL setup, so the last saved state can still be read if the process dies midway through a write.' },
       ],
       links: [
         { label: '↗ GitHub Repo', href: 'https://github.com/NikhByte/CogniOS' },
@@ -432,15 +432,15 @@
     'fate': {
       name: 'FATE',
       sub: 'Full Attention Telemetry Engine · Insomniac Hackathon · Runner-Up · 24 hrs',
-      overview: 'FATE (Full Attention Telemetry Engine) is an autonomous mobile attention telemetry system that measures cognitive focus via a Contextual Attention Score (CAS). CAS synthesizes spatial context (GPS, ambient sound), social context (communication frequency), and digital telemetry (app usage, screen-on duration). Built end-to-end in 24 hours at the Insomniac Hackathon, winning Runner-Up. Architecture combines Flutter and Android native sensors on the client with a Python FastAPI inference backend and Gemini CLI coaching.',
+      overview: 'FATE is a mobile app our team built in 24 hours at the Insomniac Hackathon. It combines motion, location, ambient sound, communication frequency, app usage, and screen time into a Contextual Attention Score. The app uses Flutter and Android sensors, with a FastAPI backend. We finished as runners-up.',
       timeline: [
-        { date: 'Day 1 — 8:00 PM', event: 'Hackathon starts. Team formed. Locked scope in 20 minutes: phone-only multi-signal focus tracking with zero wearables.', milestone: true },
-        { date: 'Day 1 — 10:00 PM', event: 'Flutter mobile client scaffolded. FastAPI backend initialized. Agreed on strict typed REST schema.' },
-        { date: 'Day 1 — 11:30 PM', event: 'Engineered Contextual Attention Score (CAS) algorithm. Formulated weighted multi-tier signal fusion.' },
-        { date: 'Day 2 — 3:00 AM', event: 'Android native layer wired via Flutter platform channels. Real-time background GPS, motion, and usage stats operational.' },
-        { date: 'Day 2 — 9:00 AM', event: 'Backend inference pipeline active. Integrated Gemini CLI for contextual coaching nudges.', milestone: true },
-        { date: 'Day 2 — 6:00 PM', event: 'Final validation, edge-case hardening, demo recorded. Submitted before deadline. Awarded Runner-Up.', milestone: true },
-        { date: 'Day 2 — 8:00 PM', event: 'Hackathon concludes. 24 hours from zero to working telemetry product.', milestone: false },
+        { date: 'Day 1, 8:00 PM', event: 'We formed the team and cut the idea down to phone-only attention tracking with no wearable.', milestone: true },
+        { date: 'Day 1, 10:00 PM', event: 'We started the Flutter app and FastAPI backend, then agreed on the request and response shapes.' },
+        { date: 'Day 1, 11:30 PM', event: 'We wrote the first weighted version of the attention score.' },
+        { date: 'Day 2, 3:00 AM', event: 'I connected the Android sensor layer through Flutter platform channels and started collecting GPS, motion, and usage data.' },
+        { date: 'Day 2, 9:00 AM', event: 'The backend was working, and we added short coaching suggestions with Gemini CLI.', milestone: true },
+        { date: 'Day 2, 6:00 PM', event: 'We fixed the demo path, recorded the submission, and sent it in before the deadline.', milestone: true },
+        { date: 'Day 2, 8:00 PM', event: 'The hackathon ended. FATE placed second.', milestone: false },
       ],
       stack: [
         { label: 'MOBILE', tags: ['Flutter', 'Dart', 'Android'] },
@@ -449,9 +449,9 @@
         { label: 'AI', tags: ['Gemini CLI'] },
       ],
       hurdles: [
-        { title: 'Asynchronous multi-sensor stream fusion', desc: 'Merging high-frequency accelerometer streams with low-frequency GPS and app-usage timestamps caused lock contention. Solved using Flutter background isolates and time-windowed aggregation buckets.' },
-        { title: 'Algorithmic attention scoring without training data', desc: 'Under 24-hour time constraints, ML training was replaced by an analytical multi-tier heuristic calibrated against distraction research.' },
-        { title: 'Android 12+ background permission restrictions', desc: 'Engineered a seamless onboarding permission guide directing users through system settings for background telemetry.' },
+        { title: 'Sensors arrive at different speeds', desc: 'Accelerometer data arrived far more often than GPS and app-usage updates. We moved collection into a background isolate and grouped readings into time windows.' },
+        { title: 'No time to train a model', desc: 'With only 24 hours, we used a weighted rule-based score instead of pretending we had enough data for a useful model.' },
+        { title: 'Android background permissions', desc: 'Android 12 makes background access easy to get wrong. We added a short guide that takes people to the right system settings.' },
       ],
       links: [
         { label: '↗ GitHub Repo', href: 'https://github.com/NikhByte/FATE' },
@@ -461,13 +461,13 @@
     'spark': {
       name: 'SPARK',
       sub: 'Self-hosted Personal Access Remote Kit · DevLUP Labs WoC · 2025',
-      overview: 'SPARK is a self-hosted cloud infrastructure stack deployed on a repurposed Ubuntu Server machine. It utilizes CasaOS as an orchestration interface over Docker microservices — Jellyfin for media streaming, Nextcloud for distributed file storage, and Vaultwarden for password security. Built under strict campus network constraints where all inbound ports are blocked by NAT; bypassed using outbound-only persistent Cloudflare Tunnels.',
+      overview: 'SPARK is my small homelab on a repurposed Ubuntu machine. CasaOS manages Docker containers for Jellyfin, Nextcloud, and Vaultwarden. The campus network blocks incoming ports, so I use an outbound Cloudflare Tunnel to reach the services remotely.',
       timeline: [
-        { date: 'Jan 2025', event: 'Configured Ubuntu Server 24.04 on bare metal. Configured static subnet IP, SSH keys, and firewall hardening.', milestone: true },
-        { date: 'Feb 2025', event: 'Deployed CasaOS. Provisioned Docker containers for Nextcloud and Jellyfin with persistent volume mappings.' },
-        { date: 'Mar 2025', event: 'Configured Cloudflare Tunnel (cloudflared) daemon to punch through strict campus NAT without port forwarding.', milestone: true },
-        { date: 'Apr 2025', event: 'Added Vaultwarden vault and configured Prometheus + Grafana telemetry for 24/7 node health monitoring.' },
-        { date: 'Ongoing', event: 'Integrating local Ollama inference container into the homelab private cluster.', milestone: true },
+        { date: 'Jan 2025', event: 'I installed Ubuntu Server 24.04, set a local address, added SSH keys, and tightened the firewall.', milestone: true },
+        { date: 'Feb 2025', event: 'I added CasaOS and Docker containers for Nextcloud and Jellyfin, with data stored outside the containers.' },
+        { date: 'Mar 2025', event: 'I set up cloudflared so I could reach the server through campus NAT without opening ports.', milestone: true },
+        { date: 'Apr 2025', event: 'I added Vaultwarden, Prometheus, and Grafana for passwords and basic machine health.' },
+        { date: 'Ongoing', event: 'I am adding an Ollama container for local inference on the same machine.', milestone: true },
       ],
       stack: [
         { label: 'HOST', tags: ['Ubuntu Server', 'Linux', 'systemd'] },
@@ -476,9 +476,9 @@
         { label: 'OBS', tags: ['Prometheus', 'Grafana'] },
       ],
       hurdles: [
-        { title: 'Inbound port blocking on college network', desc: 'Campus NAT forbids port forwarding. Cloudflare Tunnel (outbound HTTP/2 tunnel to Cloudflare edge) provided authenticated ingress with zero exposed ports.' },
-        { title: 'Dynamic campus IP reallocation', desc: 'Campus DHCP leases periodically reassign local addresses. Automated a systemd boot script that discovers active subnet routing and updates Docker bridge networks.' },
-        { title: '24/7 thermal safety on laptop chassis', desc: 'Configured aggressive CPU frequency governors and an automated daemon that monitors thermal sensors and throttles non-essential containers above 80°C.' },
+        { title: 'The campus network blocks incoming ports', desc: 'Port forwarding was not an option, so the server opens its own Cloudflare Tunnel and exposes no inbound port.' },
+        { title: 'The local address keeps changing', desc: 'A small systemd script checks the active subnet at boot and updates the Docker bridge when DHCP moves the machine.' },
+        { title: 'The hardware runs hot', desc: 'A temperature monitor slows non-essential containers above 80°C, and the CPU governor keeps the old laptop from sitting at full power all day.' },
       ],
       links: [
         { label: '↗ GitHub Repo', href: 'https://github.com/NikhByte/SPARK' },
@@ -487,14 +487,14 @@
 
     'debateos': {
       name: 'DebateOS',
-      sub: 'Multi-agent AI Debate Engine · Cerebras Hackathon · 24 hrs',
-      overview: 'DebateOS is an autonomous multi-agent reasoning system where two LLM agents engage in structured dialectical debate, evaluated turn-by-turn by an automated judge agent. Orchestrated with LangGraph running Llama 3 70B on the Cerebras high-speed inference engine (~800 tokens/sec). The judge agent grades arguments on logical coherence, fallacy detection, and evidence utilization, producing an automated rubric score and final verdict.',
+      sub: 'Three-agent debate demo · Cerebras Hackathon · 24 hrs',
+      overview: 'DebateOS puts two Llama 3 70B agents on opposite sides of a motion and gives a third agent the judge role. LangGraph keeps track of turns and context, while Cerebras serves the model at roughly 800 tokens per second. The judge checks the arguments against a simple rubric and picks a winner.',
       timeline: [
-        { date: 'Hour 0–3', event: 'Designed agent graph architecture. Locked three distinct agent roles: Proponent, Opponent, Judge.', milestone: true },
-        { date: 'Hour 3–8', event: 'Integrated Cerebras API with Llama 3 70B. Benchmarked streaming latency to ensure sub-second response times.' },
-        { date: 'Hour 8–14', event: 'Constructed stateful turn-taking logic with LangGraph, feeding prior context into opposing agents.' },
-        { date: 'Hour 14–20', event: 'Engineered judge scoring rubric with adversarial prompt constraints to prevent sycophancy.', milestone: true },
-        { date: 'Hour 20–24', event: 'Built live web interface. Tested edge cases and context compaction. Submitted at Hour 24.', milestone: true },
+        { date: 'Hour 0–3', event: 'I split the graph into three roles: one agent for each side and one judge.', milestone: true },
+        { date: 'Hour 3–8', event: 'I connected Llama 3 70B through Cerebras and checked how quickly streamed responses arrived.' },
+        { date: 'Hour 8–14', event: 'I built the turn loop in LangGraph and passed the previous arguments into each new response.' },
+        { date: 'Hour 14–20', event: 'The agents kept agreeing with each other, so I tightened their prompts and wrote a two-step judging rubric.', milestone: true },
+        { date: 'Hour 20–24', event: 'I built the web interface, tested long debates, and submitted the demo.', milestone: true },
       ],
       stack: [
         { label: 'AGENT', tags: ['LangGraph', 'LangChain'] },
@@ -503,9 +503,9 @@
         { label: 'UI', tags: ['HTML5', 'CSS3', 'Vanilla JS'] },
       ],
       hurdles: [
-        { title: 'LLM sycophancy and agreeable convergence', desc: 'Default models tend to agree with opponents. Solved by injecting strict adversarial constraints into system prompts, explicitly penalizing concessions.' },
-        { title: 'Judge impartiality', desc: 'The judge agent initially awarded equal scores. Implemented a dual-pass evaluation chain: first analyze logical fallacies, then compute weighted rubric scores.' },
-        { title: 'Context window growth across multiple debate rounds', desc: 'Implemented sliding-window summarization that preserves opening premises and recent rebuttals while compressing middle turns.' },
+        { title: 'The debaters kept agreeing', desc: 'The base model often softened its position after a rebuttal. I made each role more explicit and penalized unsupported concessions in the prompt.' },
+        { title: 'The judge kept calling it a draw', desc: 'A single scoring prompt produced almost identical scores. I split judging into two passes: find weaknesses first, then apply the weighted rubric.' },
+        { title: 'Long debates filled the context window', desc: 'I kept the opening claims and latest rebuttals, then summarized the middle rounds once the transcript grew too large.' },
       ],
       links: [
         { label: '↗ GitHub Repo', href: 'https://github.com/NikhByte/DebateOS' },
@@ -514,14 +514,14 @@
 
     'aerowse': {
       name: 'AeroWSE',
-      sub: 'Warfighter Swarm Engine · Cerebras Hackathon · 24 hrs',
-      overview: 'AeroWSE (Autonomous Embedded Radar Ops — Warfighter Swarm Engine) is a 3D drone swarm tactical simulator rendered in Three.js/WebGL. 50+ autonomous drone entities follow flocking boids algorithms (separation, alignment, cohesion) overlaid with mission vector targets synthesized from natural language commands via Gemma 4 31B on the Cerebras API. Supports real-time mission execution: Patrol, Intercept, Scatter, and Regroup.',
+      sub: '3D drone-swarm demo · Cerebras Hackathon · 24 hrs',
+      overview: 'AeroWSE is a Three.js drone-swarm demo I built during the Cerebras Hackathon. More than 50 drones follow a Boids simulation, while Gemma 4 31B turns plain-language commands into target positions. The demo supports four commands: Patrol, Intercept, Scatter, and Regroup.',
       timeline: [
-        { date: 'Hour 0–4', event: 'Three.js scene graph initialized. Designed low-poly drone geometry and camera control rig.', milestone: true },
-        { date: 'Hour 4–10', event: 'Engineered Boids vector physics algorithm. Calibrated flocking weights for realistic swarm kinematics.' },
-        { date: 'Hour 10–16', event: 'Integrated Gemma 4 31B via Cerebras API to parse natural language mission directives into vector targets.', milestone: true },
-        { date: 'Hour 16–21', event: 'Refactored rendering to WebGL InstancedMesh, achieving single-draw-call performance at a rock-solid 60fps.' },
-        { date: 'Hour 21–24', event: 'Implemented mission modes: Patrol, Intercept, Scatter, Regroup. Final demo recorded. Shipped at Hour 24.', milestone: true },
+        { date: 'Hour 0–4', event: 'I set up the Three.js scene, made a low-poly drone, and added the camera controls.', milestone: true },
+        { date: 'Hour 4–10', event: 'I wrote the separation, alignment, and cohesion rules, then tuned the weights until the swarm stopped looking random.' },
+        { date: 'Hour 10–16', event: 'I connected Gemma 4 31B through Cerebras and converted its command output into target vectors.', milestone: true },
+        { date: 'Hour 16–21', event: 'Rendering each drone separately dropped the frame rate, so I moved the swarm to one InstancedMesh draw call.' },
+        { date: 'Hour 21–24', event: 'I added Patrol, Intercept, Scatter, and Regroup, recorded the demo, and submitted it.', milestone: true },
       ],
       stack: [
         { label: '3D', tags: ['Three.js', 'WebGL', 'GLSL'] },
@@ -530,9 +530,9 @@
         { label: 'ALGO', tags: ['Boids Simulation', 'Vector Math'] },
       ],
       hurdles: [
-        { title: 'Three.js draw-call bottleneck with 50+ meshes', desc: 'Individual mesh instances caused frame rate drops to ~12fps. Migrated to WebGL InstancedMesh with dynamic matrix buffers, maintaining a stable 60fps with one draw call.' },
-        { title: 'Natural language to 3D mission vectors', desc: 'Gemma outputs freeform text, while the physics loop requires 3D coordinates and force weights. Implemented a strict JSON-grammar parser with automatic vector fallback.' },
-        { title: 'API latency compensation in active simulation', desc: 'When receiving a command, the swarm immediately transitions into an intermediate alert state while the LLM parses vectors, ensuring zero perceived UI lag.' },
+        { title: 'Fifty separate meshes were too slow', desc: 'The first version fell to about 12 fps. InstancedMesh let me update all drone matrices while drawing the swarm in one call, which brought it back to 60 fps.' },
+        { title: 'The model returns words, not vectors', desc: 'The physics loop needs coordinates and force weights. I constrained the response to JSON and kept a fallback target for malformed output.' },
+        { title: 'Commands take time to parse', desc: 'The swarm enters a simple waiting state as soon as a command arrives, then switches to the new target when the model response is ready.' },
       ],
       links: [
         { label: '↗ GitHub Repo', href: 'https://github.com/NikhByte/AeroWSE' },
@@ -541,24 +541,24 @@
 
     'credo': {
       name: 'Credo',
-      sub: 'Task Management Engine · Bootup Hackathon · Top 5 Finalist',
-      overview: 'Credo is a task orchestration application with an AI-assisted UI synthesis layer. Engineered at the Bootup Hackathon as Team Elite Coders, advancing to the Top 5 finals. Features a Node.js backend with SQLite persistence, concurrency locking, and a clean, accessible frontend interface with complete keyboard-driven navigation.',
+      sub: 'Task manager · Bootup Hackathon · Top 5 Finalist',
+      overview: 'Credo is a task manager our team built at the Bootup Hackathon, where we reached the top five. It has a Node.js backend, SQLite storage, category filters, and keyboard navigation. We used generated interface fragments early on, then rewrote the layout and styles into one consistent system.',
       timeline: [
-        { date: 'Day 1 — Morning', event: 'Formed Team Elite Coders. Scoped core requirements: high-speed task management and structured persistence.', milestone: true },
-        { date: 'Day 1 — Afternoon', event: 'Scaffolded Node.js backend and relational SQLite schema with normalized task categories.' },
-        { date: 'Day 1 — Evening', event: 'Integrated AI-generated UI scaffolding into hand-crafted structure; normalized CSS design tokens.' },
-        { date: 'Day 2 — Morning', event: 'Implemented keyboard navigation, category filtering, and atomic SQLite transaction queues.', milestone: true },
-        { date: 'Day 2 — Afternoon', event: 'Final polish and demo presentation. Selected as Top 5 finalist in the hackathon.', milestone: true },
+        { date: 'Day 1, morning', event: 'We formed Team Elite Coders and agreed to focus on fast task entry, categories, and reliable storage.', milestone: true },
+        { date: 'Day 1, afternoon', event: 'We started the Node.js backend and designed the SQLite tables.' },
+        { date: 'Day 1, evening', event: 'We pulled the early generated UI fragments into one layout and one set of CSS tokens.' },
+        { date: 'Day 2, morning', event: 'We added keyboard navigation, category filters, and a queue for SQLite writes.', milestone: true },
+        { date: 'Day 2, afternoon', event: 'We fixed the demo, presented it, and finished in the top five.', milestone: true },
       ],
       stack: [
         { label: 'FRONT', tags: ['HTML5', 'CSS3', 'JavaScript'] },
         { label: 'BACK', tags: ['Node.js', 'Express', 'SQLite'] },
-        { label: 'AI', tags: ['UI Component Synthesis', 'Prompt Engineering'] },
+        { label: 'PROCESS', tags: ['Generated prototype', 'CSS cleanup'] },
       ],
       hurdles: [
-        { title: 'Normalizing disparate AI-generated UI fragments', desc: 'AI-synthesized components varied widely in spacing and styling. Standardized all elements into a unified CSS variable design system.' },
-        { title: 'SQLite concurrency locks under rapid requests', desc: 'Multiple asynchronous HTTP writes created SQLite database lock exceptions. Built a synchronized write queue serialized through better-sqlite3 transactions.' },
-        { title: 'Scope management under hackathon pressure', desc: 'Cut secondary calendar features on morning of Day 2 to guarantee the core flow was 100% stable for the judges.' },
+        { title: 'The early UI did not fit together', desc: 'Generated components came with different spacing and styling. We kept the useful pieces and moved everything onto the same CSS variables.' },
+        { title: 'SQLite locked under quick repeated writes', desc: 'Several asynchronous requests could write at once. We added a small queue and ran the better-sqlite3 transactions one at a time.' },
+        { title: 'We had more ideas than time', desc: 'On the second morning we dropped the calendar work and spent the remaining hours making the main task flow dependable.' },
       ],
       links: [
         { label: '↗ GitHub Repo', href: 'https://github.com/NikhByte/Credo' },
@@ -567,14 +567,14 @@
 
     'localai': {
       name: 'Local AI Environment',
-      sub: 'Personal Inference Hardware Stack · Active Project',
-      overview: 'A personal offline LLM inference stack engineered on an RTX 3050 mobile GPU (4GB VRAM). Ollama powers model serving and quantization; Open WebUI provides a clean interface. Enables running quantized 7B and 8B parameter models locally with zero cloud dependence, zero per-query latency, and verified thermal constraints.',
+      sub: 'Offline LLM setup · RTX 3050 laptop GPU · In progress',
+      overview: 'This is my offline LLM setup on a laptop RTX 3050 with 4 GB of VRAM. Ollama serves the models and Open WebUI provides the interface. I use it to compare quantization levels, memory use, speed, and temperature instead of relying on cloud inference.',
       timeline: [
-        { date: 'Month 1', event: 'Installed Ollama. Pulled Llama 3 8B and Mistral 7B. Monitored VRAM allocation via nvidia-smi.', milestone: true },
-        { date: 'Month 2', event: 'Deployed Open WebUI Docker container. Set up persistent SSD storage for model weights.' },
-        { date: 'Month 3', event: 'Constructed quantization benchmarking matrix across Q4_K_M, Q5, and Q8 levels for tokens/sec vs memory.', milestone: true },
-        { date: 'Month 4', event: 'Integrated inference sessions into CogniOS telemetry as labeled compute-bound training data.' },
-        { date: 'Ongoing', event: 'Benchmarking lightweight reasoning models (Qwen 2.5, DeepSeek) and experimenting with local RAG.', milestone: true },
+        { date: 'Month 1', event: 'I installed Ollama, tried Llama 3 8B and Mistral 7B, and watched VRAM use with nvidia-smi.', milestone: true },
+        { date: 'Month 2', event: 'I added Open WebUI in Docker and kept the model files on persistent SSD storage.' },
+        { date: 'Month 3', event: 'I compared Q4_K_M, Q5, and Q8 using tokens per second and memory use.', milestone: true },
+        { date: 'Month 4', event: 'I fed local inference sessions into CogniOS as examples of compute-bound work.' },
+        { date: 'Ongoing', event: 'I am testing smaller reasoning models and trying a local RAG setup.', milestone: true },
       ],
       stack: [
         { label: 'INFRA', tags: ['Ollama', 'Open WebUI', 'Docker'] },
@@ -582,9 +582,9 @@
         { label: 'QUANT', tags: ['GGUF', 'Q4_K_M', 'llama.cpp'] },
       ],
       hurdles: [
-        { title: '4GB VRAM ceiling', desc: 'Any model exceeding ~7B at Q4 offloads to CPU, dropping throughput from 35 tok/sec to 4 tok/sec. Calibrated a model-quantization matrix to keep active context entirely in VRAM.' },
-        { title: 'Thermal management during sustained inference', desc: 'Prolonged batch inference caused laptop GPU throttling at 75°C. Configured aggressive fan curves and context limits in Ollama.' },
-        { title: 'VRAM fragmentation between model switches', desc: 'Automated an unload command alias in bash to release resident weights before initializing new model tensors.' },
+        { title: 'Four gigabytes of VRAM is not much', desc: 'Models above roughly 7B at Q4 spill onto the CPU, and speed drops from about 35 to 4 tokens per second. I keep a small table of model size, quantization, context, and memory use.' },
+        { title: 'Long runs heat up the laptop', desc: 'Sustained batches pushed the GPU to its thermal limit. I reduced the context size and changed the fan curve for longer tests.' },
+        { title: 'Switching models leaves memory behind', desc: 'I added a shell alias that unloads the current model before the next one starts.' },
       ],
       links: [
         { label: '↗ GitHub Repo', href: 'https://github.com/NikhByte/LocalAI-Setup' },
