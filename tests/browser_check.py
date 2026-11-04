@@ -13,7 +13,27 @@ with sync_playwright() as p:
     page = browser.new_page(viewport={'width': 1440, 'height': 900}, reduced_motion='reduce')
     errors = []
     page.on('pageerror', lambda error: errors.append(str(error)))
+    like_counts = {}
+    like_hits = []
+    def likes_api(route):
+        parts = route.request.url.split('/')
+        action, key = parts[-3], parts[-1]
+        if action == 'get':
+            if key not in like_counts:
+                route.fulfill(status=404, content_type='application/json', body='{"error":"Key not found"}')
+            else:
+                route.fulfill(status=200, content_type='application/json', body='{"value":%d}' % like_counts[key])
+            return
+        if action == 'hit':
+            like_counts[key] = like_counts.get(key, 0) + 1
+            like_hits.append(key)
+            route.fulfill(status=200, content_type='application/json', body='{"value":%d}' % like_counts[key])
+            return
+        route.fulfill(status=400, content_type='application/json', body='{}')
+    page.route('https://abacus.jasoncameron.dev/**', likes_api)
     page.goto(URL, wait_until='networkidle')
+    expect(page.locator('.card-like-count')).to_have_text(['0'] * 7)
+    expect(page.locator('.like-count')).to_have_text(['0'] * 3)
     for width, height in [(1440,900),(1024,768),(768,1024),(390,844),(320,740)]:
         page.set_viewport_size({'width':width,'height':height})
         page.screenshot(path=str(OUTPUT / f'hero-{width}.png'))
@@ -62,8 +82,14 @@ with sync_playwright() as p:
     expect(like).to_be_focused()
     assert order == page.locator('.project-card').evaluate_all('(cards) => cards.map(c => c.dataset.pid)')
     expect(like).to_have_attribute('aria-pressed','true')
+    expect(like.locator('.card-like-count')).to_have_text('1')
+    assert like_hits.count('project-fate') == 1
+    like.dispatch_event('click')
+    expect(like.locator('.card-like-count')).to_have_text('1')
+    assert like_hits.count('project-fate') == 1
     page.reload(wait_until='networkidle')
     expect(like).to_have_attribute('aria-pressed','true')
+    expect(like.locator('.card-like-count')).to_have_text('1')
     # No messages leave the machine: exercise error and success with intercepted responses.
     calls = []
     def failed(route):
@@ -107,8 +133,11 @@ with sync_playwright() as p:
     expect(writing_like).to_have_attribute('aria-pressed', 'false')
     writing_like.click()
     expect(writing_like).to_have_attribute('aria-pressed', 'true')
+    expect(writing_like.locator('.like-count')).to_have_text('1')
+    assert like_hits.count('post-post-1') == 1
     retina = browser.new_page(viewport={'width':390,'height':844}, device_scale_factor=2)
     retina.on('pageerror', lambda error: errors.append(str(error)))
+    retina.route('https://abacus.jasoncameron.dev/**', likes_api)
     retina.goto(URL, wait_until='networkidle')
     assert retina.locator('#particle-canvas').evaluate('(c) => c.width === innerWidth * 2 && c.height === innerHeight * 2')
     retina.set_viewport_size({'width':390,'height':740})
@@ -118,5 +147,5 @@ with sync_playwright() as p:
     assert retina.locator('#particle-canvas').evaluate('(c) => getComputedStyle(c).display') == 'none'
     retina.close()
     assert not errors, errors
-    print('PASS: five viewport widths, focus trapping/restoration, filters, likes persistence, email validation, mocked contact failure/success, reduced motion, no JS errors.')
+    print('PASS: five viewport widths, focus trapping/restoration, filters, shared anonymous likes, email validation, mocked contact failure/success, reduced motion, no JS errors.')
     browser.close()

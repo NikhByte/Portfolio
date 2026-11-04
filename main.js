@@ -5,6 +5,67 @@
   var prefersReduced = motionPreference.matches;
   motionPreference.addEventListener('change', function(e) { prefersReduced = e.matches; });
 
+  var LIKE_API = 'https://abacus.jasoncameron.dev';
+  var LIKE_NAMESPACE = 'nikhbyte-portfolio-v1';
+  var LIKE_STORAGE_KEY = 'nikhbyte_shared_likes_v1';
+
+  function getPersonalLikes() {
+    try { return JSON.parse(localStorage.getItem(LIKE_STORAGE_KEY) || '{}'); }
+    catch (e) { return {}; }
+  }
+
+  function rememberLike(key) {
+    var likes = getPersonalLikes();
+    likes[key] = true;
+    try { localStorage.setItem(LIKE_STORAGE_KEY, JSON.stringify(likes)); }
+    catch (e) {}
+  }
+
+  function likeUrl(action, key) {
+    return LIKE_API + '/' + action + '/' + LIKE_NAMESPACE + '/' + encodeURIComponent(key);
+  }
+
+  function readLikeCount(key) {
+    return fetch(likeUrl('get', key), { mode: 'cors', cache: 'no-store' })
+      .then(function(response) {
+        if (response.status === 404) return { value: 0 };
+        if (!response.ok) throw new Error('Could not load likes');
+        return response.json();
+      })
+      .then(function(data) {
+        var value = Number(data.value);
+        return Number.isFinite(value) && value >= 0 ? Math.floor(value) : 0;
+      });
+  }
+
+  function addLike(key) {
+    return fetch(likeUrl('hit', key), { mode: 'cors', cache: 'no-store' })
+      .then(function(response) {
+        if (!response.ok) throw new Error('Could not save like');
+        return response.json();
+      })
+      .then(function(data) {
+        var value = Number(data.value);
+        if (!Number.isFinite(value) || value < 1) throw new Error('Invalid like count');
+        return Math.floor(value);
+      });
+  }
+
+  function announceLike(message) {
+    var status = document.getElementById('like-status');
+    if (status) status.textContent = message;
+  }
+
+  function setLikedButton(btn, liked, label) {
+    var icon = btn.querySelector('.card-like-icon, .like-icon');
+    btn.classList.toggle('liked', liked);
+    btn.setAttribute('aria-pressed', String(liked));
+    btn.setAttribute('aria-disabled', String(liked));
+    btn.setAttribute('aria-label', liked ? 'You liked ' + label : 'Like ' + label);
+    btn.title = liked ? 'You already liked this' : 'Like this';
+    if (icon) icon.textContent = liked ? '♥' : '♡';
+  }
+
   // ── 1. SCROLL PROGRESS & FLOATING NAV SCROLL EFFECT ──────────────
   var nav = document.getElementById('main-nav');
   var progressBar = document.getElementById('scroll-progress');
@@ -321,53 +382,35 @@
     }
   })();
 
-  // ── 8. WRITING POSTS ACCORDION + LIKES ───────────────────────────
+  // ── 8. WRITING POSTS ACCORDION + SHARED LIKES ────────────────────
   (function() {
-    var STORAGE_KEY = 'nikhil_post_likes';
-    var BASE = { 'post-1': 3, 'post-2': 5, 'post-3': 7 };
-
-    function getLikes() {
-      try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
-      catch(e) { return {}; }
-    }
-    function saveLikes(data) {
-      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
-      catch(e) {}
-    }
-    function getDisplayCount(postId, liked) {
-      var personal = getLikes();
-      var base = BASE[postId] || 0;
-      return base + (personal[postId] ? 1 : 0);
-    }
-
     document.querySelectorAll('.writing-post .like-btn').forEach(function(btn) {
       var postId = btn.getAttribute('data-post');
-      var personal = getLikes();
-      var liked = !!personal[postId];
-      btn.setAttribute('aria-pressed', String(liked));
+      var key = 'post-' + postId;
+      var liked = !!getPersonalLikes()[key];
       var countEl = btn.querySelector('.like-count');
-      var iconEl = btn.querySelector('.like-icon');
-
-      if (countEl) countEl.textContent = getDisplayCount(postId, liked);
-      if (liked && iconEl) {
-        btn.classList.add('liked');
-        iconEl.textContent = '♥';
-      }
+      var title = btn.closest('.writing-post').querySelector('.writing-title').textContent.trim();
+      setLikedButton(btn, liked, title);
+      readLikeCount(key).then(function(count) {
+        if (countEl) countEl.textContent = String(count);
+      }).catch(function() {});
 
       btn.addEventListener('click', function(e) {
         e.stopPropagation();
-        var p = getLikes();
-        p[postId] = !p[postId];
-        saveLikes(p);
-
-        var nowLiked = !!p[postId];
-        btn.setAttribute('aria-pressed', String(nowLiked));
-        if (countEl) countEl.textContent = getDisplayCount(postId, nowLiked);
-        btn.classList.toggle('liked', nowLiked);
-        if (iconEl) iconEl.textContent = nowLiked ? '♥' : '♡';
-
-        btn.style.transform = 'scale(1.15)';
-        setTimeout(function() { btn.style.transform = ''; }, 140);
+        if (getPersonalLikes()[key] || btn.getAttribute('data-like-pending') === 'true') return;
+        btn.setAttribute('data-like-pending', 'true');
+        addLike(key).then(function(count) {
+          rememberLike(key);
+          if (countEl) countEl.textContent = String(count);
+          setLikedButton(btn, true, title);
+          announceLike('Your like was added to ' + title + '.');
+          btn.style.transform = 'scale(1.15)';
+          setTimeout(function() { btn.style.transform = ''; }, 140);
+        }).catch(function() {
+          announceLike('The like could not be saved. Please try again.');
+        }).finally(function() {
+          btn.removeAttribute('data-like-pending');
+        });
       });
     });
 
@@ -723,69 +766,37 @@
     });
   });
 
-  // ── 10. PROJECT CARD LIKES & DYNAMIC SORTING ─────────────────────
+  // ── 10. PROJECT CARD SHARED LIKES ─────────────────────────────────
   (function() {
-    var STORAGE_KEY = 'nikhil_card_likes';
-    var BASE_LIKES = { cognios: 24, aerowse: 18, debateos: 15, fate: 12, localai: 10, spark: 8, credo: 6 };
-
-    function getLikes() {
-      try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
-      catch(e) { return {}; }
-    }
-    function saveLikes(data) {
-      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
-      catch(e) {}
-    }
-    function getCount(pid) {
-      return (BASE_LIKES[pid] || 0) + (getLikes()[pid] ? 1 : 0);
-    }
-
-    function sortGrid() {
-      var grid = document.getElementById('project-grid');
-      if (!grid) return;
-      var cards = Array.from(grid.querySelectorAll('.project-card'));
-      cards.sort(function(a, b) {
-        var pidA = a.getAttribute('data-pid') || '';
-        var pidB = b.getAttribute('data-pid') || '';
-        return getCount(pidB) - getCount(pidA);
-      });
-      cards.forEach(function(c) { grid.appendChild(c); });
-    }
-
     document.querySelectorAll('.card-like-btn').forEach(function(btn) {
       var pid = btn.getAttribute('data-pid');
       if (!pid) return;
+      var key = 'project-' + pid;
       var countEl = btn.querySelector('.card-like-count');
-      var iconEl  = btn.querySelector('.card-like-icon');
-      var liked = !!getLikes()[pid];
-      btn.setAttribute('aria-pressed', String(liked));
-
-      if (countEl) countEl.textContent = getCount(pid);
-      if (liked) {
-        btn.classList.add('liked');
-        if (iconEl) iconEl.textContent = '♥';
-      }
+      var projectName = btn.closest('article[data-pid]').querySelector('.project-heading, .card-title').textContent.trim();
+      setLikedButton(btn, !!getPersonalLikes()[key], projectName);
+      readLikeCount(key).then(function(count) {
+        if (countEl) countEl.textContent = String(count);
+      }).catch(function() {});
 
       btn.addEventListener('click', function(e) {
         e.stopPropagation();
-        var p = getLikes();
-        p[pid] = !p[pid];
-        saveLikes(p);
-
-        var nowLiked = !!p[pid];
-        btn.setAttribute('aria-pressed', String(nowLiked));
-        if (countEl) countEl.textContent = getCount(pid);
-        btn.classList.toggle('liked', nowLiked);
-        if (iconEl) iconEl.textContent = nowLiked ? '♥' : '♡';
-
-        btn.style.transform = 'scale(1.22) rotate(-4deg)';
-        setTimeout(function() { btn.style.transform = ''; }, 160);
-
-
+        if (getPersonalLikes()[key] || btn.getAttribute('data-like-pending') === 'true') return;
+        btn.setAttribute('data-like-pending', 'true');
+        addLike(key).then(function(count) {
+          rememberLike(key);
+          if (countEl) countEl.textContent = String(count);
+          setLikedButton(btn, true, projectName);
+          announceLike('Your like was added to ' + projectName + '.');
+          btn.style.transform = 'scale(1.22) rotate(-4deg)';
+          setTimeout(function() { btn.style.transform = ''; }, 160);
+        }).catch(function() {
+          announceLike('The like could not be saved. Please try again.');
+        }).finally(function() {
+          btn.removeAttribute('data-like-pending');
+        });
       });
     });
-
-    sortGrid();
   })();
 
   // ── 11. PROJECT DISCIPLINE FILTER SYSTEM ─────────────────────────

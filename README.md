@@ -5,7 +5,7 @@ Personal portfolio and interactive project case-studies.
 ## Tech Stack
 - Vanilla HTML5
 - Pure CSS (CSS Variables, Flexbox, CSS Grid, Media Queries)
-- Vanilla JavaScript (IntersectionObserver, Canvas API, LocalStorage)
+- Vanilla JavaScript (IntersectionObserver, Canvas API, Fetch API, LocalStorage)
 
 ## Architecture
 - **Zero Dependencies**: No React, no Tailwind, no build step. 
@@ -14,7 +14,7 @@ Personal portfolio and interactive project case-studies.
 
 ## Features
 - Interactive Canvas Particle Field (with `prefers-reduced-motion` fallback)
-- LocalStorage-backed Like System
+- Shared anonymous likes backed by a public counter API, with one like per browser
 - Full-screen Project Detail Overlays
 - Custom Terminal-style Hero
 
@@ -27,8 +27,8 @@ Open `http://localhost:8080` in your browser.
 ## Browser regression checks
 
 The browser suite checks responsive overflow, dialog keyboard behavior, project filters,
-local likes, reduced motion, and contact-form validation/error/success states. Contact
-requests are intercepted; the suite does not send messages.
+shared likes, reduced motion, and contact-form validation/error/success states. Like and contact
+requests are intercepted; the suite does not send real network mutations.
 
 ```bash
 python3 -m venv /tmp/portfolio-test-env
